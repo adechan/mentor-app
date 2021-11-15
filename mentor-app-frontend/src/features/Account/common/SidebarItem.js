@@ -16,10 +16,13 @@ const customStyle = makeStyles(() => ({
   },
 }));
 
-const SidebarItem = ({ itemTitle }) => {
+const SidebarItem = ({ itemTitle, onClick, selected }) => {
   const customClasses = customStyle();
   return (
-    <Typography variant="h5" className={customClasses.text}>
+    <Typography variant="h5" className={customClasses.text} 
+    onClick={onClick} 
+    style={{backgroundColor: selected === itemTitle? '#636fa4': 'inherit'}}
+    >
       {itemTitle}
     </Typography>
   );
