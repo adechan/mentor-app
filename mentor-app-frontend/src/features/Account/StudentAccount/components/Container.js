@@ -5,6 +5,7 @@ import Appointments from './Appointments/Appointments';
 import Awards from './Awards/Awards';
 import Interests from './Interests/Interests/Interests';
 import Mentors from './Mentors/Mentors';
+import MentorMoreInfo from './Recommendations/MentorMoreInfo';
 import Recommendations from './Recommendations/Recommendations';
 import Settings from './Settings/Settings';
 import SwitchProfile from './SwitchProfile/SwitchProfile';
@@ -26,6 +27,7 @@ const Container = () => {
                 <Route path="/student-account/awards" component={() => <Awards />}/>
                 <Route path="/student-account/appointments" component={() => <Appointments />}/>
                 <Route path="/student-account/my-mentors" component={() => <Mentors />}/>
+                <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo />}/>
                 <Route path="/student-account/recommendations" component={() => <Recommendations />}/>
                 <Route path="/student-account/settings" component={() => <Settings />}/>
                 <Route path="/student-account/switch-profile" component={() => <SwitchProfile />}/>

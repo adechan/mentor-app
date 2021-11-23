@@ -37,11 +37,13 @@ const Appointments = () => {
       mentor: "Mentor1",
       price: "34 lei",
       date: "16 November",
+      status: "Accepted"
     },
     {
         mentor: "Mentor2",
         price: "34 lei",
         date: "16 November",
+        status: 'In pending'
     },
   ];
   return (

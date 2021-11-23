@@ -24,7 +24,7 @@ const customStyles = makeStyles(() => ({
         paddingBottom: 5,
     },
     container: {
-        height: 100,
+        height: 130,
         width: 250,
         backgroundColor: 'white',
         margin: 20,
@@ -58,6 +58,10 @@ const AppointmentCard = ({appoitment}) => {
         
             <Typography variant="h5" className={customClasses.date} >
               Date: <b>{appoitment.date}</b>
+            </Typography>
+
+            <Typography variant="h5" className={customClasses.date} >
+              Status: <b>{appoitment.status}</b>
             </Typography>
             </div>
 

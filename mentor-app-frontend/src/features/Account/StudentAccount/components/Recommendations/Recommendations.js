@@ -1,5 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import MentorCard from "./MentorCard";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -64,9 +65,14 @@ const Recommendations = () => {
         </Typography>
       </div>
 
+      <MentorCard mentor={{
+        id: 1,
+        name: 'mentor1',
+        subject: 'subject'
+      }}/>
+
       {/* <div className={customClasses.interestContainer}>
         {mentors.map((mentor) => (
-          <MentorCard mentor={mentor}/>
         ))}
       </div> */}
     </div>
