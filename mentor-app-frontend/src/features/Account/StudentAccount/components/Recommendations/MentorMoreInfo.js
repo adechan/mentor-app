@@ -33,7 +33,7 @@ const customStyles = makeStyles(() => ({
   },
   subContainer: {
     padding: 20,
-    height: 500,
+    height: '100%',
     width: "calc(100% - 80px)",
     backgroundColor: "white",
     margin: 20,
@@ -41,6 +41,7 @@ const customStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
+
   },
 }));
 

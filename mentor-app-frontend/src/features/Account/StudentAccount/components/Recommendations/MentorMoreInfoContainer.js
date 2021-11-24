@@ -1,42 +1,55 @@
 import React from "react";
 import { Avatar, Button, makeStyles, Typography } from "@material-ui/core";
+import ReviewCard from "./ReviewCard";
 
 const customStyles = makeStyles(() => ({
   title: {
     color: "black",
     fontFamily: "Urbanist",
     fontWeight: 400,
-    fontSize: 18,
+    fontSize: 20,
+  },
+  quote: {
+    color: "#585858",
+    fontFamily: "Dancing Script",
+    fontWeight: 400,
+    fontSize: 30,
+    lineHeight: "30px",
+    textAlign: "center",
+
+    marginBottom: 20,
   },
   container: {
-    padding: 20,
-    height: 300,
-    width: 200,
-    backgroundColor: "white",
-    margin: 20,
-    display: "flex",
-    flexDirection: "column",
-    justifyContent: "space-between",
-    alignItems: "center",
+    height: "100%",
+    width: "100%",
+
+    position: "relative",
   },
   subContainer: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
-    alignItems: "center",
+    alignItems: "start",
+
+    marginBottom: 20,
   },
   bottomSubcontainer: {
     width: "100%",
     display: "flex",
     flexDirection: "column",
     alignItems: "start",
+
+    marginBottom: 15,
+  },
+  buttonContainer: {
   },
   button: {
-      fontSize: 12,
+    fontSize: 12,
     border: "1px solid black",
     color: "white",
     backgroundColor: "black",
+
     "&:hover": {
       backgroundColor: "black",
     },
@@ -46,43 +59,83 @@ const customStyles = makeStyles(() => ({
 const MentorMoreInfoContainer = ({ mentor }) => {
   const customClasses = customStyles();
 
+  const courses = [
+    { course: "Biology", price: 10 },
+    { course: "Math", price: 20 },
+  ];
+  const reviews = [
+    {
+      name: "studet1",
+      text: "The nicest teacher in the worl!",
+    },
+    {
+      name: "student2",
+      text: "Loved studying biology with her!",
+    },
+  ];
+
   return (
-      <>
-    <div className={customClasses.container}
-    >
-      <div className={customClasses.subContainer}
-    style={{borderBottom: '1px solid lightgray'}}
-      >
-        <Avatar src="dasd" style={{ marginBottom: 10 }} />
-        <Typography variant="h5" className={customClasses.title}>
-          <b>Mentor #1</b>
-        </Typography>
-        <Typography variant="h5" className={customClasses.title}
-        style={{marginBottom: 15}}
-        >
-          Bacau, Romania
-        </Typography>
-      </div>
+    <>
+      <div className={customClasses.container}>
+        <div className={customClasses.subContainer}>
+          <Typography variant="h5" className={customClasses.title}>
+            <b>Mentor #1</b>
+          </Typography>
+          <Typography variant="h5" className={customClasses.title}>
+            Bacau, Romania
+          </Typography>
+        </div>
 
-      <div className={customClasses.bottomSubcontainer}>
-        <Typography variant="h5" className={customClasses.title}>
-        Course:<b> Guitar</b>
+        <Typography variant="h5" className={customClasses.quote}>
+          "Maecenas lobortis nibh eu mi tempus, at aliquam odio euismod. Quisque
+          malesuada ultricies massa, tincidunt semper arcu ornare id. Donec
+          sagittis vestibulum leo, "
         </Typography>
-        <Typography variant="h5" className={customClasses.title}
-        style={{marginBottom: 15}}
-        >
-           Price per hour:<b> 13 lei</b>
-        </Typography>
-      </div>
 
-      <Button
-        className={customClasses.button}
-        variant="contained"
-        color="primary"
-      >
-       Create appointment
-      </Button>
-    </div>
+        <div className={customClasses.bottomSubcontainer}>
+          <Typography
+            variant="h5"
+            className={customClasses.title}
+            style={{ textDecoration: "underline", marginBottom: 15 }}
+          >
+            Courses that I mentor:
+          </Typography>
+
+          <div>
+            {courses.map((course) => (
+              <Typography variant="h5" className={customClasses.title}>
+                {`- ${course.course} : ${course.price} Lei`}
+              </Typography>
+            ))}
+          </div>
+        </div>
+
+        <div className={customClasses.bottomSubcontainer}>
+          <Typography
+            variant="h5"
+            className={customClasses.title}
+            style={{ textDecoration: "underline", marginBottom: 15 }}
+          >
+            Latest 3 reviews:
+          </Typography>
+
+          <div>
+            {reviews.map((review) => (
+              <ReviewCard review={review}/>
+            ))}
+          </div>
+        </div>
+
+        <div className={customClasses.buttonContainer}>
+          <Button
+            className={customClasses.button}
+            variant="contained"
+            color="primary"
+          >
+            Create appointment
+          </Button>
+        </div>
+      </div>
     </>
   );
 };
