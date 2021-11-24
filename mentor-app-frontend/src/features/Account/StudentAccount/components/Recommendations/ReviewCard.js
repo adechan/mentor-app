@@ -5,6 +5,7 @@ const customStyles = makeStyles(() => ({
     color: "black",
     fontFamily: "Urbanist",
     fontWeight: 900,
+    fontSize: 20,
   },
   subtitle: {
     color: "#585858",
@@ -30,7 +31,7 @@ const ReviewCard = ({ review }) => {
   const customClasses = customStyles();
   return (
     <div className={customClasses.container}>
-      <Typography variant="h5" className={customClasses.name}>{review.text}</Typography>
+      <Typography variant="h5" className={customClasses.title}>{review.text}</Typography>
       <Typography variant="h5"
       className={customClasses.subtitle}
       >{`- by ${review.name}`}</Typography>

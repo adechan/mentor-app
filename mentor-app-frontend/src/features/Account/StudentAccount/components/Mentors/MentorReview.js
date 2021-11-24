@@ -3,17 +3,13 @@ import {
   Dialog,
   DialogTitle,
   DialogContent,
+  TextareaAutosize,
   Button,
   DialogActions,
   makeStyles,
-  TextField,
 } from "@material-ui/core";
-import Autocomplete from "@mui/material/Autocomplete";
 
 const customStyle = makeStyles(() => ({
-  container: {
-    height: "40vh",
-  },
   title: {
     padding: 20,
     color: "black",
@@ -22,21 +18,23 @@ const customStyle = makeStyles(() => ({
   },
 }));
 
-const MentorReview = ({ openDialog, handleClose, mentorReview }) => {
+const MentorReview = ({ openDialog, handleClose, mentor }) => {
   const customClasses = customStyle();
   return (
-    <Dialog
-      open={openDialog}
-      onClose={handleClose}
-    >
+    <Dialog open={openDialog} onClose={handleClose}>
       <DialogTitle className={customClasses.title}>
-        Do you want to pick another interest?
+        Do you want to review <b>{mentor.name}</b>?
       </DialogTitle>
-      <DialogContent
-      className={customClasses.container}
-      >
-        {mentorReview}
+      <DialogContent>
+        <TextareaAutosize
+          maxRows={5}
+          aria-label="Review"
+          placeholder="Write your review here:"
+          defaultValue={mentor.review}
+          style={{ width: "90%" }}
+        />
       </DialogContent>
+
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
         <Button onClick={handleClose}>Save</Button>

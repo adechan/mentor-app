@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useState } from "react";
+import MentorReview from "./MentorReview"
 import { Button, makeStyles, Typography } from "@material-ui/core";
 
 const customStyles = makeStyles(() => ({
@@ -10,7 +11,6 @@ const customStyles = makeStyles(() => ({
   },
   container: {
     padding: 20,
-    height: 100,
     width: 200,
     backgroundColor: "white",
     margin: 20,
@@ -20,6 +20,7 @@ const customStyles = makeStyles(() => ({
     alignItems: "center",
   },
   subContainer: {
+    marginBottom: 10,
     width: "100%",
     display: "flex",
     justifyContent: "space-between",
@@ -37,26 +38,45 @@ const customStyles = makeStyles(() => ({
 
 const MentorCard = ({ mentor }) => {
   const customClasses = customStyles();
-  return (
-    
-    <div className={customClasses.container}>
-      <div className={customClasses.subContainer}>
-        <Typography variant="h5" className={customClasses.title}>
-          <b>{mentor.name}</b>
-        </Typography>
-        <Typography variant="h5" className={customClasses.title}>
-          {mentor.subject}
-        </Typography>
-      </div>
+  const [isOpenReviewDialog, setIsOpenReviewDialog] = useState(false);
 
-      <Button
-        className={customClasses.button}
-        variant="contained"
-        color="primary"
-      >
-        {mentor.review !== null ? 'View Review': 'Review'}
-      </Button>
-    </div>
+  return (
+    <>
+      <MentorReview
+        openDialog={isOpenReviewDialog}
+        handleClose={() => setIsOpenReviewDialog(false)}
+        mentor={mentor}
+      />
+      <div className={customClasses.container}>
+        <div className={customClasses.subContainer}>
+          <Typography variant="h5" className={customClasses.title}>
+            <b>{mentor.name}</b>
+          </Typography>
+          <Typography variant="h5" className={customClasses.title}>
+            {mentor.subject}
+          </Typography>
+        </div>
+
+        {mentor.review && (
+          <Typography
+            variant="h5"
+            className={customClasses.title}
+            style={{ marginBottom: 10 }}
+          >
+            {mentor.review}
+          </Typography>
+        )}
+
+        <Button
+          className={customClasses.button}
+          variant="contained"
+          color="primary"
+          onClick={() => setIsOpenReviewDialog(true)}
+        >
+          {mentor.review !== null ? "Edit Review" : "Review"}
+        </Button>
+      </div>
+    </>
   );
 };
 

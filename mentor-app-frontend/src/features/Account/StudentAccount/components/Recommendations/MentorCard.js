@@ -10,7 +10,6 @@ const customStyles = makeStyles(() => ({
     fontSize: 18,
   },
   container: {
-    cursor: "pointer",
     padding: 20,
     height: 300,
     width: 200,
@@ -22,6 +21,8 @@ const customStyles = makeStyles(() => ({
     alignItems: "center",
   },
   subContainer: {
+    cursor: "pointer",
+
     width: "100%",
     display: "flex",
     flexDirection: "column",
@@ -52,10 +53,10 @@ const history = useHistory();
   return (
       <>
     <div className={customClasses.container}
-    onClick={() => history.push(`/student-account/recommendations/${mentor.id}`)}
     >
       <div className={customClasses.subContainer}
     style={{borderBottom: '1px solid lightgray'}}
+    onClick={() => history.push(`/student-account/recommendations/${mentor.id}`)}
       >
         <Avatar src="dasd" style={{ marginBottom: 10 }} />
         <Typography variant="h5" className={customClasses.title}>
@@ -83,6 +84,7 @@ const history = useHistory();
         className={customClasses.button}
         variant="contained"
         color="primary"
+        onClick={() => console.log('create appoitment')}
       >
        Create appointment
       </Button>
