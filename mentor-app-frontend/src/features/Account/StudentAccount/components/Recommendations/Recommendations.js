@@ -71,10 +71,6 @@ const Recommendations = () => {
         subject: 'subject'
       }}/>
 
-      {/* <div className={customClasses.interestContainer}>
-        {mentors.map((mentor) => (
-        ))}
-      </div> */}
     </div>
   );
 };
