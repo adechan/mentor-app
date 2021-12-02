@@ -18,12 +18,14 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const history = useHistory();
 
+  const [hasMentorAccount, setHasMenorAccount] = useState(true);
+
   return (
     <div className={customClasses.container}>
       <SidebarItem
         itemTitle="Awards"
         onClick={() => {
-          history.push('/student-account/awards')
+          history.push("/student-account/awards");
           setSelected("Awards");
         }}
         selected={selected}
@@ -40,44 +42,54 @@ const Sidebar = () => {
         itemTitle="Appointments"
         onClick={() => {
           history.push("/student-account/appointments");
-          setSelected("Appointments")}}
+          setSelected("Appointments");
+        }}
         selected={selected}
       />
       <SidebarItem
         itemTitle="Recommendation"
         onClick={() => {
-          history.push('/student-account/recommendations');
-          setSelected("Recommendation")}}
+          history.push("/student-account/recommendations");
+          setSelected("Recommendation");
+        }}
         selected={selected}
       />
       <SidebarItem
         itemTitle="My Mentors"
-        onClick={() =>{ 
-          history.push('/student-account/my-mentors');
-          setSelected("My Mentors")}}
+        onClick={() => {
+          history.push("/student-account/my-mentors");
+          setSelected("My Mentors");
+        }}
         selected={selected}
       />
       <SidebarItem
         itemTitle="Settings"
         onClick={() => {
-          history.push('/student-account/settings');
-          setSelected("Settings")}}
+          history.push("/student-account/settings");
+          setSelected("Settings");
+        }}
         selected={selected}
       />
-      <SidebarItem
-        itemTitle="Switch profile"
-        onClick={() => {
-          history.push('/student-account/switch-profile');
-          setSelected("Switch profile")}}
-        selected={selected}
-      />
-      <SidebarItem
-        itemTitle="Create a new profile"
-        onClick={() => {
-          history.push('/create-profile');
-          setSelected("Create a new profile")}}
-        selected={selected}
-      />
+
+      {hasMentorAccount ? (
+        <SidebarItem
+          itemTitle="Switch to mentor"
+          onClick={() => {
+            history.push("/mentor-account");
+            setSelected("Switch profile");
+          }}
+          selected={selected}
+        />
+      ) : (
+        <SidebarItem
+          itemTitle="Create a new profile"
+          onClick={() => {
+            history.push("/create-profile-mentor/basic");
+            setSelected("Create a new profile");
+          }}
+          selected={selected}
+        />
+      )}
     </div>
   );
 };

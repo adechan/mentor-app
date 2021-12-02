@@ -8,6 +8,7 @@ import CreateProfile from "./features/Registration/components/common/CreateProfi
 import OnboardingStudent from "./features/Registration/components/OnboardingStudent/views/OnboardingStudent";
 import StudentAccount from "./features/Account/StudentAccount/views/StudentAccount";
 import Login from "./features/Login/views/Login"
+import { useState } from "react";
 
 const customStyles = makeStyles((theme) => ({
   appContainer: {
@@ -34,11 +35,12 @@ const customStyles = makeStyles((theme) => ({
 
 const App = () => {
   const customClasses = customStyles();
+  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <div className={customClasses.appContainer}>
       <Router>
-        <ApplicationHeader />
+        <ApplicationHeader loggedIn={loggedIn}/>
         <>
           <Switch>
             <Route

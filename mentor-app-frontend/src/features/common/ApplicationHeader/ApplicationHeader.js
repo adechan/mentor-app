@@ -29,7 +29,7 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const ApplicationHeader = () => {
+const ApplicationHeader = ({ loggedIn }) => {
   const customClasses = customStyles();
   const history = useHistory();
 
@@ -38,13 +38,15 @@ const ApplicationHeader = () => {
       <Typography variant="h5" className={customClasses.text}>
         Mentor App
       </Typography>
-      <Typography
-        variant="h5"
-        className={customClasses.logOut}
-        onClick={() => history.push("/")}
-      >
-        Log out
-      </Typography>
+      {loggedIn && (
+        <Typography
+          variant="h5"
+          className={customClasses.logOut}
+          onClick={() => history.push("/")}
+        >
+          Log out
+        </Typography>
+      )}
     </div>
   );
 };

@@ -8,7 +8,6 @@ import Mentors from './Mentors/Mentors';
 import MentorMoreInfo from './Recommendations/MentorMoreInfo';
 import Recommendations from './Recommendations/Recommendations';
 import Settings from './Settings/Settings';
-import SwitchProfile from './SwitchProfile/SwitchProfile';
 
 const customStyles = makeStyles(() => ({
     scrollableContaienr: {
@@ -30,7 +29,6 @@ const Container = () => {
                 <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo />}/>
                 <Route path="/student-account/recommendations" component={() => <Recommendations />}/>
                 <Route path="/student-account/settings" component={() => <Settings />}/>
-                <Route path="/student-account/switch-profile" component={() => <SwitchProfile />}/>
             </Switch>
 
         </div>
