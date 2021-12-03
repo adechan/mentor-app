@@ -9,6 +9,7 @@ import OnboardingStudent from "./features/Registration/components/OnboardingStud
 import StudentAccount from "./features/Account/StudentAccount/views/StudentAccount";
 import Login from "./features/Login/views/Login"
 import { useState } from "react";
+import MentorAccount from "./features/Account/MentorAccount/views/MentorAccount";
 
 const customStyles = makeStyles((theme) => ({
   appContainer: {
@@ -49,7 +50,7 @@ const App = () => {
             />
             <Route
               path="/mentor-account"
-              component={() => <div> Mentor Account </div>}
+              component={() => <MentorAccount />}
             />
 
             <Route
