@@ -2,7 +2,7 @@ import { makeStyles, Typography, TextField,  } from "@material-ui/core";
 import React, { useState } from "react";
 import FooterButtons from "./FooterButtons";
 
-const customStyles = makeStyles(() => ({
+const customStyles = makeStyles((theme) => ({
   title: {
     padding: 20,
     color: "black",
@@ -19,6 +19,10 @@ const customStyles = makeStyles(() => ({
   subContainer: {
     marginLeft: 20,
     width: "40vw",
+
+    [theme.breakpoints.down('xs')]: {
+      width: '90vw'
+    }
   },
   row: {
     display: "flex",

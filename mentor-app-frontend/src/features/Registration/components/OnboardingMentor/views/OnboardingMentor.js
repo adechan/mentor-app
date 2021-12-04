@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import CustomStepper from "../../common/components/CustomStepper"
-import StudentProfileBasic from "../components/StudentProfileBasic";
 import { Switch, Route } from "react-router-dom";
-import StudentProfilePersonal from "../components/StudentProfilePersonal";
-import StudentProfileInterests from "../components/StudentProfileInterests";
 import { makeStyles } from "@material-ui/core";
+import MentorProfileBasic from "../components/MentorProfileBasic";
+import MentorProfilePersonal from "../components/MentorProfilePersonal";
+import MentorProfileInterests from "../components/MentorProfileInterests";
 
 const customStyle = makeStyles((theme) => ({
     transparentContainer: {
@@ -23,14 +23,14 @@ const customStyle = makeStyles((theme) => ({
         flexDirection: "column",
 
         [theme.breakpoints.down('xs')]: {
-          width: 'calc(100vw - 100px)', 
-          marginLeft: 'auto',
-          marginRight: 'auto'
-        }
+            width: 'calc(100vw - 100px)', 
+            marginLeft: 'auto',
+            marginRight: 'auto'
+          }
     },
 }))
 
-const OnboardingStudent = () => {
+const OnboardingMentor = () => {
   const [activeStep, setActiveStep] = useState(0);
   const customClasses = customStyle();
 
@@ -40,23 +40,23 @@ const OnboardingStudent = () => {
 
       <Switch>
         <Route
-          path="/create-profile-student/basic"
+          path="/create-profile-mentor/basic"
           component={() => (
-            <StudentProfileBasic setActiveStep={setActiveStep} />
+            <MentorProfileBasic setActiveStep={setActiveStep} />
           )}
         />
 
         <Route
-          path="/create-profile-student/personal"
+          path="/create-profile-mentor/personal"
           component={() => (
-            <StudentProfilePersonal setActiveStep={setActiveStep} />
+            <MentorProfilePersonal setActiveStep={setActiveStep} />
           )}
         />
 
         <Route
-          path="/create-profile-student/interests"
+          path="/create-profile-mentor/interests"
           component={() => (
-            <StudentProfileInterests setActiveStep={setActiveStep} />
+            <MentorProfileInterests setActiveStep={setActiveStep} />
           )}
         />
       </Switch>
@@ -64,4 +64,4 @@ const OnboardingStudent = () => {
   );
 };
 
-export default OnboardingStudent;
+export default OnboardingMentor;

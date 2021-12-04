@@ -1,4 +1,4 @@
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import SidebarItem from "../../common/SidebarItem";
 import { useState } from "react";
@@ -10,6 +10,11 @@ const customStyles = makeStyles((theme) => ({
     width: "200px",
     backgroundColor: "#ffffff5c",
     backdropFilter: "blur(10px)",
+
+    [theme.breakpoints.down('xs')]: {
+      height: 'auto',
+      width: '100vw'
+    }
   },
 }));
 

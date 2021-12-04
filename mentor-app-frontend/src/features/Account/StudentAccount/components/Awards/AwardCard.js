@@ -1,7 +1,7 @@
 import React from 'react'
 import { makeStyles, Typography } from "@material-ui/core";
 
-const customStyles = makeStyles(() => ({
+const customStyles = makeStyles((theme) => ({
     title: {
       paddingTop: 20,
       color: "black",
@@ -34,6 +34,10 @@ const customStyles = makeStyles(() => ({
         "& svg": {
             padding: 20,
             cursor: 'pointer'
+        },
+
+        [theme.breakpoints.down('xs')]: {
+            width: '90vw'
         }
     },
     subContainer: {

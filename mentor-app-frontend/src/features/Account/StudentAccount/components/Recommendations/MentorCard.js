@@ -2,7 +2,7 @@ import React from "react";
 import { Avatar, Button, makeStyles, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
 
-const customStyles = makeStyles(() => ({
+const customStyles = makeStyles((theme) => ({
   title: {
     color: "black",
     fontFamily: "Urbanist",
@@ -19,6 +19,11 @@ const customStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
+
+    
+    [theme.breakpoints.down('xs')]: {
+      width: '80vw'
+  }
   },
   subContainer: {
     cursor: "pointer",

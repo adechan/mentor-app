@@ -39,7 +39,7 @@ const AddInterestDialog = ({ openDialog, handleClose, possibleInterests }) => {
           disablePortal
           id="combo-box-demo"
           options={possibleInterests}
-          sx={{ width: 300 }}
+          sx={{ width: 'auto' }}
           renderInput={(params) => <TextField {...params} label="Interest" />}
         />
       </DialogContent>

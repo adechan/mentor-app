@@ -2,7 +2,7 @@ import React from 'react'
 import { makeStyles, Typography } from "@material-ui/core";
 import DeleteIcon from '@material-ui/icons/Delete';
 
-const customStyles = makeStyles(() => ({
+const customStyles = makeStyles((theme) => ({
     title: {
       padding: 20,
       color: "black",
@@ -21,7 +21,11 @@ const customStyles = makeStyles(() => ({
         "& svg": {
             padding: 20,
             cursor: 'pointer'
-        }
+        },
+        
+        [theme.breakpoints.down('xs')]: {
+          width: '90vw'
+      }
     }
   }));
 

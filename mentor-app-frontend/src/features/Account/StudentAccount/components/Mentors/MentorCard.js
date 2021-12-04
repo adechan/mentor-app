@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import MentorReview from "./MentorReview"
 import { Button, makeStyles, Typography } from "@material-ui/core";
 
-const customStyles = makeStyles(() => ({
+const customStyles = makeStyles((theme) => ({
   title: {
     color: "black",
     fontFamily: "Urbanist",
@@ -18,6 +18,11 @@ const customStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
+
+    
+    [theme.breakpoints.down('xs')]: {
+      width: '80vw'
+  }
   },
   subContainer: {
     marginBottom: 10,

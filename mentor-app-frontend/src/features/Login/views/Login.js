@@ -1,5 +1,5 @@
 import { TextField, Typography, Button } from "@material-ui/core";
-import { makeStyles } from "@material-ui/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 import { useHistory } from "react-router-dom";
 
@@ -18,6 +18,12 @@ const customStyles = makeStyles((theme) => ({
     
         display: "flex",
         flexDirection: "column",
+
+        [theme.breakpoints.down('xs')]: {
+          width: 'calc(100vw - 100px)', 
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }
     },
   containerHeader: {
     display: "flex",

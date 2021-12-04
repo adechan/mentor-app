@@ -10,12 +10,18 @@ import StudentAccount from "./features/Account/StudentAccount/views/StudentAccou
 import Login from "./features/Login/views/Login"
 import { useState } from "react";
 import MentorAccount from "./features/Account/MentorAccount/views/MentorAccount";
+import OnboardingMentor from "./features/Registration/components/OnboardingMentor/views/OnboardingMentor";
 
 const customStyles = makeStyles((theme) => ({
   appContainer: {
     height: "100vh",
     width: "100vw",
     backgroundImage: "linear-gradient(to right, #e8cbc0 , #636fa4);",
+
+    [theme.breakpoints.down('xs')]: {
+      height: '100%',
+      minHeight: '100vh'
+    }
   },
   container: {
     marginTop: 40,
@@ -72,7 +78,7 @@ const App = () => {
 
             <Route
               path="/create-profile-mentor"
-              component={() => <OnboardingStudent />}
+              component={() => <OnboardingMentor />}
             />
 
             <Route path="/" component={() => <Welcome />} />

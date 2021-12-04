@@ -17,6 +17,12 @@ const customStyles = makeStyles((theme) => ({
     
         display: "flex",
         flexDirection: "column",
+
+        [theme.breakpoints.down('xs')]: {
+          width: 'calc(100vw - 100px)', 
+          marginLeft: 'auto',
+          marginRight: 'auto'
+        }
     },
   button: {
     marginTop: 30,

@@ -1,16 +1,14 @@
 import { makeStyles } from '@material-ui/core'
 import React from 'react'
 import Sidebar from '../components/Sidebar'
-// import Container from "../components/Container"
+import Container from "../components/Container"
 
-const customStyles = makeStyles(() => ({
+const customStyles = makeStyles((theme) => ({
     container: {
-        display: 'flex'
-    },
-    scrollableContaienr: {
-        height: 'calc(100vh - 60px)',
-        width: 'calc(100vw - 200px)',
-        overflowY: 'scroll'
+        display: 'flex',
+        [theme.breakpoints.down('xs')]: {
+            flexDirection: 'column'
+        }
     }
 }))
 
@@ -19,7 +17,7 @@ const MentorAccount = () => {
     return (
         <div className={customClasses.container}>
             <Sidebar />
-            {/* <Container /> */}
+            <Container />
         </div>
     )
 }
