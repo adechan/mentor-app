@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import AddMentoringSubject from "./AddMentoringSubject";
+import MentoringCard from "./MentoringCard";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -40,8 +41,13 @@ const Mentoring = () => {
   const customClasses = customStyles();
   const [openDialog, setOpenDialog] = useState(false);
 
-  const subjects = ["math", "drawing", "guitar"];
+  const mentoringSubjects = [{
+    title: 'Math',
+    price: 200,
+    availableHours: [8, 9, 12, 13]
+  }, ];
   const possibleSubjects = ["painting", "sing"];
+
   return (
     <>
       <AddMentoringSubject
@@ -64,9 +70,9 @@ const Mentoring = () => {
         </div>
 
         <div className={customClasses.interestContainer}>
-          {/* {interests.map((interest) => (
-          <InterestCard title={interest} onClick={() => console.log('clicking')} />
-        ))} */}
+          {mentoringSubjects.map((mentoringSubject) => (
+          <MentoringCard mentoringSubject={mentoringSubject} onClick={() => console.log('clicking')} />
+        ))}
         </div>
       </div>
     </>

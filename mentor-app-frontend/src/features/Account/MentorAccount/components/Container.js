@@ -3,6 +3,7 @@ import React from 'react'
 import { Switch, Route } from "react-router-dom";
 import Reviews from './Reviews/Reviews';
 import Mentoring from './Mentoring/Mentoring';
+import Settings from "./Settings/Settings"
 
 const customStyles = makeStyles((theme) => ({
     scrollableContaienr: {
@@ -24,6 +25,7 @@ const Container = () => {
             <Switch>
                 <Route path="/mentor-account/reviews" component={() => <Reviews />} />
                 <Route path="/mentor-account/mentoring" component={() => <Mentoring />} />
+                <Route path="/mentor-account/settings" component={() => <Settings />}/>
                 {/* <Route path="/student-account/interests" component={() => <Interests />}/>
                 <Route path="/student-account/awards" component={() => <Awards />}/>
                 <Route path="/student-account/appointments" component={() => <Appointments />}/>
