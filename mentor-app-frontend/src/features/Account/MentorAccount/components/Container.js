@@ -4,6 +4,8 @@ import { Switch, Route } from "react-router-dom";
 import Reviews from './Reviews/Reviews';
 import Mentoring from './Mentoring/Mentoring';
 import Settings from "./Settings/Settings"
+import Appointments from './Appointments/Appointments';
+import Students from './Students/Students';
 
 const customStyles = makeStyles((theme) => ({
     scrollableContaienr: {
@@ -26,13 +28,8 @@ const Container = () => {
                 <Route path="/mentor-account/reviews" component={() => <Reviews />} />
                 <Route path="/mentor-account/mentoring" component={() => <Mentoring />} />
                 <Route path="/mentor-account/settings" component={() => <Settings />}/>
-                {/* <Route path="/student-account/interests" component={() => <Interests />}/>
-                <Route path="/student-account/awards" component={() => <Awards />}/>
-                <Route path="/student-account/appointments" component={() => <Appointments />}/>
-                <Route path="/student-account/my-mentors" component={() => <Mentors />}/>
-                <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo />}/>
-                <Route path="/student-account/recommendations" component={() => <Recommendations />}/>
-                <Route path="/student-account/settings" component={() => <Settings />}/> */}
+                <Route path="/mentor-account/appointments" component={() => <Appointments />}/>
+                <Route path="/mentor-account/my-students" component={() => <Students />}/>
             </Switch>
 
         </div>

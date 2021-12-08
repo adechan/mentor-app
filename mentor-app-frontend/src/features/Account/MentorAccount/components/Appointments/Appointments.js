@@ -34,20 +34,22 @@ const Appointments = () => {
 
   const appoitments = [
     {
-      mentor: "Mentor1",
-      subject: "Math",
+      student: "Student1",
+      subject: 'Math',
       price: "34 lei",
       date: "16 November",
+      hour: '8:00',
       status: "Accepted",
-      mentorEmail: 'ade.enter@yahoo.com'
+      studentEmail: 'ade.enter@yahoo.com'
     },
     {
-        mentor: "Mentor2",
-        subject: 'Paintig',
-        price: "34 lei",
-        date: "16 November",
-        status: 'In pending',
-        mentorEmail: 'ade.enter@yahoo.com'
+      student: "Student1",
+      subject: 'Drawing',
+      price: "34 lei",
+      date: "16 November",
+      hour: '8:00',
+      status: "Pending",
+      studentEmail: 'ade.enter@yahoo.com'
     },
   ];
   return (

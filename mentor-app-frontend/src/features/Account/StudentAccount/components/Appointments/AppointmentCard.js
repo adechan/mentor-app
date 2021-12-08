@@ -24,7 +24,7 @@ const customStyles = makeStyles((theme) => ({
         paddingBottom: 5,
     },
     container: {
-        height: 130,
+        height: 'auto',
         width: 250,
         backgroundColor: 'white',
         margin: 20,
@@ -55,7 +55,10 @@ const AppointmentCard = ({appoitment}) => {
         <div className={customClasses.container}>
             <div style={{display: 'flex', flexDirection: 'column'}}>
             <Typography variant="h5" className={customClasses.title}>
-                {appoitment.mentor}
+                {appoitment.mentor} - {appoitment.subject}
+            </Typography>
+            <Typography variant="h5" className={customClasses.byMentor} >
+                Mentor email: <b>{appoitment.mentorEmail}</b>
             </Typography>
             <Typography variant="h5" className={customClasses.byMentor} >
                Price: <b>{appoitment.price}</b>
