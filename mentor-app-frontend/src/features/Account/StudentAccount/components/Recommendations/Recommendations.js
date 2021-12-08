@@ -68,7 +68,9 @@ const Recommendations = () => {
       <MentorCard mentor={{
         id: 1,
         name: 'mentor1',
-        subject: 'subject'
+        subject: 'Math',
+        price: 300,
+        email: 'ade.enter@yahoo.com'
       }}/>
 
     </div>

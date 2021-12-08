@@ -1,6 +1,7 @@
-import React from "react";
+import React, {useState} from "react";
 import { Avatar, Button, makeStyles, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import CreateAppointment from "./CreateAppointment";
 
 const customStyles = makeStyles((theme) => ({
   title: {
@@ -55,8 +56,12 @@ const MentorCard = ({ mentor }) => {
   const customClasses = customStyles();
 const history = useHistory();
 
+  const [openCreateAppointment, setOpenCreateAppointment] = useState(false);
   return (
       <>
+      <CreateAppointment mentor={mentor} openDialog={openCreateAppointment} 
+      handleClose={() => setOpenCreateAppointment(false)}
+      />
     <div className={customClasses.container}
     >
       <div className={customClasses.subContainer}
@@ -89,7 +94,7 @@ const history = useHistory();
         className={customClasses.button}
         variant="contained"
         color="primary"
-        onClick={() => console.log('create appoitment')}
+        onClick={() => setOpenCreateAppointment(true)}
       >
        Create appointment
       </Button>
