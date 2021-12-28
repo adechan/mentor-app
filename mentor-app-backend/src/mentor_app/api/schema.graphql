@@ -1,0 +1,74 @@
+schema {
+    query: Query
+    mutation: Mutation
+}
+
+type Account {
+    account_id: ID!
+    mentor_id: ID
+    student_id: ID
+    first_name: String!
+    last_name: String!
+    email: String!
+}
+
+type MentorProfile {
+    mentor_id: ID!
+    username: String!
+    profile_image: String
+    country: String!
+    city: String!
+    hobbies: String
+    statement: String
+    quote: String
+}
+
+type StudentProfile {
+    student_id: ID!
+    username: String!
+    profile_image: String
+    country: String!
+    city: String!
+    hobbies: String
+    statement: String
+}
+
+union Profile = MentorProfile | StudentProfile
+
+input NewStudentProfile {
+    username: String!
+    profile_image: String
+    country: String!
+    city: String!
+    hobbies: String
+    statement: String
+}
+
+input NewMentorProfile {
+    username: String!
+    profile_image: String
+    country: String!
+    city: String!
+    hobbies: String
+    statement: String
+    quote: String
+}
+
+type EmailInUseResult {
+    in_use: Boolean!
+    error: String
+}
+
+type Query {
+    account_info(account_id: ID!): Account! # Authenticated
+    student_info(student_id: ID!): StudentProfile!
+    mentor_info(mentor_id: ID!): MentorProfile!
+    is_email_in_use(email: String!): EmailInUseResult!
+}
+
+type Mutation {
+    login(email: String!, password: String!): Boolean!
+    register_student(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewStudentProfile!): Boolean!
+    register_mentor(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewMentorProfile!): Boolean!
+    logout: Boolean! # Authenticated
+}

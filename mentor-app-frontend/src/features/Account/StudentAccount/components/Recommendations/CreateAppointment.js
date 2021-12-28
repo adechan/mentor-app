@@ -49,7 +49,7 @@ const CreateAppointment = ({ openDialog, handleClose, mentor }) => {
         <Typography variant="h5" className={customClasses.text}>
          Price: <b>{mentor.price}</b>
         </Typography>
-        <Autocomplete
+        <Autocomplete // TODO: Need to incorporate date and time interval (example: Interval(Date(..., 23:30), Date(...next day, 00:30)))
           disablePortal
           id="combo-box-demo"
           options={possibleHours}

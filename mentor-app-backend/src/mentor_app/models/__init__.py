@@ -1,1 +1,11 @@
-from .appointments import Appointment
+from .accounts import define_account_table
+from .appointments import define_appointments_table
+from .student_awards import define_student_award_table
+from .students import define_student_table
+from .mentors import define_mentors_table
+from .courses import define_courses_table
+from .mentor_courses import define_mentor_courses_table
+from .mentor_reviews import define_mentor_reviews_table
+from .student_interests import define_student_interests_table
+from .appointment_available_hours import define_available_hours_table
+

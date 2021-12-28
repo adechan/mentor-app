@@ -1,1 +1,1 @@
-from .app import app, db
+from .server import MentorServer

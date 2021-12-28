@@ -1,13 +1,14 @@
-from mentor_app import db
+def define_mentor_courses_table(db):
+    class MentorCourses(db.Model):
+        mentor_id = db.Column(db.Integer, primary_key=True)
+        course_id = db.Column(db.Integer)
+        price = db.Column(db.Float)
 
-class MentorCourses(db.Model):
-    mentor_id = db.Column(db.Integer, primary_key=True)
-    course_id = db.Column(db.Integer)
-    price = db.Column(db.Float)
+        def to_dict(self):
+            return dict(
+                mentor_id=self.mentor_id,
+                course_id=self.course_id,
+                price=self.price
+            )
 
-    def to_dict(self):
-        return dict(
-            mentor_id=self.mentor_id,
-            course_id=self.course_id,
-            price=self.price
-        )
+    return MentorCourses

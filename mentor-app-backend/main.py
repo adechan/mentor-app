@@ -1,19 +1,22 @@
-from mentor_app import app, db, models
-from pprint import pprint
+from mentor_app import MentorServer
 from loguru import logger
 
-@app.route('/')
+server = MentorServer()
+@server.app.route('/')
 def hello():
     return 'Hello!'
 
-def create_db():
+def create_db(db, api):
     db.create_all()
+    account = api.Account(
+        account_id=0, mentor_id=0, student_id=0,
+        first_name='Big', last_name='Horse',
+        email='man@man.com', password='hi'
+    )
 
-    appointment = models.Appointment(id=0, status='Test appointment')
-    db.session.add(appointment)
+    db.session.add(account)
     db.session.commit()
-    logger.debug(f'Appointment {appointment} committed')
+    logger.debug(f'Account {account} committed')
 
-pprint(vars(db))
-create_db()
-#app.run(host='127.0.0.1', port=1234)
+# create_db(server.db, server.api)
+server.serve()
