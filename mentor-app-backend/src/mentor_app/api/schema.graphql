@@ -57,11 +57,6 @@ input NewMentorProfile {
     quote: String
 }
 
-type EmailInUseResult {
-    in_use: Boolean
-    error: String
-}
-
 type Result {
     result: Boolean
     error: String
@@ -79,22 +74,22 @@ type StudentInterestResult {
 }
 
 type Query {
-    is_email_in_use(email: String!): EmailInUseResult!
+    is_email_in_use(email: String!): Result!
 
-    get_student_awards(student_id: ID!): [StudentAwardResult!]
-    get_student_interests(student_id: ID!): [StudentInterestResult!]
+    get_student_awards(student_id: ID!): [StudentAwardResult!]!  # Authenticated
+    get_student_interests(student_id: ID!): [StudentInterestResult!]!  # Authenticated
 
     account_info(account_id: ID!): Account! # Authenticated
-    student_info(student_id: ID!): StudentProfile!
-    mentor_info(mentor_id: ID!): MentorProfile!
+    student_info(student_id: ID!): StudentProfile!  # Authenticated?
+    mentor_info(mentor_id: ID!): MentorProfile!  # Authenticated?
 }
 
 type Mutation {
-    register_student(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewStudentProfile!): Result
-    register_mentor(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewMentorProfile!): Result
+    register_student(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewStudentProfile!): Result!
+    register_mentor(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewMentorProfile!): Result!
 
-    delete_student_interest(student_id: ID!, course_id: ID!): Result
+    delete_student_interest(student_id: ID!, course_id: ID!): Result!  # Authenticated
 
-    login(email: String!, password: String!): Boolean!
+    login(email: String!, password: String!): Result!
     logout: Boolean! # Authenticated
 }

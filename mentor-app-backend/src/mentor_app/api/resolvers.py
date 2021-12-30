@@ -3,6 +3,9 @@ import hashlib
 from ariadne import convert_kwargs_to_snake_case, ObjectType
 from loguru import logger
 
+from mentor_app import session
+from mentor_app.error import NotAuthenticated
+
 class GQLResolver:
     def __init__(self, db, api, typename: str):
         self.db = db
@@ -50,14 +53,19 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_is_email_in_use(self, _, info, email: str):
         try:
+            # sess = session.verify_session_cookie(info.context.cookies)
+            logger.debug(f'{sess=}')
             logger.debug(f'{info=}')
             logger.debug(f'{email=}')
             # .filter when using sql where clause (Ex :"WHERE thing = ?")
             query_results = list(self.db.session.query(self.api.Account).filter(self.api.Account.email == email))
-            return dict(in_use=len(query_results) > 0)
+            return dict(result=len(query_results) > 0)
+
+        except NotAuthenticated as e:
+            return dict(error=str(e))
 
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
             return dict(error='Error finding e-mail in database!')
 
     @convert_kwargs_to_snake_case
@@ -90,7 +98,7 @@ class GQLQueryResolver(GQLResolver):
             return result if len(result) > 0 else None
 
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
@@ -112,7 +120,7 @@ class GQLQueryResolver(GQLResolver):
             return result if len(result) > 0 else None
 
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
             return dict(error='No matches')
 
 
@@ -173,7 +181,7 @@ class GQLMutationResolver(GQLResolver):
             return dict(result=True)
 
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
 
     @convert_kwargs_to_snake_case
     def resolve_mutation_register_mentor(self, _,
@@ -220,7 +228,7 @@ class GQLMutationResolver(GQLResolver):
             return dict(result=True)
 
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
 
     @convert_kwargs_to_snake_case
     def resolve_mutation_delete_student_interest(self, _,
@@ -231,4 +239,4 @@ class GQLMutationResolver(GQLResolver):
             return dict(result=True)
 
         except Exception as e:
-            logger.error(e)
+            logger.exception(e)
