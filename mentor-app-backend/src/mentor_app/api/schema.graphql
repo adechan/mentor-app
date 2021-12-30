@@ -16,6 +16,7 @@ type MentorProfile {
     mentor_id: ID!
     username: String!
     profile_image: String
+    mentor_email: String
     country: String!
     city: String!
     hobbies: String
@@ -27,26 +28,28 @@ type StudentProfile {
     student_id: ID!
     username: String!
     profile_image: String
+    student_email: String
     country: String!
     city: String!
     hobbies: String
     statement: String
 }
 
-union Profile = MentorProfile | StudentProfile
-
 input NewStudentProfile {
     username: String!
     profile_image: String
+    student_email: String
     country: String!
     city: String!
     hobbies: String
     statement: String
+    courseId: ID
 }
 
 input NewMentorProfile {
     username: String!
     profile_image: String
+    mentor_email: String
     country: String!
     city: String!
     hobbies: String
@@ -55,20 +58,43 @@ input NewMentorProfile {
 }
 
 type EmailInUseResult {
-    in_use: Boolean!
+    in_use: Boolean
     error: String
 }
 
+type Result {
+    result: Boolean
+    error: String
+}
+
+type StudentAwardResult {
+    course_title: String
+    mentor_username: String
+    date: String
+}
+
+type StudentInterestResult {
+    course_id: String
+    course_title: String
+}
+
 type Query {
+    is_email_in_use(email: String!): EmailInUseResult!
+
+    get_student_awards(student_id: ID!): [StudentAwardResult!]
+    get_student_interests(student_id: ID!): [StudentInterestResult!]
+
     account_info(account_id: ID!): Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!
     mentor_info(mentor_id: ID!): MentorProfile!
-    is_email_in_use(email: String!): EmailInUseResult!
 }
 
 type Mutation {
+    register_student(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewStudentProfile!): Result
+    register_mentor(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewMentorProfile!): Result
+
+    delete_student_interest(student_id: ID!, course_id: ID!): Result
+
     login(email: String!, password: String!): Boolean!
-    register_student(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewStudentProfile!): Boolean!
-    register_mentor(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewMentorProfile!): Boolean!
     logout: Boolean! # Authenticated
 }

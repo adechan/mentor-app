@@ -19,6 +19,7 @@ class MentorServer:
         self._define_routes()
 
     def serve(self, host: str = '127.0.0.1', port: int = 8080):
+        logger.info(f'Serving on endpoint {host}:{port}')
         self.app.run(host, port)
 
     def _define_routes(self):
