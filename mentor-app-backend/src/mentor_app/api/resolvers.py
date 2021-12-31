@@ -54,15 +54,15 @@ class GQLQueryResolver(GQLResolver):
     def resolve_query_is_email_in_use(self, _, info, email: str):
         try:
             # sess = session.verify_session_cookie(info.context.cookies)
-            logger.debug(f'{sess=}')
+            # logger.debug(f'{sess=}')
             logger.debug(f'{info=}')
             logger.debug(f'{email=}')
             # .filter when using sql where clause (Ex :"WHERE thing = ?")
             query_results = list(self.db.session.query(self.api.Account).filter(self.api.Account.email == email))
             return dict(result=len(query_results) > 0)
 
-        except NotAuthenticated as e:
-            return dict(error=str(e))
+        # except NotAuthenticated as e:
+        #     return dict(error=str(e))
 
         except Exception as e:
             logger.exception(e)
@@ -122,6 +122,27 @@ class GQLQueryResolver(GQLResolver):
         except Exception as e:
             logger.exception(e)
             return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_all_courses(self, _, info):
+        try:
+            courses = self.db.session.query(self.api.Course) \
+                .all()
+
+            result = []
+            for course in courses:
+                item = {
+                    "course_id": course.course_id,
+                    "course_title": course.title
+                }
+                result.append(item)
+
+            return result if len(result) > 0 else None
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
 
 
 class GQLMutationResolver(GQLResolver):
@@ -235,6 +256,29 @@ class GQLMutationResolver(GQLResolver):
         info, student_id, course_id
     ):
         try:
+            self.db.session.query(self.api.StudentInterests) \
+                .filter(self.api.StudentInterests.student_id == student_id) \
+                .filter(self.api.StudentInterests.course_id == course_id) \
+                .delete()
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_add_student_interest(self, _,
+        info, student_id, course_id
+    ):
+        try:
+            student_interest = self.api.StudentInterests(
+                student_id=student_id,
+                course_id=course_id,
+            )
+
+            self.db.session.add(student_interest)
+            self.db.session.commit()
 
             return dict(result=True)
 

@@ -78,6 +78,7 @@ type Query {
 
     get_student_awards(student_id: ID!): [StudentAwardResult!]!  # Authenticated
     get_student_interests(student_id: ID!): [StudentInterestResult!]!  # Authenticated
+    get_all_courses: [StudentInterestResult!]! # Authenticated
 
     account_info(account_id: ID!): Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!  # Authenticated?
@@ -89,6 +90,7 @@ type Mutation {
     register_mentor(first_name: String!, last_name: String!, email: String!, password: String!, profile: NewMentorProfile!): Result!
 
     delete_student_interest(student_id: ID!, course_id: ID!): Result!  # Authenticated
+    add_student_interest(student_id: ID!, course_id: ID!): Result! #Authenticated
 
     login(email: String!, password: String!): Result!
     logout: Boolean! # Authenticated
