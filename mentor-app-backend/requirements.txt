@@ -3,3 +3,5 @@ flask-sqlalchemy
 loguru
 ariadne
 PyJWT
+bcrypt
+SQLAlchemy

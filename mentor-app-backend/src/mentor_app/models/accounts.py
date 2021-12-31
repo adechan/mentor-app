@@ -21,6 +21,6 @@ def define_account_table(db):
             )
 
         def __str__(self):
-            return f'<Account {self.account_id} ({self.first_name} {self.last_name}, {self.email})>'
+            return f'<Account {self.account_id} | {self.first_name} {self.last_name} | {self.email}>'
 
     return Account

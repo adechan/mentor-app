@@ -1,4 +1,3 @@
-
 def define_student_table(db):
     class Student(db.Model):
         student_id = db.Column(db.Integer, primary_key=True)

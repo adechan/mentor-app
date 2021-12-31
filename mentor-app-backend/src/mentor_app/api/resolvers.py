@@ -1,10 +1,7 @@
-import hashlib
-
+import flask
 from ariadne import convert_kwargs_to_snake_case, ObjectType
 from loguru import logger
-
-from mentor_app import session
-from mentor_app.error import NotAuthenticated
+from mentor_app.error import NotAuthenticated, ServerError
 
 class GQLResolver:
     def __init__(self, db, api, typename: str):
@@ -53,8 +50,6 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_is_email_in_use(self, _, info, email: str):
         try:
-            # sess = session.verify_session_cookie(info.context.cookies)
-            logger.debug(f'{sess=}')
             logger.debug(f'{info=}')
             logger.debug(f'{email=}')
             # .filter when using sql where clause (Ex :"WHERE thing = ?")
@@ -80,17 +75,17 @@ class GQLQueryResolver(GQLResolver):
 
             for award in awards:
                 logger.debug(f'{award.course_id=}')
-                mentorRow = self.db.session.query(self.api.Mentor) \
+                mentor_row = self.db.session.query(self.api.Mentor) \
                     .filter(self.api.Mentor.mentor_id == award.mentor_id) \
                     .one()
 
-                courseRow = self.db.session.query(self.api.Course) \
+                course_row = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == award.course_id) \
                     .one()
 
                 item = {
-                   "course_title": courseRow.title,
-                    "mentor_username": mentorRow.username,
+                   "course_title": course_row.title,
+                    "mentor_username": mentor_row.username,
                     "date": award.date
                 }
 
@@ -135,17 +130,7 @@ class GQLMutationResolver(GQLResolver):
     ):
         # Add to account + student + student interests tables
         try:
-            # Add to account
-            account = self.api.Account(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=hashlib.sha256(password.encode()).hexdigest(),
-            )
-
-            self.db.session.add(account)
-            self.db.session.commit()
-            self.db.session.refresh(account)
+            account_id = self.api.register_account(first_name, last_name, email, password)
 
             # Add to student
             student = self.api.Student(
@@ -166,7 +151,7 @@ class GQLMutationResolver(GQLResolver):
 
             # Update account
             self.db.session.query(self.api.Account) \
-                .filter(self.api.Account.account_id == account.account_id) \
+                .filter(self.api.Account.account_id == account_id) \
                 .update({"student_id": student.student_id})
             self.db.session.commit()
 
@@ -175,13 +160,18 @@ class GQLMutationResolver(GQLResolver):
                 course_id=profile["course_id"],
                 student_id=student.student_id
             )
+
             self.db.session.add(interest)
             self.db.session.commit()
-
             return dict(result=True)
+
+        except ServerError as e:
+            logger.exception(e)
+            return dict(error=str(e))
 
         except Exception as e:
             logger.exception(e)
+            return dict(error='There was an error handling your request')
 
     @convert_kwargs_to_snake_case
     def resolve_mutation_register_mentor(self, _,
@@ -190,17 +180,7 @@ class GQLMutationResolver(GQLResolver):
     ):
         # Add to account + mentor tables
         try:
-            # Add to account
-            account = self.api.Account(
-                first_name=first_name,
-                last_name=last_name,
-                email=email,
-                password=hashlib.sha256(password.encode()).hexdigest(),
-            )
-
-            self.db.session.add(account)
-            self.db.session.commit()
-            self.db.session.refresh(account)
+            account_id = self.api.register_account(first_name, last_name, email, password)
 
             # Add to student
             mentor = self.api.Mentor(
@@ -216,12 +196,11 @@ class GQLMutationResolver(GQLResolver):
 
             self.db.session.add(mentor)
             self.db.session.commit()
-
             self.db.session.refresh(mentor)
 
             # Update account
             self.db.session.query(self.api.Account) \
-                .filter(self.api.Account.account_id == account.account_id) \
+                .filter(self.api.Account.account_id == account_id) \
                 .update({"mentor_id": mentor.mentor_id})
             self.db.session.commit()
 
@@ -235,7 +214,6 @@ class GQLMutationResolver(GQLResolver):
         info, student_id, course_id
     ):
         try:
-
             return dict(result=True)
 
         except Exception as e:
