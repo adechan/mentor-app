@@ -1,0 +1,128 @@
+
+REGISTER MENTOR
+# Write your query or mutation here
+mutation getAccountInfo {
+  register_mentor(
+    first_name: "Ade",
+    last_name: "Chan",
+    email: "ade.chan1@com",
+    password: "adeade",
+   profile: {
+    username: "adechan",
+    profile_image: "imagetodo",
+    country: "Romania",
+    city: "Bacau",
+    mentor_email: "adeade.mentor@com",
+    hobbies: "Those are my hobbies",
+    statement: "This is my statement",
+    quote: "This is my quote"
+  }
+  ) {
+    result
+  }
+}
+
+
+REGISTE STUDENT
+# Write your query or mutation here
+mutation getAccountInfo {
+  register_student(
+    first_name: "Ade",
+    last_name: "Chan",
+    email: "ade.chan@com",
+    password: "adeade",
+   profile: {
+    username: "adechan",
+    profile_image: "imagetodo",
+    country: "Romania",
+    city: "Bacau",
+    student_email: "adeade@com",
+    hobbies: "Those are my hobbies",
+    statement: "This is my statement",
+    courseId: 0
+  }
+  ) {
+    result
+  }
+}
+
+GET STUDENT AWARDS
+# Write your query or mutation here
+query getAccountInfo {
+  get_student_awards(
+ 		student_id: 1
+  ) {
+    course_title
+    mentor_username
+    date
+  }
+}
+
+GET STUDENT INTERESTS
+# Write your query or mutation here
+query getAccountInfo {
+  get_student_interests(
+ 		student_id: 1
+  ) {
+    course_id
+    course_title
+  }
+}
+
+DELETE STUDET INTEREST
+mutation getAccountInfo {
+  delete_student_interest(
+ 		student_id: 1,
+    course_id: 1
+  ) {
+    result
+  }
+}
+
+GET ALL COURSES
+# Write your query or mutation here
+query getAccountInfo {
+  get_all_courses {
+    course_id
+    course_title
+  }
+}
+
+ADD MENTOR COURSE
+# Write your query or mutation here
+mutation getAccountInfo {
+  add_mentor_course(
+    mentor_id: 0,
+    course_id: 0,
+    price: 900,
+    day: 0,
+    hours: [0, 1]
+  ) {
+    result
+  }
+}
+
+DELETE MENTOR COURSE
+# Write your query or mutation here
+mutation getAccountInfo {
+  delete_mentor_course(
+    mentor_id: 0,
+    course_id: 0
+  ) {
+    result
+  }
+}
+
+
+GET ALL MENTOR COURSES
+query getAccountInfo {
+  get_mentor_courses(
+    mentor_id: 0,
+  ) {
+     course_id
+    course_title
+    price
+    day
+    hours
+  }
+}
