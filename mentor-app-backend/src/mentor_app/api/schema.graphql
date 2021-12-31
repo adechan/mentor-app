@@ -69,8 +69,16 @@ type StudentAwardResult {
 }
 
 type StudentInterestResult {
-    course_id: String
+    course_id: ID
     course_title: String
+}
+
+type MentorCoursesResult {
+    course_id: ID
+    course_title: String
+    price: Float
+    day: String
+    hours: [Int]
 }
 
 type Query {
@@ -79,6 +87,8 @@ type Query {
     get_student_awards(student_id: ID!): [StudentAwardResult!]!  # Authenticated
     get_student_interests(student_id: ID!): [StudentInterestResult!]!  # Authenticated
     get_all_courses: [StudentInterestResult!]! # Authenticated
+
+    get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!]! # Authenticated - REDO??
 
     account_info(account_id: ID!): Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!  # Authenticated?
@@ -91,6 +101,9 @@ type Mutation {
 
     delete_student_interest(student_id: ID!, course_id: ID!): Result!  # Authenticated
     add_student_interest(student_id: ID!, course_id: ID!): Result! #Authenticated
+
+    add_mentor_course(mentor_id: ID!, course_id: ID!, price: Float!, day: Int!, hours: [Int!]!): Result! # Authenticated - REDO???
+    delete_mentor_course(mentor_id: ID!, course_id: ID!): Result! # Authenticated
 
     login(email: String!, password: String!): Result!
     logout: Boolean! # Authenticated

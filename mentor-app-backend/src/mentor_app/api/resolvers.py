@@ -140,6 +140,48 @@ class GQLQueryResolver(GQLResolver):
             logger.exception(e)
             return dict(error='No matches')
 
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_mentor_courses(self, _, info, mentor_id):
+        try:
+
+            result = []
+            courses = self.db.session.query(self.api.MentorCourses) \
+                .filter(self.api.MentorCourses.mentor_id == mentor_id) \
+                .all()
+
+            for course in courses:
+                courseRow = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == course.course_id) \
+                    .one()
+
+                availableHours = self.db.session.query(self.api.AppointmentAvailableHours) \
+                    .filter(self.api.AppointmentAvailableHours.course_id == course.course_id) \
+                    .filter(self.api.AppointmentAvailableHours.mentor_id == mentor_id) \
+                    .all()
+
+                # assuming all values from Day are the same
+                hours = []
+                day = ""
+                for availableHour in availableHours:
+                    day = availableHour.day
+                    hours.append(availableHour.hours)
+
+                item = {
+                    "course_id": course.course_id,
+                    "course_title": courseRow.title,
+                    "price": course.price,
+                    "day": day,
+                    "hours": hours
+                }
+
+                result.append(item)
+
+            return result if len(result) > 0 else None
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
 
 
 class GQLMutationResolver(GQLResolver):
@@ -260,6 +302,59 @@ class GQLMutationResolver(GQLResolver):
 
             self.db.session.add(student_interest)
             self.db.session.commit()
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_add_mentor_course(self, _,
+        info, mentor_id, course_id, price, day, hours
+    ):
+        try:
+            mentor_course = self.api.MentorCourses(
+                mentor_id=mentor_id,
+                course_id=course_id,
+                price=price
+            )
+
+            self.db.session.add(mentor_course)
+            self.db.session.commit()
+
+            for hour in hours:
+                available_hour = self.api.AppointmentAvailableHours(
+                    mentor_id=mentor_id,
+                    course_id=course_id,
+                    day=day,
+                    hours=hour,
+                    available=True
+                )
+                self.db.session.add(available_hour)
+                self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_delete_mentor_course(self, _,
+    info, mentor_id, course_id
+    ):
+        try:
+            self.db.session.query(self.api.MentorCourses) \
+                .filter(self.api.MentorCourses.mentor_id == mentor_id) \
+                .filter(self.api.MentorCourses.course_id == course_id) \
+                .delete()
+            self.db.session.commit()
+
+            self.db.session.query(self.api.AppointmentAvailableHours) \
+                .filter(self.api.AppointmentAvailableHours.mentor_id == mentor_id) \
+                .filter(self.api.AppointmentAvailableHours.course_id == course_id) \
+                .delete()
+            self.db.session.commit()
+
+
             return dict(result=True)
 
         except Exception as e:
