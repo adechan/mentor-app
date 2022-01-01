@@ -182,6 +182,39 @@ class GQLQueryResolver(GQLResolver):
             logger.exception(e)
             return dict(error='No matches')
 
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_mentor_reviews(self, _, info, mentor_id):
+        try:
+            reviews = self.db.session.query(self.api.MentorReview) \
+                .filter(self.api.MentorReview.mentor_id == mentor_id) \
+                .all()
+
+            logger.debug(reviews)
+            result = []
+            for reviewRow in reviews:
+                courseRow = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == reviewRow.course_id) \
+                    .one() # get title from here
+
+                studentRow = self.db.session.query(self.api.Student) \
+                    .filter(self.api.Student.student_id == reviewRow.student_id) \
+                    .one() # get student_username from here
+
+                item = {
+                    "course_title": courseRow.title,
+                    "review": reviewRow.review,
+                    "stars": reviewRow.stars,
+                    "student_username": studentRow.username,
+                    "date": reviewRow.date
+                }
+                result.append(item)
+
+            return result if len(result) > 0 else None
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
 
 
 class GQLMutationResolver(GQLResolver):

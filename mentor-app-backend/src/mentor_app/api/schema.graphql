@@ -81,6 +81,14 @@ type MentorCoursesResult {
     hours: [Int]
 }
 
+type MentorReviewResult {
+    course_title: String
+    review: String
+    stars: Int
+    student_username: String
+    date: String
+}
+
 type Query {
     is_email_in_use(email: String!): Result!
 
@@ -88,6 +96,7 @@ type Query {
     get_student_interests(student_id: ID!): [StudentInterestResult!]!  # Authenticated
     get_all_courses: [StudentInterestResult!]! # Authenticated
 
+    get_mentor_reviews(mentor_id: ID!): [MentorReviewResult!]! # Authenticated
     get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!]! # Authenticated - REDO??
 
     account_info(account_id: ID!): Account! # Authenticated

@@ -125,4 +125,16 @@ query getAccountInfo {
     day
     hours
   }
+
+GET ALL MENTOR REVIEWS
+query getAccountInfo {
+  get_mentor_reviews(
+    mentor_id: 1
+  ) {
+   course_title
+    review
+    stars
+    student_username
+    date
+  }
 }
