@@ -89,6 +89,27 @@ type MentorReviewResult {
     date: String
 }
 
+type StudentSettingsResult {
+    first_name: String
+    last_name: String
+    student_email: String
+    country: String
+    city: String
+    statement: String
+    hobbies: String
+}
+
+type MentorSettingsResult {
+    first_name: String
+    last_name: String
+    mentor_email: String
+    country: String
+    city: String
+    statement: String
+    hobbies: String
+    quote: String
+}
+
 type Query {
     is_email_in_use(email: String!): Result!
 
@@ -98,6 +119,9 @@ type Query {
 
     get_mentor_reviews(mentor_id: ID!): [MentorReviewResult!]! # Authenticated
     get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!]! # Authenticated - REDO??
+
+    get_student_settings_info(account_id: ID!): StudentSettingsResult! # Authenticated
+    get_mentor_settings_info(account_id: ID!): MentorSettingsResult! # Authenticated
 
     account_info(account_id: ID!): Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!  # Authenticated?
@@ -114,6 +138,6 @@ type Mutation {
     add_mentor_course(mentor_id: ID!, course_id: ID!, price: Float!, day: Int!, hours: [Int!]!): Result! # Authenticated - REDO???
     delete_mentor_course(mentor_id: ID!, course_id: ID!): Result! # Authenticated
 
-    login(email: String!, password: String!): Result!
+    login(email: String!, password: String!): Result! # This should give me an account_id IDEALLY
     logout: Boolean! # Authenticated
 }

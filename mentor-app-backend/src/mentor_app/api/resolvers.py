@@ -189,7 +189,6 @@ class GQLQueryResolver(GQLResolver):
                 .filter(self.api.MentorReview.mentor_id == mentor_id) \
                 .all()
 
-            logger.debug(reviews)
             result = []
             for reviewRow in reviews:
                 courseRow = self.db.session.query(self.api.Course) \
@@ -210,6 +209,61 @@ class GQLQueryResolver(GQLResolver):
                 result.append(item)
 
             return result if len(result) > 0 else None
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_student_settings_info(self, _, info, account_id):
+        try:
+            accountRow = self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .one()
+
+            studentRow = self.db.session.query(self.api.Student) \
+                .filter(self.api.Student.student_id == accountRow.student_id) \
+                .one()
+
+            result = {
+                "first_name": accountRow.first_name,
+                "last_name": accountRow.last_name,
+                "student_email": studentRow.student_email,
+                "country": studentRow.country,
+                "city": studentRow.city,
+                "statement": studentRow.statement,
+                "hobbies": studentRow.hobbies,
+            }
+
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_mentor_settings_info(self, _, info, account_id):
+        try:
+            accountRow = self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .one()
+
+            mentorRow = self.db.session.query(self.api.Mentor) \
+                .filter(self.api.Mentor.mentor_id == accountRow.mentor_id) \
+                .one()
+
+            result = {
+                "first_name": accountRow.first_name,
+                "last_name": accountRow.last_name,
+                "mentor_email": mentorRow.mentor_email,
+                "country": mentorRow.country,
+                "city": mentorRow.city,
+                "statement": mentorRow.statement,
+                "hobbies": mentorRow.hobbies,
+                "quote": mentorRow.quote
+            }
+
+            return result
 
         except Exception as e:
             logger.exception(e)
