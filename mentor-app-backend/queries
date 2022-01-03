@@ -169,3 +169,206 @@ query getAccountInfo {
     quote
   }
 }
+
+UPDATE SETTINGS INFO - STUDENT
+mutation getAccountInfo {
+  update_student_settings_info(
+    account_id: 1,
+    settings_info: {
+      first_name: "Ade1",
+    last_name: "Chan1",
+    student_email: "studentemail@com",
+    country: "Romania",
+    city: "Bacau"
+    hobbies: "some hobbies",
+    statement: "some statement"
+    }
+  ) {
+  	result
+  }
+}
+
+UPDATE SETTINGS INFO - MENTOR
+mutation getAccountInfo {
+  update_mentor_settings_info(
+    account_id: 1,
+    settings_info: {
+      first_name: "Ade1",
+    last_name: "Chan1",
+    mentor_email: "mentoremail@com",
+    country: "Romania",
+    city: "Bacau"
+    hobbies: "some hobbies",
+    statement: "some statement",
+      quote:"some quote"
+    }
+  ) {
+  	result
+  }
+}
+
+GET STUDENT - ALL RECOMMENDATIONS
+query getAccountInfo {
+  get_student_all_recommendations(
+    student_id: 1,
+  ) {
+    mentor_id
+  	mentor_profile_image
+    mentor_username
+    mentor_country
+    mentor_city
+    course
+    course_id
+    price
+  }
+}
+
+GET STUDENT - CREATE APPOINTMENT - INFO
+query getAccountInfo {
+  get_create_appointment_info(
+    mentor_id: 1,
+    course_id: 0,
+  ) {
+      mentor_username
+    mentor_email
+    course
+    course_id
+    price
+    availableHours {
+      day
+      hour
+      available_hours_id
+    }
+  }
+}
+
+CREATE APPOINTMENT
+mutation getAccountInfo {
+  create_appointment(
+    student_id: 1,
+    mentor_id: 1,
+    course_id: 0,
+    available_hours_id: 1
+  ) {
+    result
+  }
+}
+
+DELETE APPOINTMENT
+mutation getAccountInfo {
+  cancel_appointment(
+    appointment_id: 1,
+  ) {
+    result
+  }
+}
+
+GET STUDENT ALL APPOINTMENTS
+query getAccountInfo {
+  get_student_all_appointments(
+    student_id: 1
+  ) {
+    appointment_id
+    mentor_username
+    mentor_email
+    course
+    price
+    day
+    hour
+    status
+  }
+}
+
+GET MENTOR ALL APPOINTMENTS
+query getAccountInfo {
+  get_mentor_all_appointments(
+    mentor_id: 1,
+  ) {
+    appointment_id
+    student_username
+    student_email
+    course
+    price
+    day
+    hour
+    status
+  }
+}
+
+MENTOR FINISH APPOINTMENT
+mutation getAccountInfo {
+  mentor_finish_appointment(
+    appointment_id: 3,
+  ) {
+    result
+  }
+}
+
+MENTOR ACCEPT APPOINTMENT
+mutation getAccountInfo {
+  mentor_accept_appointment(
+    appointment_id: 3,
+  ) {
+    result
+  }
+}
+
+STUDENT - GET ALL MENTORS - YOU FINISHED THE APPOINTMENTS
+query getAccountInfo {
+  get_student_all_mentors(
+    student_id: 1,
+  ) {
+     mentor_id
+    username
+    course_id
+    course_title
+    review
+  }
+}
+
+STUDENT - REVIEW MENTOR
+mutation getAccountInfo {
+  student_review_mentor(
+    student_id: 1,
+    course_id: 0,
+    mentor_id: 1,
+    review: "Love this mentor"
+  ) {
+    result
+  }
+}
+
+STUDENT - EDIT REVIEW MENTOR
+mutation getAccountInfo {
+  student_edit_review_mentor(
+    student_id: 1,
+    course_id: 0,
+    mentor_id: 1,
+    review: "Love this mentor yayssssss"
+  ) {
+    result
+  }
+}
+
+MENTOR - GET ALL STUDENTS
+query getAccountInfo {
+  get_mentor_all_students(
+    mentor_id: 1,
+  ) {
+       student_id
+    course_id
+    username
+    course_title
+  }
+}
+
+MENTOR - AWARD STUDENT
+mutation getAccountInfo {
+  mentor_award_student(
+    mentor_id: 1,
+    student_id: 1,
+    course_id: 0,
+  ) {
+     result
+  }
+}

@@ -1,3 +1,5 @@
+import datetime
+
 import flask
 from ariadne import convert_kwargs_to_snake_case, ObjectType
 from loguru import logger
@@ -269,6 +271,292 @@ class GQLQueryResolver(GQLResolver):
             logger.exception(e)
             return dict(error='No matches')
 
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_student_all_recommendations(self, _, info, student_id):
+        try:
+            result = []
+
+            studentInterestRows = self.db.session.query(self.api.StudentInterests) \
+                .filter(self.api.StudentInterests.student_id == student_id) \
+                .all()
+
+            interests = []
+            for studentInterestRow in studentInterestRows:
+                courseId = studentInterestRow.course_id
+
+                interests.append(courseId)
+
+            mentors = []
+            for interestId in interests:
+                 mentorRows = self.db.session.query(self.api.MentorCourses) \
+                    .filter(self.api.MentorCourses.course_id == interestId) \
+                    .all()
+
+                 for mentorRow in mentorRows:
+                     mentors.append(mentorRow.mentor_id)
+
+            for mentorId in mentors:
+                mentorRows = self.db.session.query(self.api.MentorCourses) \
+                    .filter(self.api.MentorCourses.mentor_id == mentorId) \
+                    .all() # get price from here
+
+                for mentorRow in mentorRows:
+                    if mentorRow.course_id in interests:
+                        mentorInfo = self.db.session.query(self.api.Mentor) \
+                            .filter(self.api.Mentor.mentor_id == mentorRow.mentor_id) \
+                            .one() # get mentor info from here
+
+                        courseInfo = self.db.session.query(self.api.Course) \
+                            .filter(self.api.Course.course_id == mentorRow.course_id) \
+                            .one() # get course info from here
+
+                        item = {
+                            "mentor_id": mentorInfo.mentor_id,
+                            "mentor_profile_image": mentorInfo.profile_image,
+                            "mentor_username": mentorInfo.username,
+                            "mentor_country": mentorInfo.country,
+                            "mentor_city": mentorInfo.city,
+                            "course_id": courseInfo.course_id,
+                            "course": courseInfo.title,
+                            "price": mentorRow.price
+                        }
+                        result.append(item)
+
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_create_appointment_info(self, _, info, mentor_id, course_id):
+        try:
+            mentorInfo = self.db.session.query(self.api.Mentor) \
+                .filter(self.api.Mentor.mentor_id == mentor_id) \
+                .one()
+
+            courseInfo = self.db.session.query(self.api.Course) \
+                .filter(self.api.Course.course_id == course_id) \
+                .one()
+
+            price = self.db.session.query(self.api.MentorCourses) \
+                .filter(self.api.MentorCourses.course_id == course_id) \
+                .filter(self.api.MentorCourses.mentor_id == mentor_id) \
+                .one().price
+
+            availableHoursRows = self.db.session.query(self.api.AppointmentAvailableHours) \
+                .filter(self.api.AppointmentAvailableHours.course_id == course_id) \
+                .filter(self.api.AppointmentAvailableHours.mentor_id == mentor_id) \
+                .filter(self.api.AppointmentAvailableHours.available == 1) \
+                .all()
+
+            hours = []
+            for availableHoursRow in availableHoursRows:
+                item = {
+                    "day": availableHoursRow.day,
+                    "hour": availableHoursRow.hours,
+                    "available_hours_id": availableHoursRow.id
+                }
+                hours.append(item)
+
+            logger.debug(hours)
+            hours = [{
+                "day": 0,
+                "hour": 0,
+                "available_hours_id": 0
+            }]
+
+            logger.debug(hours)
+            item = {
+                "mentor_username": mentorInfo.username,
+                "mentor_email": mentorInfo.mentor_email,
+                "course": courseInfo.title,
+                "course_id": courseInfo.course_id,
+                "price": price,
+                "availableHours": hours
+            }
+
+            return item
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_student_all_appointments(self, _, info, student_id):
+        try:
+            result = []
+
+            appointmentRows = self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.student_id == student_id) \
+                .filter(self.api.Appointment.status != "CANCELED") \
+                .filter(self.api.Appointment.status != "FINISHED") \
+                .all()
+
+            for appointmentRow in appointmentRows:
+                mentorRow = self.db.session.query(self.api.Mentor) \
+                    .filter(self.api.Mentor.mentor_id == appointmentRow.mentor_id) \
+                    .one() # mentor info from here
+
+                courseTitle = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == appointmentRow.course_id) \
+                    .one().title
+
+                price = self.db.session.query(self.api.MentorCourses) \
+                    .filter(self.api.MentorCourses.mentor_id == appointmentRow.mentor_id) \
+                    .filter(self.api.MentorCourses.course_id == appointmentRow.course_id) \
+                    .one().price # mentor info from here
+
+                appointmentHoursRow = self.db.session.query(self.api.AppointmentAvailableHours) \
+                    .filter(self.api.AppointmentAvailableHours.id == appointmentRow.available_hours_id) \
+                    .one()  # mentor info from here
+
+                item = {
+                    "appointment_id": appointmentRow.id,
+                    "mentor_username": mentorRow.username,
+                    "mentor_email": mentorRow.mentor_email,
+                    "course": courseTitle,
+                    "price": price,
+                    "day": appointmentHoursRow.day,
+                    "hour": appointmentHoursRow.hours,
+                    "status": appointmentRow.status
+                }
+                result.append(item)
+
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_mentor_all_appointments(self, _, info, mentor_id):
+        try:
+            result = []
+
+            appointmentRows = self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.mentor_id == mentor_id) \
+                .filter(self.api.Appointment.status != "CANCELED") \
+                .filter(self.api.Appointment.status != "FINISHED") \
+                .all()
+
+            for appointmentRow in appointmentRows:
+                studentRow = self.db.session.query(self.api.Student) \
+                    .filter(self.api.Student.student_id == appointmentRow.student_id) \
+                    .one()  # mentor info from here
+
+                courseTitle = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == appointmentRow.course_id) \
+                    .one().title
+
+                price = self.db.session.query(self.api.MentorCourses) \
+                    .filter(self.api.MentorCourses.mentor_id == appointmentRow.mentor_id) \
+                    .filter(self.api.MentorCourses.course_id == appointmentRow.course_id) \
+                    .one().price  # mentor info from here
+
+                appointmentHoursRow = self.db.session.query(self.api.AppointmentAvailableHours) \
+                    .filter(self.api.AppointmentAvailableHours.id == appointmentRow.available_hours_id) \
+                    .one()  # mentor info from here
+
+                item = {
+                    "appointment_id": appointmentRow.id,
+                    "student_username": studentRow.username,
+                    "student_email": studentRow.student_email,
+                    "course": courseTitle,
+                    "price": price,
+                    "day": appointmentHoursRow.day,
+                    "hour": appointmentHoursRow.hours,
+                    "status": appointmentRow.status
+                }
+                result.append(item)
+
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_student_all_mentors(self, _, info, student_id):
+        try:
+
+            result = []
+
+            appointmentRows = self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.student_id == student_id) \
+                .filter(self.api.Appointment.status == "FINISHED") \
+                .all()
+
+            for appointmentRow in appointmentRows:
+                mentorUsername = self.db.session.query(self.api.Mentor) \
+                    .filter(self.api.Mentor.mentor_id == appointmentRow.mentor_id) \
+                    .one().username
+
+                course = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == appointmentRow.course_id) \
+                    .one().title
+
+                reviewRow = self.db.session.query(self.api.MentorReview) \
+                    .filter(self.api.MentorReview.mentor_id == appointmentRow.mentor_id) \
+                    .filter(self.api.MentorReview.course_id == appointmentRow.course_id) \
+                    .filter(self.api.MentorReview.student_id == student_id) \
+                    .all()
+
+                review = ""
+                if len(reviewRow) > 0:
+                    review = reviewRow.review
+
+                item = {
+                    "mentor_id": appointmentRow.mentor_id,
+                    "username": mentorUsername,
+                    "course_id": appointmentRow.course_id,
+                    "course_title": course,
+                    "review": review
+                }
+
+                result.append(item)
+
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_mentor_all_students(self, _, info, mentor_id):
+        try:
+
+            result = []
+
+            appointmentRows = self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.mentor_id == mentor_id) \
+                .filter(self.api.Appointment.status == "FINISHED") \
+                .all()
+
+            for appointmentRow in appointmentRows:
+                studentUsername = self.db.session.query(self.api.Student) \
+                    .filter(self.api.Student.student_id == appointmentRow.student_id) \
+                    .one().username
+
+                course = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == appointmentRow.course_id) \
+                    .one().title
+
+                item = {
+                    "student_id": appointmentRow.student_id,
+                    "username": studentUsername,
+                    "course_id": appointmentRow.course_id,
+                    "course_title": course,
+                }
+
+                result.append(item)
+
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
 
 
 class GQLMutationResolver(GQLResolver):
@@ -446,3 +734,213 @@ class GQLMutationResolver(GQLResolver):
 
         except Exception as e:
             logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_update_student_settings_info(self, _,
+    info, account_id, settings_info
+    ):
+        try:
+            self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .update({"first_name": settings_info["first_name"],
+                         "last_name": settings_info["last_name"]})
+            self.db.session.commit()
+
+            accountRow = self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .one()
+
+            self.db.session.query(self.api.Student) \
+                .filter(self.api.Student.student_id == accountRow.student_id) \
+                .update({"student_email": settings_info["student_email"],
+                         "country": settings_info["country"],
+                         "city": settings_info["city"],
+                         "hobbies": settings_info["hobbies"],
+                         "statement": settings_info["statement"]})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_update_mentor_settings_info(self, _,
+    info, account_id, settings_info
+    ):
+        try:
+            self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .update({"first_name": settings_info["first_name"],
+                         "last_name": settings_info["last_name"]})
+            self.db.session.commit()
+
+            accountRow = self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .one()
+
+            self.db.session.query(self.api.Mentor) \
+                .filter(self.api.Mentor.mentor_id == accountRow.mentor_id) \
+                .update({"mentor_email": settings_info["mentor_email"],
+                         "country": settings_info["country"],
+                         "city": settings_info["city"],
+                         "hobbies": settings_info["hobbies"],
+                         "statement": settings_info["statement"],
+                         "quote": settings_info["quote"]})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_create_appointment(self, _,
+    info, student_id, course_id, mentor_id, available_hours_id
+    ):
+        try:
+            appointment = self.api.Appointment(
+                student_id=student_id,
+                course_id=course_id,
+                mentor_id=mentor_id,
+                available_hours_id=available_hours_id,
+                status="PENDING"
+            )
+            self.db.session.add(appointment)
+            self.db.session.commit()
+
+            # available field to false - nobody else can make an appointment with this day/hour
+            self.db.session.query(self.api.AppointmentAvailableHours) \
+                .filter(self.api.AppointmentAvailableHours.mentor_id == mentor_id) \
+                .filter(self.api.AppointmentAvailableHours.course_id == course_id) \
+                .update({"available": False})
+            self.db.session.commit()
+
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_cancel_appointment(self, _,
+    info, appointment_id
+    ):
+        try:
+            self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.id == appointment_id) \
+                .update({"status": "CANCELED"})
+            self.db.session.commit()
+
+            appointment = self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.id == appointment_id) \
+                .one()
+
+            self.db.session.query(self.api.AppointmentAvailableHours) \
+                .filter(self.api.AppointmentAvailableHours.id == appointment.available_hours_id) \
+                .update({"available": True})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_mentor_accept_appointment(self, _,
+        info, appointment_id
+    ):
+        try:
+            self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.id == appointment_id) \
+                .update({"status": "ACCEPTED"})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_mentor_finish_appointment(self, _,
+        info, appointment_id
+    ):
+        try:
+            self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.id == appointment_id) \
+                .update({"status": "FINISHED"})
+            self.db.session.commit()
+
+            appointment = self.db.session.query(self.api.Appointment) \
+                .filter(self.api.Appointment.id == appointment_id) \
+                .one()
+
+            self.db.session.query(self.api.AppointmentAvailableHours) \
+                .filter(self.api.AppointmentAvailableHours.id == appointment.available_hours_id) \
+                .update({"available": True})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_student_review_mentor(self, _,
+        info, student_id, mentor_id, course_id, review
+    ):
+        try:
+            review = self.api.MentorReview(
+                student_id=student_id,
+                course_id=course_id,
+                mentor_id=mentor_id,
+                review=review,
+                stars=0,
+                date=datetime.datetime.now()
+            )
+
+            self.db.session.add(review)
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_student_edit_review_mentor(self, _,
+        info, student_id, mentor_id, course_id, review
+    ):
+        try:
+            self.db.session.query(self.api.MentorReview) \
+                .filter(self.api.MentorReview.student_id == student_id) \
+                .filter(self.api.MentorReview.course_id == course_id) \
+                .filter(self.api.MentorReview.mentor_id == mentor_id) \
+                .update({"review": review})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_mentor_award_student(self, _,
+        info, student_id, mentor_id, course_id
+    ):
+        try:
+            award = self.api.StudentAward(
+                student_id=student_id,
+                course_id=course_id,
+                mentor_id=mentor_id,
+                date=datetime.datetime.now()
+            )
+
+            self.db.session.add(award)
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
