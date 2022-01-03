@@ -65,10 +65,10 @@ class MentorServer:
             response = make_response(jsonify(result), 200)
             if 'id' in flask.session:
                 logger.debug(f'Cookie set!')
-                response.set_cookie(
-                    key='session_id', value=flask.session['id'],
-                    max_age=flask.session['duration'],
-                    httponly=True
-                )
+                # response.set_cookie(
+                #     key='session_id', value=flask.session['id'],
+                #     max_age=flask.session['duration'],
+                #     httponly=True
+                # )
 
             return response
