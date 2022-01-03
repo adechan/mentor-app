@@ -549,6 +549,66 @@ class GQLQueryResolver(GQLResolver):
             logger.exception(e)
             return dict(error='No matches')
 
+    @convert_kwargs_to_snake_case
+    def resolve_query_get_mentor_details(self, _, info, mentor_id):
+        try:
+            mentor = self.db.session.query(self.api.Mentor) \
+                .filter(self.api.Mentor.mentor_id == mentor_id) \
+                .one() # mentor details from here
+
+            courses_rows = self.db.session.query(self.api.MentorCourses) \
+                .filter(self.api.MentorCourses.mentor_id == mentor_id) \
+                .all() # get course + course price
+
+            courses = []
+            for row in courses_rows:
+                course_title = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == row.course_id) \
+                    .one().title
+
+                item = {
+                    "course_id": row.course_id,
+                    "course_title": course_title,
+                    "price": row.price,
+                }
+
+                courses.append(item)
+
+            reviews_rows = self.db.session.query(self.api.MentorReview) \
+                .filter(self.api.MentorReview.mentor_id == mentor_id) \
+                .order_by(self.api.MentorReview.date.desc()) \
+                .all()
+
+            reviews = []
+            for row in reviews_rows:
+                student_username = self.db.session.query(self.api.Student) \
+                    .filter(self.api.Student.student_id == row.student_id) \
+                    .one().username
+
+                course_title = self.db.session.query(self.api.Course) \
+                    .filter(self.api.Course.course_id == row.course_id) \
+                    .one().title
+                item = {
+                    "review": row.review,
+                    "course_title": course_title,
+                    "student_username": student_username,
+                }
+
+                reviews.append(item)
+
+            result = {
+                "mentor_username": mentor.username,
+                "country": mentor.country,
+                "city": mentor.city,
+                "quote": mentor.quote,
+                "courses": courses,
+                "reviews": reviews
+            }
+            return result
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
 
 
 class GQLMutationResolver(GQLResolver):

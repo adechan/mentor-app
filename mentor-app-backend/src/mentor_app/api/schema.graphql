@@ -194,6 +194,27 @@ type MentorGetAllAppointmentsType {
     status: String!
 }
 
+type MentorCoursesType {
+    course_id: ID!
+    course_title: String!
+    price: Float!
+}
+
+type MentorReviewsType {
+    review: String!
+    course_title: String!
+    student_username: String!
+}
+
+type MentorDetailsResult {
+    mentor_username: String!
+    country: String!
+    city: String!
+    quote: String!
+    courses: [MentorCoursesType!]!
+    reviews: [MentorReviewsType!]!
+}
+
 type Query {
     is_email_in_use(email: String!): Result!
 
@@ -215,6 +236,8 @@ type Query {
 
     get_student_all_appointments(student_id: ID!): [StudentGetAllAppointmentsType!]! # Authenticated
     get_mentor_all_appointments(mentor_id: ID!): [MentorGetAllAppointmentsType!]! # Authenticated
+
+    get_mentor_details(mentor_id: ID!): MentorDetailsResult! # Authenticated
 
     account_info(account_id: ID!): Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!  # Authenticated?

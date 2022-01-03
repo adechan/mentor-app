@@ -372,3 +372,25 @@ mutation getAccountInfo {
      result
   }
 }
+
+GET MENTOR DETAILS FOR RECOMMENDATION TAB
+query getAccountInfo {
+ get_mentor_details(
+    mentor_id: 1,
+  ) {
+    mentor_username
+    country
+    city
+    quote
+    courses {
+       course_id
+    course_title
+    price
+    }
+    reviews {
+      review
+      course_title
+    student_username
+    }
+  }
+}

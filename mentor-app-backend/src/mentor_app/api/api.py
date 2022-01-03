@@ -39,7 +39,7 @@ class MentorAPI:
         return make_executable_schema(
             type_defs, self.query_resolver.gql_object_type, self.mutation_resolver.gql_object_type,
             snake_case_fallback_resolvers
-        )
+    )
 
     def register_account(self, first_name: str, last_name: str, email: str, password: str) -> int:
         logger.debug(f'{email=} {first_name=} {last_name=}')
