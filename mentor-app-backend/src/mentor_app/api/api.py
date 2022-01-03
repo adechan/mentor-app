@@ -1,4 +1,5 @@
 import datetime
+import os
 import uuid
 
 import bcrypt
@@ -49,7 +50,7 @@ class MentorAPI:
         pw_hash = bcrypt.hashpw(password.encode(), salt)
         logger.debug(f'{salt=} {pw_hash=}')
 
-        session_id = uuid.uuid4().hex
+        session_id = os.urandom(32).hex()
 
         # Add to account
         account = self.Account(

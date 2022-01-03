@@ -1,6 +1,7 @@
 import os
 import uuid
 
+import flask
 from ariadne import graphql_sync
 from ariadne.constants import PLAYGROUND_HTML
 from flask import Flask, request, jsonify, make_response
@@ -13,7 +14,7 @@ class MentorServer:
         self.app = Flask(db_name)
         self.app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.getcwd()}/{db_name}.db"
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-        self.app.config['SECRET_KEY'] = uuid.uuid4().hex
+        self.app.config['SECRET_KEY'] = os.urandom(32).hex()
         logger.debug(f'database uri: {self.app.config["SQLALCHEMY_DATABASE_URI"]}')
 
         self.db = SQLAlchemy(self.app)
@@ -25,8 +26,7 @@ class MentorServer:
         self.app.run(host, port)
 
     def _define_routes(self):
-        # TODO: Replace with actual result instead of graphql playground
-        #   (probably similar to the below POST version)
+        # TODO: remove this route for production
         @self.app.route("/graphql", methods=["GET"])
         def graphql_playground():
             return PLAYGROUND_HTML, 200
@@ -45,4 +45,5 @@ class MentorServer:
 
             status_code = 200 if success else 400
             response = make_response(jsonify(result), status_code)
+            # response.set_cookie(key='session_id', )
             return response
