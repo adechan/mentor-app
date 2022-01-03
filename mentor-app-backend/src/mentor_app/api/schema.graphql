@@ -158,8 +158,8 @@ type StudentRecommendationsResult {
 }
 
 type AvailableHoursType {
-    day: Float!
-    hour: Float!
+    day: Int!
+    hour: Int!
     available_hours_id: ID!
 }
 
@@ -169,7 +169,7 @@ type StudentGetCreateAppointmentInfoResult {
     course: String!
     course_id: ID!
     price: Float!
-    availableHours: [AvailableHoursType!]!
+    available_hours: [AvailableHoursType!]!
 }
 
 type StudentGetAllAppointmentsType {

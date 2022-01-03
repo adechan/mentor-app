@@ -331,11 +331,11 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_get_create_appointment_info(self, _, info, mentor_id, course_id):
         try:
-            mentorInfo = self.db.session.query(self.api.Mentor) \
+            mentor_info = self.db.session.query(self.api.Mentor) \
                 .filter(self.api.Mentor.mentor_id == mentor_id) \
                 .one()
 
-            courseInfo = self.db.session.query(self.api.Course) \
+            course_info = self.db.session.query(self.api.Course) \
                 .filter(self.api.Course.course_id == course_id) \
                 .one()
 
@@ -344,36 +344,35 @@ class GQLQueryResolver(GQLResolver):
                 .filter(self.api.MentorCourses.mentor_id == mentor_id) \
                 .one().price
 
-            availableHoursRows = self.db.session.query(self.api.AppointmentAvailableHours) \
+            available_hours_rows = self.db.session.query(self.api.AppointmentAvailableHours) \
                 .filter(self.api.AppointmentAvailableHours.course_id == course_id) \
                 .filter(self.api.AppointmentAvailableHours.mentor_id == mentor_id) \
                 .filter(self.api.AppointmentAvailableHours.available == 1) \
                 .all()
 
             hours = []
-            for availableHoursRow in availableHoursRows:
+            for row in available_hours_rows:
                 item = {
-                    "day": availableHoursRow.day,
-                    "hour": availableHoursRow.hours,
-                    "available_hours_id": availableHoursRow.id
+                    "day": row.day,
+                    "hour": row.hours,
+                    "available_hours_id": row.id
                 }
                 hours.append(item)
 
-            logger.debug(hours)
-            hours = [{
-                "day": 0,
-                "hour": 0,
-                "available_hours_id": 0
-            }]
+            # hours = [{
+            #     "day": 0,
+            #     "hour": 0,
+            #     "available_hours_id": 0
+            # }]
 
-            logger.debug(hours)
+            logger.debug(f'{hours=}')
             item = {
-                "mentor_username": mentorInfo.username,
-                "mentor_email": mentorInfo.mentor_email,
-                "course": courseInfo.title,
-                "course_id": courseInfo.course_id,
+                "mentor_username": mentor_info.username,
+                "mentor_email": mentor_info.mentor_email,
+                "course": course_info.title,
+                "course_id": course_info.course_id,
                 "price": price,
-                "availableHours": hours
+                "available_hours": hours
             }
 
             return item
