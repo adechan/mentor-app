@@ -996,3 +996,65 @@ class GQLMutationResolver(GQLResolver):
         except Exception as e:
             logger.exception(e)
 
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_create_student_profile(self, _,
+        info, account_id, profile
+    ):
+        try:
+            student = self.api.Student(
+                username=profile["username"],
+                profile_image=profile["profile_image"],
+                country=profile["country"],
+                city=profile["city"],
+                student_email=profile["student_email"],
+                hobbies=profile["hobbies"],
+                statement=profile["statement"],
+            )
+
+            self.db.session.add(student)
+            self.db.session.commit()
+            self.db.session.refresh(student)
+
+            # Update account
+            self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .update({"student_id": student.student_id})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_create_mentor_profile(self, _,
+        info, account_id, profile
+    ):
+        try:
+            mentor = self.api.Mentor(
+                username=profile["username"],
+                profile_image=profile["profile_image"],
+                country=profile["country"],
+                city=profile["city"],
+                mentor_email=profile["mentor_email"],
+                hobbies=profile["hobbies"],
+                statement=profile["statement"],
+                quote=profile["quote"],
+            )
+
+            self.db.session.add(mentor)
+            self.db.session.commit()
+            self.db.session.refresh(mentor)
+
+            # Update account
+            self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.account_id == account_id) \
+                .update({"mentor_id": mentor.mentor_id})
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+
