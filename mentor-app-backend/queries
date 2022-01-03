@@ -372,3 +372,66 @@ mutation getAccountInfo {
      result
   }
 }
+
+GET MENTOR DETAILS FOR RECOMMENDATION TAB
+query getAccountInfo {
+ get_mentor_details(
+    mentor_id: 1,
+  ) {
+    mentor_username
+    country
+    city
+    quote
+    courses {
+       course_id
+    course_title
+    price
+    }
+    reviews {
+      review
+      course_title
+    student_username
+    }
+  }
+}
+
+
+CREATE STUDENT PROFILE
+# Write your query or mutation here
+mutation getAccountInfo {
+  create_student_profile(
+    account_id: 0,
+   profile: {
+    username: "shaun",
+    profile_image: "imagetodo",
+    country: "Romania",
+    city: "Bacau",
+    student_email: "addasdeade@com",
+    hobbies: "Those are my hobbies",
+    statement: "This is my statement",
+    courseId: 0
+  }
+  ) {
+    result
+  }
+}
+
+CREATE MENTOR PROFILE
+# Write your query or mutation here
+mutation getAccountInfo {
+  create_mentor_profile(
+    account_id: 0,
+   profile: {
+    username: "shaun",
+    profile_image: "imagetodo",
+    country: "Romania",
+    city: "Bacau",
+    mentor_email: "addasdeade@com",
+    hobbies: "Those are my hobbies",
+    statement: "This is my statement",
+    quote:"hi"
+  }
+  ) {
+    result
+  }
+}

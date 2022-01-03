@@ -57,7 +57,7 @@ class MentorAPI:
         return make_executable_schema(
             type_defs, self.query_resolver.gql_object_type, self.mutation_resolver.gql_object_type,
             snake_case_fallback_resolvers
-        )
+    )
 
     def login_account(self, email: str, password: str):
         accounts = self._db.session.query(self.Account).filter(self.Account.email == email).all()

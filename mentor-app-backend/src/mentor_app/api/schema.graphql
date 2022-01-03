@@ -194,6 +194,27 @@ type MentorGetAllAppointmentsType {
     status: String!
 }
 
+type MentorCoursesType {
+    course_id: ID!
+    course_title: String!
+    price: Float!
+}
+
+type MentorReviewsType {
+    review: String!
+    course_title: String!
+    student_username: String!
+}
+
+type MentorDetailsResult {
+    mentor_username: String!
+    country: String!
+    city: String!
+    quote: String!
+    courses: [MentorCoursesType!]!
+    reviews: [MentorReviewsType!]!
+}
+
 type Query {
     is_email_in_use(email: String!): Result!
 
@@ -216,7 +237,13 @@ type Query {
     get_student_all_appointments(student_id: ID!): [StudentGetAllAppointmentsType!]! # Authenticated
     get_mentor_all_appointments(mentor_id: ID!): [MentorGetAllAppointmentsType!]! # Authenticated
 
+<<<<<<< HEAD
     account_info(account_id: ID): Account! # Authenticated
+=======
+    get_mentor_details(mentor_id: ID!): MentorDetailsResult! # Authenticated
+
+    account_info(account_id: ID!): Account! # Authenticated
+>>>>>>> refs/remotes/origin/main
     student_info(student_id: ID!): StudentProfile!  # Authenticated?
     mentor_info(mentor_id: ID!): MentorProfile!  # Authenticated?
 }
@@ -243,6 +270,9 @@ type Mutation {
     student_edit_review_mentor(student_id: ID!, mentor_id: ID!, course_id: ID!, review: String!): Result! # Authenticated
 
     mentor_award_student(student_id: ID!, mentor_id: ID!, course_id: ID!): Result! # Authenticated
+
+    create_student_profile(account_id: ID!, profile: NewStudentProfile!): Result! # Authenticated
+    create_mentor_profile(account_id: ID!, profile: NewMentorProfile!): Result! # Authenticated
 
     login(email: String!, password: String!): Result! # This should give me an account_id IDEALLY
     logout: Boolean! # Authenticated
