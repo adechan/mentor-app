@@ -5,3 +5,4 @@ ariadne
 PyJWT
 bcrypt
 SQLAlchemy
+graphql

@@ -1,9 +1,9 @@
 import datetime
 
-import flask
 from ariadne import convert_kwargs_to_snake_case, ObjectType
 from loguru import logger
-from mentor_app.error import NotAuthenticated, ServerError
+from mentor_app.error import ServerError, InvalidLogin
+
 
 class GQLResolver:
     def __init__(self, db, api, typename: str):
@@ -64,8 +64,6 @@ class GQLQueryResolver(GQLResolver):
         except Exception as e:
             logger.exception(e)
             return dict(error='Error finding e-mail in database!')
-
-
 
     @convert_kwargs_to_snake_case
     def resolve_query_get_student_awards(self, _, info, student_id):
@@ -288,27 +286,27 @@ class GQLQueryResolver(GQLResolver):
 
             mentors = []
             for interestId in interests:
-                 mentorRows = self.db.session.query(self.api.MentorCourses) \
+                mentorRows = self.db.session.query(self.api.MentorCourses) \
                     .filter(self.api.MentorCourses.course_id == interestId) \
                     .all()
 
-                 for mentorRow in mentorRows:
-                     mentors.append(mentorRow.mentor_id)
+                for mentorRow in mentorRows:
+                    mentors.append(mentorRow.mentor_id)
 
             for mentorId in mentors:
                 mentorRows = self.db.session.query(self.api.MentorCourses) \
                     .filter(self.api.MentorCourses.mentor_id == mentorId) \
-                    .all() # get price from here
+                    .all()  # get price from here
 
                 for mentorRow in mentorRows:
                     if mentorRow.course_id in interests:
                         mentorInfo = self.db.session.query(self.api.Mentor) \
                             .filter(self.api.Mentor.mentor_id == mentorRow.mentor_id) \
-                            .one() # get mentor info from here
+                            .one()  # get mentor info from here
 
                         courseInfo = self.db.session.query(self.api.Course) \
                             .filter(self.api.Course.course_id == mentorRow.course_id) \
-                            .one() # get course info from here
+                            .one()  # get course info from here
 
                         item = {
                             "mentor_id": mentorInfo.mentor_id,
@@ -549,11 +547,18 @@ class GQLQueryResolver(GQLResolver):
             logger.exception(e)
             return dict(error='No matches')
 
-
-
 class GQLMutationResolver(GQLResolver):
     def __init__(self, db, api):
         super().__init__(db, api, 'Mutation')
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_login(self, _, info, email: str, password: str):
+        try:
+            self.api.login_account(email, password)
+            return dict(result=True)
+
+        except InvalidLogin:
+            return dict(error='Invalid username or password')
 
     @convert_kwargs_to_snake_case
     def resolve_mutation_register_student(self, _,
@@ -720,8 +725,6 @@ class GQLMutationResolver(GQLResolver):
                 .filter(self.api.AppointmentAvailableHours.course_id == course_id) \
                 .delete()
             self.db.session.commit()
-
-
             return dict(result=True)
 
         except Exception as e:

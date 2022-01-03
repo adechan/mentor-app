@@ -3,3 +3,6 @@ class NotAuthenticated(Exception):
 
 class ServerError(Exception):
     pass
+
+class InvalidLogin(ServerError):
+    pass

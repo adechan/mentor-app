@@ -216,7 +216,7 @@ type Query {
     get_student_all_appointments(student_id: ID!): [StudentGetAllAppointmentsType!]! # Authenticated
     get_mentor_all_appointments(mentor_id: ID!): [MentorGetAllAppointmentsType!]! # Authenticated
 
-    account_info(account_id: ID!): Account! # Authenticated
+    account_info(account_id: ID): Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!  # Authenticated?
     mentor_info(mentor_id: ID!): MentorProfile!  # Authenticated?
 }

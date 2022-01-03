@@ -20,6 +20,6 @@ def create_course_table(db, api):
     logger.debug(f'Course {courses} commited')
 
 
-# server.db.create_all()
+server.db.create_all()
 # create_course_table(server.db, server.api)
 server.serve()

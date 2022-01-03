@@ -1,3 +1,4 @@
+
 def define_account_table(db):
     class Account(db.Model):
         account_id = db.Column(db.Integer, primary_key=True)
