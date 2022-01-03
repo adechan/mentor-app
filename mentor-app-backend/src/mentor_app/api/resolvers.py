@@ -359,13 +359,6 @@ class GQLQueryResolver(GQLResolver):
                 }
                 hours.append(item)
 
-            # hours = [{
-            #     "day": 0,
-            #     "hour": 0,
-            #     "available_hours_id": 0
-            # }]
-
-            logger.debug(f'{hours=}')
             item = {
                 "mentor_username": mentor_info.username,
                 "mentor_email": mentor_info.mentor_email,
