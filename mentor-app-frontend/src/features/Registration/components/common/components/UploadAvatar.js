@@ -9,9 +9,9 @@ const customStyles = makeStyles((theme) => ({
     fontSize: 15,
   },
 }));
-const UploadAvatar = () => {
+
+const UploadAvatar = ({avatar, setAvatar}) => {
   const customClasses = customStyles();
-  const [avatar, setAvatar] = useState("");
 
   return (
     <>
@@ -22,7 +22,8 @@ const UploadAvatar = () => {
         type="file"
         id="myFile"
         name="filename"
-        onChange={(e) => setAvatar(e.target.value)}
+        value={avatar}
+        onChange={setAvatar}
       ></input>
     </>
   );

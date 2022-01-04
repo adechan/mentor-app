@@ -1,0 +1,43 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { registrationActions } from '../../../../../store/slices/registrationSlice';
+import useRegisterStudent from "./useRegisterStudent";
+
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
+import { useHistory } from 'react-router-dom';
+
+export const useGetProfileThirdStep = (thirdStep) => {
+
+  const register = useRegisterStudent();
+  const dispatch = useDispatch();
+  const history = useHistory();
+
+  const studentProfile = useSelector((store) => store.registration.studentProfile);
+
+    const handleNextStep = () => {
+        dispatch(registrationActions.SET_ACCOUNT_INFO({
+            studentProfile: {
+                ...studentProfile,
+                interest: thirdStep.id,
+            }
+        }))
+
+        register();
+        history.push("/student-account")
+    }
+
+
+    const formik = useFormik({
+        initialValues: {
+            interest: '',
+        },
+        validationSchema: Yup.object({
+        interest: Yup.string()
+            .required('Required'),
+        }),
+        onSubmit: () => {
+            handleNextStep();
+        },
+    });
+    return { formik };
+};  
