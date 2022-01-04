@@ -1,7 +1,8 @@
 import { TextField, Typography, Button } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
+import { useLogin } from "../hooks/useLogin";
 
 const customStyles = makeStyles((theme) => ({
     transparentContainer: {
@@ -69,11 +70,32 @@ const customStyles = makeStyles((theme) => ({
       backgroundColor: "black",
     },
   },
+  error: {
+    margin: 0,
+    color: "red",
+  },
 }));
 
 const Login = () => {
   const customClasses = customStyles();
   const history = useHistory();
+
+  
+  const [accountInfo, setAccountInfo] = useState({
+    email: "",
+    password: "",
+  });
+
+  const { formik } = useLogin(accountInfo);
+
+  useEffect(() => {
+    setAccountInfo(prev => ({
+      ...prev,
+      email: formik.values.email,
+      password: formik.values.password,
+    }))
+  }, [formik.values]);
+
 
   return (
     <div className={customClasses.transparentContainer}>
@@ -95,26 +117,39 @@ const Login = () => {
         label="Email"
         variant="outlined"
         fullWidth={true}
-        className={customClasses.textField}
+        className={customClasses.textField} 
+        value={formik.values.email}
+        onChange={(e) => formik.setFieldValue("email", e.target.value)}
       />
+      {formik.touched.email && formik.errors.email && (
+        <p className={customClasses.error}>{formik.errors.email}</p>
+      )}
+
       <TextField
         label="Password"
         type={"password"}
         variant="outlined"
         fullWidth={true}
         className={customClasses.textField}
+        value={formik.values.password}
+        onChange={(e) => formik.setFieldValue("password", e.target.value)}
       />
-      <div className={customClasses.forgotPasswordContainer}>
+      {formik.touched.password && formik.errors.password && (
+        <p className={customClasses.error}>{formik.errors.password}</p>
+      )}
+
+      {/* <div className={customClasses.forgotPasswordContainer}>
         <Typography variant="h6" className={customClasses.forgotPassword}>
           Forgot your password?
         </Typography>
-      </div>
+      </div> */}
 
       <Button
         variant="contained"
         color="primary"
         className={customClasses.button}
         fullWidth={true}
+        onClick={formik.handleSubmit}
       >
         Next
       </Button>
