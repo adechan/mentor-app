@@ -13,11 +13,9 @@ const useIsEmailUsed = (email) => {
     email: email,
   };
 
-  // TODO: SOMETHING IS BROKEN HERE???
-  const isEmailUsed = () => {
-   request("http://127.0.0.1:8080/graphql", query, variables).then((data) =>
-      console.log(data)
-    );
+  const isEmailUsed = async () => {
+   const data = await request("http://127.0.0.1:8080/graphql", query, variables);
+   return data.is_email_in_use?.result;
   }
  
   return isEmailUsed;

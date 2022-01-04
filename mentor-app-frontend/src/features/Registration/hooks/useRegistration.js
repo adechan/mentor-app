@@ -23,8 +23,6 @@ export const useRegistration = (accountInfo) => {
         history.push("/create-profile");
     }
 
-    // console.log(accountInfo)
-
     const formik = useFormik({
         initialValues: {
             firstName: '',
@@ -42,7 +40,9 @@ export const useRegistration = (accountInfo) => {
             .required('Required'),
         email: Yup.string()
             .email('Invalid email address')
-            // .test('unique-email', 'This email is already taken', isEmailUsed)
+            .test('unique-email', 'This email is already taken',  async () => {
+                return !await isEmailUsed();
+            })
             .required('Required'),
         password: Yup.string()
             .min(5, "Password must be at least 5 characters")

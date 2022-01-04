@@ -9,11 +9,11 @@ from ariadne import graphql_sync
 from ariadne.constants import PLAYGROUND_HTML
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
+from flask_cors import CORS, cross_origin
 from graphql import MiddlewareManager, GraphQLResolveInfo
 from loguru import logger
 from .api import MentorAPI
 from .error import ServerError
-
 
 class MentorServer:
     def __init__(self, db_name: str = 'mentor_app'):
@@ -35,10 +35,12 @@ class MentorServer:
     def _define_routes(self):
         # TODO: remove this route for production
         @self.app.route("/graphql", methods=["GET"])
+        @cross_origin(supports_credentials=True)
         def graphql_playground():
             return PLAYGROUND_HTML, 200
 
         @self.app.route("/graphql", methods=["POST"])
+        @cross_origin(supports_credentials=True)
         def graphql_server():
             data = request.get_json()
             session_id = request.cookies.get('session_id') if 'session_id' in request.cookies else None

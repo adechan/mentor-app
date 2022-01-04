@@ -81,7 +81,6 @@ const Registration = () => {
   const { formik } = useRegistration(accountInfo);
 
   useEffect(() => {
-    console.log(formik.values);
     setAccountInfo(prev => ({
       ...prev,
       firstName: formik.values.firstName,
