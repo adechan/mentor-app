@@ -628,7 +628,7 @@ class GQLMutationResolver(GQLResolver):
     ):
         # Add to account + student + student interests tables
         try:
-            account_id = self.api.register_account(first_name, last_name, email, password)
+            account_id, session_id = self.api.register_account(first_name, last_name, email, password)
 
             # Add to student
             student = self.api.Student(

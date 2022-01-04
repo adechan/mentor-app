@@ -43,7 +43,7 @@ input NewStudentProfile {
     city: String!
     hobbies: String
     statement: String
-    courseId: ID
+    course_id: ID
 }
 
 input NewMentorProfile {

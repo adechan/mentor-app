@@ -19,6 +19,7 @@ class MentorAPI:
         'register_student',
         'register_mentor',
         'is_email_in_use',
+        'get_all_courses',
         'login',
     ]
 

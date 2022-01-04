@@ -39,7 +39,7 @@ mutation getAccountInfo {
     student_email: "adeade@com",
     hobbies: "Those are my hobbies",
     statement: "This is my statement",
-    courseId: 0
+    course_id: 0
   }
   ) {
     result

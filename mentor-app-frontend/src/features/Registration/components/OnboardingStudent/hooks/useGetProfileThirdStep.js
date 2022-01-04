@@ -2,9 +2,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registrationActions } from '../../../../../store/slices/registrationSlice';
 import useRegisterStudent from "./useRegisterStudent";
 
+import { useEffect } from "react";
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
-import { useHistory } from 'react-router-dom';
+import { useHistory} from 'react-router-dom';
 
 export const useGetProfileThirdStep = (thirdStep) => {
 
@@ -22,9 +23,15 @@ export const useGetProfileThirdStep = (thirdStep) => {
             }
         }))
 
-        register();
         history.push("/student-account")
     }
+    
+
+    useEffect(() => {
+        if (studentProfile.interest) {
+            register();
+        }
+    }, [studentProfile.interest])
 
 
     const formik = useFormik({
