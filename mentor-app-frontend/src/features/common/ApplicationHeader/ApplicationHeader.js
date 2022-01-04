@@ -2,6 +2,8 @@ import React from "react";
 import { Typography } from "@material-ui/core";
 import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { accountActions } from "../../../store/slices/accountSlice";
 
 const customStyles = makeStyles((theme) => ({
   headerContainer: {
@@ -29,9 +31,19 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const ApplicationHeader = ({ loggedIn }) => {
+const ApplicationHeader = () => {
   const customClasses = customStyles();
   const history = useHistory();
+
+  const selectedProfileId = useSelector((store) => store.account.selectedProfileId);
+  const dispatch = useDispatch();
+
+  const logOut = () => {
+    dispatch(accountActions.LOG_OUT());
+    history.push("/") 
+
+    // TODO: BE function too?
+  }
 
   return (
     <div className={customClasses.headerContainer}>
@@ -40,11 +52,11 @@ const ApplicationHeader = ({ loggedIn }) => {
         Mentor App
       </Typography>
 
-      {loggedIn && (
+      {selectedProfileId && (
         <Typography
           variant="h5"
           className={customClasses.logOut}
-          onClick={() => history.push("/")}
+          onClick={() => logOut()}
         >
           Log out
         </Typography>

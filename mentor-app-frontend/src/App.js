@@ -42,12 +42,11 @@ const customStyles = makeStyles((theme) => ({
 
 const App = () => {
   const customClasses = customStyles();
-  const [loggedIn, setLoggedIn] = useState(false);
 
   return (
     <div className={customClasses.appContainer}>
       <Router>
-        <ApplicationHeader loggedIn={loggedIn}/>
+        <ApplicationHeader />
         <>
           <Switch>
             <Route

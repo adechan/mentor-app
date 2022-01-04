@@ -9,7 +9,6 @@ export const useSetAccountInfo = () => {
   const history = useHistory();
 
   
-  const profiles = useSelector((store) => store.account.profiles);
 
   const getAccountInfoQuery = gql`
     query getAccountInfo($account_id: ID!) {

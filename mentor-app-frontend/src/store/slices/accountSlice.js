@@ -22,7 +22,11 @@ const accountSlice = createSlice({
     SET_PROFILES: (state, action) => {
       state.profiles = action.payload;
     },
-    LOG_OUT: (state) => {},
+    LOG_OUT: (state) => {
+        return ({
+            ...initialState
+        })
+    },
   },
 });
 
