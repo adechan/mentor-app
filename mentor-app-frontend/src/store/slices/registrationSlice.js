@@ -20,6 +20,11 @@ const registrationSlice = createSlice({
               ...state,
               ...action.payload
           })
+      },
+      RESET: () => {
+        return {
+            ...initialState,
+        }
       }
     },
   });

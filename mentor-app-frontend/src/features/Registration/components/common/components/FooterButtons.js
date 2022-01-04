@@ -27,13 +27,13 @@ const FooterButtons = ({ handleNext }) => {
 
   return (
     <div className={customClasses.subContainer}>
-      <Button
+      {/* <Button
         color="primary"
         className={customClasses.backButton}
         onClick={() => history.goBack()}
       >
         Back
-      </Button>
+      </Button> */}
 
       <Button
         variant="contained"

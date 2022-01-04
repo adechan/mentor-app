@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registrationActions } from '../../../../../store/slices/registrationSlice';
 
 
-const useRegisterStudent = () => {
+const useRegisterMentor = () => {
     const dispatch = useDispatch();
     const registrationInfo = useSelector((store) => store.registration);
 
@@ -19,4 +19,4 @@ const useRegisterStudent = () => {
     return register;
 };
 
-export default useRegisterStudent;
+export default useRegisterMentor;
