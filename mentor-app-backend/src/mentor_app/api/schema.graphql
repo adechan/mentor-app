@@ -220,7 +220,7 @@ type Query {
 
     get_student_awards(student_id: ID!): [StudentAwardResult!]!  # Authenticated
     get_student_interests(student_id: ID!): [StudentInterestResult!]!  # Authenticated
-    get_all_courses: [StudentInterestResult!]! # Authenticated
+    get_all_courses: [StudentInterestResult!]!
 
     get_mentor_reviews(mentor_id: ID!): [MentorReviewResult!]! # Authenticated
     get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!]! # Authenticated - REDO??

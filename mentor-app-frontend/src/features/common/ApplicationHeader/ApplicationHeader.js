@@ -35,9 +35,12 @@ const ApplicationHeader = ({ loggedIn }) => {
 
   return (
     <div className={customClasses.headerContainer}>
-      <Typography variant="h5" className={customClasses.text}>
+      <Typography variant="h5" className={customClasses.text} 
+      onClick={() => history.push("/")}
+      >
         Mentor App
       </Typography>
+
       {loggedIn && (
         <Typography
           variant="h5"

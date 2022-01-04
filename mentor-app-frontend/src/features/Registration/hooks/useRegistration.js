@@ -23,7 +23,7 @@ export const useRegistration = (accountInfo) => {
         history.push("/create-profile");
     }
 
-    console.log(accountInfo)
+    // console.log(accountInfo)
 
     const formik = useFormik({
         initialValues: {
