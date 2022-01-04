@@ -61,7 +61,7 @@ class MentorServer:
                 self.api.schema, data,
                 context_value=request,
                 debug=self.app.debug,
-                middleware=MiddlewareManager(check_auth_middleware)
+                # middleware=MiddlewareManager(check_auth_middleware)
             )
 
             logger.debug(f'{success=} {result=}')

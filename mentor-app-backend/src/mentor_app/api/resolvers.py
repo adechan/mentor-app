@@ -36,6 +36,7 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_account_info(self, _, info, account_id):
         try:
+            # account_id = flask.session['account_id']
             logger.debug(f'{info=}')
             logger.debug(f'{account_id=}')
             # .get when using primary key

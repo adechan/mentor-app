@@ -3,7 +3,10 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   accountId: null,
   selectedProfileId: null,
-  profiles: [],
+  profiles: {
+      mentorId: null,
+      studentId: null,
+  },
 };
 
 const accountSlice = createSlice({
@@ -17,8 +20,9 @@ const accountSlice = createSlice({
       state.selectedProfileId = action.payload;
     },
     SET_PROFILES: (state, action) => {
-        state.profiles = action.payload
+      state.profiles = action.payload;
     },
+    LOG_OUT: (state) => {},
   },
 });
 
