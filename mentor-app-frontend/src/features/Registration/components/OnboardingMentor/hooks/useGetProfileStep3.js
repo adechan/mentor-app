@@ -2,6 +2,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { registrationActions } from '../../../../../store/slices/registrationSlice';
 import useRegisterMentor from "./useRegisterMentor";
 
+import { useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import { useHistory } from 'react-router-dom';
@@ -22,9 +23,14 @@ export const useGetProfileStep3 = (thirdStep) => {
             }
         }))
 
-        register();
-        history.push("/mentor-account")
+        history.push("/login")
     }
+
+    useEffect(() => {
+        if (mentorProfile.quote) {
+            register();
+        }
+    }, [mentorProfile.quote])
 
 
     const formik = useFormik({

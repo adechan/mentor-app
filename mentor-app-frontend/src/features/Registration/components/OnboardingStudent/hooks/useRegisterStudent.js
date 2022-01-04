@@ -1,5 +1,4 @@
 import { request, gql } from "graphql-request";
-import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registrationActions } from "../../../../../store/slices/registrationSlice";
 
@@ -8,7 +7,7 @@ const useRegisterStudent = () => {
   const registrationInfo = useSelector((store) => store.registration);
 
   const mutation = gql`
-    mutation getAccountInfo(
+    mutation registerStudent(
         $first_name: String!, 
         $last_name: String!, 
         $email: String!, 

@@ -435,3 +435,11 @@ mutation getAccountInfo {
     result
   }
 }
+
+LOGIN
+mutation loginAccount {
+  login(email:"ade.chan@com", password:"adeade") {
+    result
+    error
+  }
+}

@@ -18,6 +18,7 @@ from .error import ServerError
 class MentorServer:
     def __init__(self, db_name: str = 'mentor_app'):
         self.app = Flask(db_name)
+        CORS(self.app, supports_credentials=True)
         self.app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.getcwd()}/{db_name}.db"
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         self.app.config['SECRET_KEY'] = os.urandom(32).hex()
