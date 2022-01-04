@@ -44,7 +44,7 @@ const customStyles = makeStyles((theme) => ({
 
 const App = () => {
   const customClasses = customStyles();
-  
+
   const graphQLClient = new GraphQLClient("http://localhost:8080/graphql", {
     credentials: "include",
     mode: "cors",
@@ -53,7 +53,7 @@ const App = () => {
   return (
     <div className={customClasses.appContainer}>
       <Router>
-        <ApplicationHeader/>
+        <ApplicationHeader graphQLClient={graphQLClient}/>
         <>
           <Switch>
             <Route

@@ -1033,6 +1033,14 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
+    def resolve_mutation_logout(self, *args):
+        if len(flask.session.keys()) == 0:
+            return dict(error='Not logged in')
+
+        flask.session.clear()
+        return dict(result=True)
+
+    @convert_kwargs_to_snake_case
     def resolve_mutation_create_mentor_profile(self, _,
         info, account_id, profile
     ):

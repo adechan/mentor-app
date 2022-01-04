@@ -4,6 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { accountActions } from "../../../store/slices/accountSlice";
+import { useLogout } from "./useLogout";
 
 const customStyles = makeStyles((theme) => ({
   headerContainer: {
@@ -31,18 +32,19 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const ApplicationHeader = () => {
+const ApplicationHeader = ({graphQLClient}) => {
   const customClasses = customStyles();
   const history = useHistory();
 
   const selectedProfileId = useSelector((store) => store.account.selectedProfileId);
   const dispatch = useDispatch();
+  const handleLogout = useLogout(graphQLClient)
 
   const logOut = () => {
     dispatch(accountActions.LOG_OUT());
-    history.push("/") 
+    handleLogout();
 
-    // TODO: BE function too?
+    history.push("/") 
   }
 
   return (
