@@ -59,20 +59,13 @@ const useRegisterStudent = () => {
   };
 
   const register = async () => {
-    console.log("register hereer");
-    console.log('profile ', registrationInfo.studentProfile.interest)
-    console.log('variables ', variables)
-    // const data = await request(
-    //   "http://127.0.0.1:8080/graphql",
-    //   mutation,
-    //   variables
-    // );
+    await request(
+      "http://127.0.0.1:8080/graphql",
+      mutation,
+      variables
+    );
 
-    
-    // console.log(data);
-
-    // + add stuff into the Account slice maybe
-    // + reset Registration slice
+    dispatch(registrationActions.RESET())
   };
 
   return register;

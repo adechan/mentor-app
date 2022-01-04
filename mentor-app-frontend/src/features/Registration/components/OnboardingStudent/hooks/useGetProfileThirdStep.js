@@ -23,7 +23,7 @@ export const useGetProfileThirdStep = (thirdStep) => {
             }
         }))
 
-        history.push("/student-account")
+        history.push("/login")
     }
     
 
