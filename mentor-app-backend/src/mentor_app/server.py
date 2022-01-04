@@ -22,6 +22,7 @@ class MentorServer:
         self.app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.getcwd()}/{db_name}.db"
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         self.app.config['SECRET_KEY'] = os.urandom(32).hex()
+        # self.app.config['SESSION_COOKIE_SECURE'] = True
         logger.debug(f'database uri: {self.app.config["SQLALCHEMY_DATABASE_URI"]}')
 
         self.db = SQLAlchemy(self.app)
@@ -44,7 +45,8 @@ class MentorServer:
         @cross_origin(supports_credentials=True)
         def graphql_server():
             data = request.get_json()
-            session_id = request.cookies.get('session_id') if 'session_id' in request.cookies else None
+            session_id = flask.session['id'] if 'id' in flask.session else None
+            logger.debug(f'{flask.session=}')
 
             def check_auth_middleware(resolver, obj, info, **kwargs):
                 logger.debug(f'{info.path=}')
@@ -61,7 +63,7 @@ class MentorServer:
                 self.api.schema, data,
                 context_value=request,
                 debug=self.app.debug,
-                # middleware=MiddlewareManager(check_auth_middleware)
+                middleware=MiddlewareManager(check_auth_middleware)
             )
 
             logger.debug(f'{success=} {result=}')

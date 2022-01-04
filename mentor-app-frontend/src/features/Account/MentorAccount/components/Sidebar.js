@@ -3,6 +3,7 @@ import React from "react";
 import SidebarItem from "../../common/SidebarItem";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 const customStyles = makeStyles((theme) => ({
   container: {
@@ -23,7 +24,8 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const history = useHistory();
 
-  const [hasStudentAccount, setHasStudentAccount] = useState(true);
+  
+  const profiles = useSelector((store) => store.account.profiles);
 
   return (
     <div className={customClasses.container}>
@@ -68,7 +70,7 @@ const Sidebar = () => {
         selected={selected}
       />
 
-      {hasStudentAccount ? (
+      {profiles.studentId ? (
         <SidebarItem
           itemTitle="Switch to student"
           onClick={() => {
@@ -79,7 +81,7 @@ const Sidebar = () => {
         />
       ) : (
         <SidebarItem
-          itemTitle="Create a new profile"
+          itemTitle="Create student profile"
           onClick={() => {
             history.push("/create-profile-student/basic");
             setSelected("Create a new profile");

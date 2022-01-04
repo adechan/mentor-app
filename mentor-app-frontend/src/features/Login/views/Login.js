@@ -76,7 +76,7 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const Login = () => {
+const Login = ({ graphQLClient }) => {
   const customClasses = customStyles();
   const history = useHistory();
 
@@ -86,7 +86,7 @@ const Login = () => {
     password: "",
   });
 
-  const { formik } = useLogin(accountInfo);
+  const { formik } = useLogin(accountInfo, graphQLClient);
 
   useEffect(() => {
     setAccountInfo(prev => ({

@@ -1,5 +1,6 @@
 import datetime
 
+import flask
 from ariadne import convert_kwargs_to_snake_case, ObjectType
 from loguru import logger
 from mentor_app.error import ServerError, InvalidLogin
@@ -34,9 +35,9 @@ class GQLQueryResolver(GQLResolver):
         super().__init__(db, api, 'Query')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_account_info(self, _, info, account_id):
+    def resolve_query_account_info(self, _, info):
         try:
-            # account_id = flask.session['account_id']
+            account_id = flask.session['account_id']
             logger.debug(f'{info=}')
             logger.debug(f'{account_id=}')
             # .get when using primary key

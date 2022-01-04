@@ -239,7 +239,7 @@ type Query {
 
     get_mentor_details(mentor_id: ID!): MentorDetailsResult! # Authenticated
 
-    account_info(account_id: ID!): Account! # Authenticated
+    account_info: Account! # Authenticated
     student_info(student_id: ID!): StudentProfile!  # Authenticated?
     mentor_info(mentor_id: ID!): MentorProfile!  # Authenticated?
 }

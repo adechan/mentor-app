@@ -438,7 +438,7 @@ mutation getAccountInfo {
 
 LOGIN
 mutation loginAccount {
-  login(email:"ade.chan@com", password:"adeade") {
+  login(email:"mentor4@c.c", password:"qawsed") {
     result
     error
   }

@@ -1,18 +1,16 @@
-import { useDispatch, useSelector } from "react-redux";
-import { request, gql } from "graphql-request";
+import { useDispatch,} from "react-redux";
+import { gql } from "graphql-request";
 
 import { useHistory } from "react-router-dom";
 import { accountActions } from "../../../store/slices/accountSlice";
 
-export const useSetAccountInfo = () => {
+export const useSetAccountInfo = (graphQLClient) => {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  
-
   const getAccountInfoQuery = gql`
-    query getAccountInfo($account_id: ID!) {
-      account_info(account_id: $account_id) {
+    query getAccountInfo {
+      account_info {
         account_id
         mentor_id
         student_id
@@ -24,21 +22,15 @@ export const useSetAccountInfo = () => {
   `;
 
   const setAccountInfo = async () => {
-    // HARD CODED - ACCOUNT ID
-    const hardCodedAccountId = 12;
-    dispatch(accountActions.SET_ACCOUNT_ID(hardCodedAccountId));
 
-    const accountInfoVariables = {
-        account_id: hardCodedAccountId,
-      };
-
-      const data = await request(
-        "http://127.0.0.1:8080/graphql",
+      const data = await graphQLClient.request(
         getAccountInfoQuery,
-        accountInfoVariables
       );
 
       const result = data?.account_info;
+
+       dispatch(accountActions.SET_ACCOUNT_ID(result.account_id));
+
     
       let profiles = []
       if (result.student_id) {
@@ -68,8 +60,6 @@ export const useSetAccountInfo = () => {
         history.push("/mentor-account")
         return;
       }
-
-      console.log("> ", data)
   };
 
   return setAccountInfo;

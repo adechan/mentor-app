@@ -1,17 +1,12 @@
-import { useDispatch } from "react-redux";
-import { request, gql } from "graphql-request";
+import { gql,  } from "graphql-request";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import { useHistory } from "react-router-dom";
-import { accountActions } from "../../../store/slices/accountSlice";
 import { useSetAccountInfo } from "./useSetAccountInfo";
 
-export const useLogin = (accountInfo) => {
-  const dispatch = useDispatch();
-  const history = useHistory();
+export const useLogin = (accountInfo, graphQLClient) => {
 
-  const setAccountInfo = useSetAccountInfo();
+  const setAccountInfo = useSetAccountInfo(graphQLClient);
 
   const mutation = gql`
     mutation loginAccount($email: String!, $password: String!) {
@@ -28,17 +23,8 @@ export const useLogin = (accountInfo) => {
   };
 
   const handleLogin = async () => {
-    const data = await request(
-      "http://127.0.0.1:8080/graphql",
-      mutation,
-      variables
-    );
-
-    // PUTS STUFF INTO THE ACCOUNT SLICE
-    // history.push("/create-profile");
-
+     await graphQLClient.request(mutation, variables);
     setAccountInfo();
-    console.log(data);
   };
 
   const formik = useFormik({

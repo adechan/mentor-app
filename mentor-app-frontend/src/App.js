@@ -11,6 +11,8 @@ import Login from "./features/Login/views/Login"
 import { useState } from "react";
 import MentorAccount from "./features/Account/MentorAccount/views/MentorAccount";
 import OnboardingMentor from "./features/Registration/components/OnboardingMentor/views/OnboardingMentor";
+import { GraphQLClient } from "graphql-request";
+
 
 const customStyles = makeStyles((theme) => ({
   appContainer: {
@@ -42,11 +44,16 @@ const customStyles = makeStyles((theme) => ({
 
 const App = () => {
   const customClasses = customStyles();
+  
+  const graphQLClient = new GraphQLClient("http://localhost:8080/graphql", {
+    credentials: "include",
+    mode: "cors",
+  });
 
   return (
     <div className={customClasses.appContainer}>
       <Router>
-        <ApplicationHeader />
+        <ApplicationHeader/>
         <>
           <Switch>
             <Route
@@ -67,7 +74,7 @@ const App = () => {
               component={() => <div>Mentor Profile </div>}
             />
 
-            <Route path="/login" component={() => <Login />} />
+            <Route path="/login" component={() => <Login graphQLClient={graphQLClient}/>} />
             <Route path="/registration" component={() => <Registration />} />
             <Route path="/create-profile" component={() => <CreateProfile />} />
             <Route
