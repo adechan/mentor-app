@@ -101,7 +101,7 @@ const Login = ({ graphQLClient }) => {
     <div className={customClasses.transparentContainer}>
       <div className={customClasses.containerHeader}>
         <Typography variant="h5" className={customClasses.title}>
-          Join Mentor App
+          Login
         </Typography>
 
         <Typography

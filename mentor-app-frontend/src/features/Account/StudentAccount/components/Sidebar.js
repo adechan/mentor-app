@@ -92,7 +92,7 @@ const Sidebar = () => {
         />
       ) : (
         <SidebarItem
-          itemTitle="Create student profile"
+          itemTitle="Create mentor profile"
           onClick={() => {
             history.push("/student-account/create-mentor/basic");
             setSelected("Create a new profile");

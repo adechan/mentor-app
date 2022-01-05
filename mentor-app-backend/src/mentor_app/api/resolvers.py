@@ -323,7 +323,7 @@ class GQLQueryResolver(GQLResolver):
                         }
                         result.append(item)
 
-            return list(set(result))
+            return result
 
         except Exception as e:
             logger.exception(e)
