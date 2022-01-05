@@ -57,8 +57,6 @@ const useGetDataForAppointment = (graphQLClient, mentorId, courseId) => {
         availableHours: result.available_hours, 
     })
 
-    console.log(result);
-
   };
 
   useEffect(() => {
