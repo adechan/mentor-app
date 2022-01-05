@@ -3,6 +3,7 @@ import React from 'react'
 import { Switch, Route } from "react-router-dom";
 import Appointments from './Appointments/Appointments';
 import Awards from './Awards/Awards';
+import OnboardingMentor from './CreateMentorProfile/views/OnboardingMentor';
 import Interests from './Interests/Interests/Interests';
 import Mentors from './Mentors/Mentors';
 import MentorMoreInfo from './Recommendations/MentorMoreInfo';
@@ -34,6 +35,7 @@ const Container = ({graphQLClient}) => {
                 <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo />}/>
                 <Route path="/student-account/recommendations" component={() => <Recommendations />}/>
                 <Route path="/student-account/settings" component={() => <Settings />}/>
+                <Route path="/student-account/create-mentor" component={() => <OnboardingMentor graphQLClient={graphQLClient}/>}/>
             </Switch>
 
         </div>
