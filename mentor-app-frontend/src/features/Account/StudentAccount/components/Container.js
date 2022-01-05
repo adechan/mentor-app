@@ -22,12 +22,12 @@ const customStyles = makeStyles((theme) => ({
     }
 }))
 
-const Container = () => {
+const Container = ({graphQLClient}) => {
     const customClasses = customStyles();
     return (
         <div className={customClasses.scrollableContaienr}>
             <Switch>
-                <Route path="/student-account/interests" component={() => <Interests />}/>
+                <Route path="/student-account/interests" component={() => <Interests graphQLClient={graphQLClient}/>}/>
                 <Route path="/student-account/awards" component={() => <Awards />}/>
                 <Route path="/student-account/appointments" component={() => <Appointments />}/>
                 <Route path="/student-account/my-mentors" component={() => <Mentors />}/>

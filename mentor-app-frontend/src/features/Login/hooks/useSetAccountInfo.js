@@ -33,31 +33,26 @@ export const useSetAccountInfo = (graphQLClient) => {
 
     
       let profiles = []
-      if (result.student_id) {
+
+      if (result.student_id || result.mentor_id) {
         dispatch(accountActions.SET_PROFILES({
             ...profiles,
-            studentId: result.student_id    
+            studentId: result?.student_id || null,
+            mentorId: result?.mentor_id || null 
         }));
       }
 
-      if (result.mentor_id) {
-        dispatch(accountActions.SET_PROFILES({
-            ...profiles,
-            mentorId: result.mentor_id    
-        }));
-      }
-     
       if (result.student_id) {
         dispatch(accountActions.SET_SELECTED_PROFILE_ID(result?.student_id));
 
-        history.push("/student-account")
+        history.push("/student-account/awards")
         return;
       } 
 
       if (result.mentor_id) {
         dispatch(accountActions.SET_SELECTED_PROFILE_ID(result?.mentor_id));
 
-        history.push("/mentor-account")
+        history.push("/mentor-account/reviews")
         return;
       }
   };

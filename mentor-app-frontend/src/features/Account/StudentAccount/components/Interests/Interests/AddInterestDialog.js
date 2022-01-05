@@ -9,6 +9,8 @@ import {
   TextField,
 } from "@material-ui/core";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useState } from "react";
+import useAddStudentInterst from "../hooks/useAddStudentInterest";
 
 const customStyle = makeStyles(() => ({
   container: {
@@ -22,30 +24,47 @@ const customStyle = makeStyles(() => ({
   },
 }));
 
-const AddInterestDialog = ({ openDialog, handleClose, possibleInterests }) => {
+const AddInterestDialog = ({ openDialog, handleClose, possibleInterests, graphQLClient,
+interests,
+setInterests }) => {
+  const [chosenInterest, setChosenInterest] = useState({
+    courseId: "",
+    courseTitle: "",
+  });
+
+  const handleAddInterest = useAddStudentInterst(graphQLClient,
+    chosenInterest,
+    setChosenInterest,
+    handleClose,
+    interests,
+    setInterests
+    )
+
   const customClasses = customStyle();
   return (
-    <Dialog
-      open={openDialog}
-      onClose={handleClose}
-    >
+    <Dialog open={openDialog} onClose={handleClose}>
       <DialogTitle className={customClasses.title}>
         Do you want to pick another interest?
       </DialogTitle>
-      <DialogContent
-      className={customClasses.container}
-      >
+      <DialogContent className={customClasses.container}>
         <Autocomplete
           disablePortal
           id="combo-box-demo"
           options={possibleInterests}
-          sx={{ width: 'auto' }}
+          onChange={(event, value) => {
+            setChosenInterest((prev) => ({
+              ...prev,
+              courseId: value !== null ? value.id : null,
+              courseTitle: value !== null ? value.label : null,
+            }));
+          }} // prints the selected value
+          sx={{ width: "auto" }}
           renderInput={(params) => <TextField {...params} label="Interest" />}
         />
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Save</Button>
+        <Button onClick={handleAddInterest}>Save</Button>
       </DialogActions>
     </Dialog>
   );

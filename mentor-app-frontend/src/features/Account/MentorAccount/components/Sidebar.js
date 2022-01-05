@@ -3,7 +3,8 @@ import React from "react";
 import SidebarItem from "../../common/SidebarItem";
 import { useState } from "react";
 import { useHistory } from "react-router-dom";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import { accountActions } from "../../../../store/slices/accountSlice";
 
 const customStyles = makeStyles((theme) => ({
   container: {
@@ -24,7 +25,7 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const history = useHistory();
 
-  
+  const  dispatch = useDispatch();
   const profiles = useSelector((store) => store.account.profiles);
 
   return (
@@ -76,6 +77,7 @@ const Sidebar = () => {
           onClick={() => {
             history.push("/student-account");
             setSelected("Switch profile");
+            dispatch(accountActions.SET_SELECTED_PROFILE_ID(profiles?.studentId));
           }}
           selected={selected}
         />
@@ -83,7 +85,7 @@ const Sidebar = () => {
         <SidebarItem
           itemTitle="Create student profile"
           onClick={() => {
-            history.push("/create-profile-student/basic");
+            history.push("/mentor-account/create-student/basic");
             setSelected("Create a new profile");
           }}
           selected={selected}

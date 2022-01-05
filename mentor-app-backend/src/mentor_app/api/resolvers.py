@@ -1027,7 +1027,16 @@ class GQLMutationResolver(GQLResolver):
                 .update({"student_id": student.student_id})
             self.db.session.commit()
 
-            return dict(result=True)
+            # Add in Student interests
+            interest = self.api.StudentInterests(
+                course_id=profile["course_id"],
+                student_id=student.student_id
+            )
+
+            self.db.session.add(interest)
+            self.db.session.commit()
+
+            return dict(result=student.student_id)
 
         except Exception as e:
             logger.exception(e)
@@ -1066,7 +1075,7 @@ class GQLMutationResolver(GQLResolver):
                 .update({"mentor_id": mentor.mentor_id})
             self.db.session.commit()
 
-            return dict(result=True)
+            return dict(result=mentor.mentor_id)
 
         except Exception as e:
             logger.exception(e)

@@ -6,6 +6,7 @@ import Mentoring from './Mentoring/Mentoring';
 import Settings from "./Settings/Settings"
 import Appointments from './Appointments/Appointments';
 import Students from './Students/Students';
+import OnboardingStudent from '../components/CreateStudentProfile/views/OnboardingStudent';
 
 const customStyles = makeStyles((theme) => ({
     scrollableContaienr: {
@@ -30,6 +31,7 @@ const Container = ({ graphQLClient }) => {
                 <Route path="/mentor-account/settings" component={() => <Settings />}/>
                 <Route path="/mentor-account/appointments" component={() => <Appointments />}/>
                 <Route path="/mentor-account/my-students" component={() => <Students />}/>
+                <Route path="/mentor-account/create-student" component={() => <OnboardingStudent graphQLClient={graphQLClient}/>}/>
             </Switch>
 
         </div>

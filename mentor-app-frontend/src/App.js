@@ -58,7 +58,7 @@ const App = () => {
           <Switch>
             <Route
               path="/student-account"
-              component={() => <StudentAccount />}
+              component={() => <StudentAccount graphQLClient={graphQLClient}/>}
             />
             <Route
               path="/mentor-account"
