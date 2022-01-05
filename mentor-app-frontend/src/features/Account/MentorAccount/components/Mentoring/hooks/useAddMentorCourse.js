@@ -1,9 +1,15 @@
 import { request, gql } from "graphql-request";
 import { useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { useEffect, useState, } from "react";
 
-const useAddMentorCourse = (graphQLClient, info,
-    setAddMentorCourseValues, handleClose) => {
+const useAddMentorCourse = (
+  graphQLClient,
+  info,
+  setAddMentorCourseValues,
+  handleClose,
+  mentoringSubjects,
+  setMentoringSubjects
+) => {
   const account = useSelector((store) => store.account);
   const [mentorId, setMentorId] = useState("");
 
@@ -43,12 +49,22 @@ const useAddMentorCourse = (graphQLClient, info,
     });
 
     setAddMentorCourseValues({
-        courseId: "",
-        price: 0,
-        day: "",
-        hours: [],
-    })
+      courseId: "",
+      price: 0,
+      day: "",
+      hours: [],
+    });
     handleClose();
+
+    const courses = [...mentoringSubjects, {
+        id: info.courseId,
+        title: info.courseTitle,
+        day: info.day,
+        price: info.price,
+        availableHours: info.hours,
+    }]
+
+    setMentoringSubjects(courses);
   };
 
   return handleAddCourse;

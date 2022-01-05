@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import AddMentoringSubject from "./AddMentoringSubject";
 import MentoringCard from "./MentoringCard";
 import useGetCourses from "./hooks/useGetCourses";
+import useGetAllMentorCourses from "./hooks/useGetAllMentorCourses";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -42,14 +43,7 @@ const Mentoring = ({ graphQLClient }) => {
   const customClasses = customStyles();
   const [openDialog, setOpenDialog] = useState(false);
 
-  const mentoringSubjects = [
-    {
-      title: "Math",
-      price: 200,
-      availableHours: [8, 9, 12, 13],
-    },
-  ];
-
+  const {mentoringSubjects, setMentoringSubjects} = useGetAllMentorCourses(graphQLClient);
   const possibleSubjects = useGetCourses();
 
   return (
@@ -59,6 +53,8 @@ const Mentoring = ({ graphQLClient }) => {
         handleClose={() => setOpenDialog(false)}
         possibleSubjects={possibleSubjects}
         graphQLClient={graphQLClient}
+        mentoringSubjects={mentoringSubjects}
+        setMentoringSubjects={setMentoringSubjects}
       />
       <div className={customClasses.container}>
         <div className={customClasses.row}>
@@ -77,8 +73,10 @@ const Mentoring = ({ graphQLClient }) => {
         <div className={customClasses.interestContainer}>
           {mentoringSubjects.map((mentoringSubject) => (
             <MentoringCard
+              setMentoringSubjects={setMentoringSubjects}
+              mentoringSubjects={mentoringSubjects}
               mentoringSubject={mentoringSubject}
-              onClick={() => console.log("clicking")}
+              graphQLClient={graphQLClient}
             />
           ))}
         </div>

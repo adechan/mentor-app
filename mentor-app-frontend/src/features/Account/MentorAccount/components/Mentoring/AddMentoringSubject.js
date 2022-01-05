@@ -41,30 +41,35 @@ const customStyle = makeStyles(() => ({
   },
 }));
 
-const AddMentoringSubject = ({ openDialog, handleClose, possibleSubjects, graphQLClient }) => {
+const AddMentoringSubject = ({
+  openDialog,
+  handleClose,
+  possibleSubjects,
+  graphQLClient,
+  mentoringSubjects,
+  setMentoringSubjects,
+}) => {
   const customClasses = customStyle();
 
   const [addMentorCourseValues, setAddMentorCourseValues] = useState({
     courseId: "",
+    courseTitle: "",
     price: 0,
     day: "",
     hours: [],
   });
-  
+
   const [hours, setHours] = useState({});
   useEffect(() => {
     const hours = Array.from(Array(24).keys());
 
-    const hoursObj = hours.reduce(function(result, item, index, array) {
-      result[index] = false; 
+    const hoursObj = hours.reduce(function (result, item, index, array) {
+      result[index] = false;
       return result;
-    }, {})
+    }, {});
 
-    setHours(hoursObj)
-  }, [])
-
-
-  console.log(hours);
+    setHours(hoursObj);
+  }, []);
 
   const handleChange = (event) => {
     setHours({
@@ -82,13 +87,20 @@ const AddMentoringSubject = ({ openDialog, handleClose, possibleSubjects, graphQ
       }
     }
 
-    setAddMentorCourseValues(prev => ({
+    setAddMentorCourseValues((prev) => ({
       ...prev,
-      hours: checkedHours
-    }))
+      hours: checkedHours,
+    }));
   }, [hours]);
 
-  const handleAddCourse = useAddMentorCourse(graphQLClient, addMentorCourseValues, setAddMentorCourseValues, handleClose)
+  const handleAddCourse = useAddMentorCourse(
+    graphQLClient,
+    addMentorCourseValues,
+    setAddMentorCourseValues,
+    handleClose,
+    mentoringSubjects,
+    setMentoringSubjects
+  );
 
   return (
     <Dialog open={openDialog} onClose={handleClose}>
@@ -104,6 +116,7 @@ const AddMentoringSubject = ({ openDialog, handleClose, possibleSubjects, graphQ
             setAddMentorCourseValues((prev) => ({
               ...prev,
               courseId: value !== null ? value.id : null,
+              courseTitle: value !== null ? value.label: null,
             }));
           }} // prints the selected value
           sx={{ width: "auto" }}
@@ -326,15 +339,19 @@ const AddMentoringSubject = ({ openDialog, handleClose, possibleSubjects, graphQ
         </FormGroup>
       </DialogContent>
       <DialogActions>
-        <Button onClick={() => {
-          setAddMentorCourseValues({
-            courseId: "",
-            price: 0,
-            day: "",
-            hours: [], 
-          })
-          handleClose()
-        }}>Cancel</Button>
+        <Button
+          onClick={() => {
+            setAddMentorCourseValues({
+              courseId: "",
+              price: 0,
+              day: "",
+              hours: [],
+            });
+            handleClose();
+          }}
+        >
+          Cancel
+        </Button>
         <Button onClick={handleAddCourse}>Save</Button>
       </DialogActions>
     </Dialog>

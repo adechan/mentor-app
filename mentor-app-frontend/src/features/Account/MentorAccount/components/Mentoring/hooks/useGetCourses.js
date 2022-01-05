@@ -17,7 +17,7 @@ const useGetCourses = () => {
     const data = await request("http://127.0.0.1:8080/graphql", query);
 
     const coursesData = data?.get_all_courses;
-    if (!coursesData.length) {
+    if (coursesData && !coursesData.length) {
       setCourses([]);
     }
 
