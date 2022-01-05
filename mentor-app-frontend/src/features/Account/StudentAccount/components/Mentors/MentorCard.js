@@ -55,10 +55,10 @@ const MentorCard = ({ mentor }) => {
       <div className={customClasses.container}>
         <div className={customClasses.subContainer}>
           <Typography variant="h5" className={customClasses.title}>
-            <b>{mentor.name}</b>
+            <b>{mentor.mentorName}</b>
           </Typography>
           <Typography variant="h5" className={customClasses.title}>
-            {mentor.subject}
+            {mentor.courseTitle}
           </Typography>
         </div>
 
@@ -78,7 +78,7 @@ const MentorCard = ({ mentor }) => {
           color="primary"
           onClick={() => setIsOpenReviewDialog(true)}
         >
-          {mentor.review !== null ? "Edit Review" : "Review"}
+          {mentor.review ? "Edit Review" : "Review"}
         </Button>
       </div>
     </>

@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import MentorCard from "./MentorCard"
+import useGetAllMentors from "./hooks/useGetAllMentors";
+import MentorCard from "./MentorCard";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -34,29 +35,11 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Mentors = () => {
+const Mentors = ({ graphQLClient }) => {
   const customClasses = customStyles();
 
-  const mentors = [{
-      name: 'Mentor1',
-      subject: 'Math',
-      review: 'He was a nice mentor!'
-  },
-  {
-    name: 'Mentor2',
-    subject: 'Math',
-    review: null
-},
-{
-    name: 'Mentor2',
-    subject: 'Math',
-    review: null
-},
-{
-    name: 'Mentor2',
-    subject: 'Math',
-    review: null
-}];
+  const {allMentors, setAllMentors} = useGetAllMentors(graphQLClient);
+
   return (
     <div className={customClasses.container}>
       <div className={customClasses.row}>
@@ -66,8 +49,8 @@ const Mentors = () => {
       </div>
 
       <div className={customClasses.interestContainer}>
-        {mentors.map((mentor) => (
-          <MentorCard mentor={mentor}/>
+        {allMentors.map((mentor) => (
+          <MentorCard mentor={mentor} />
         ))}
       </div>
     </div>

@@ -321,7 +321,9 @@ class GQLQueryResolver(GQLResolver):
                             "course": courseInfo.title,
                             "price": mentorRow.price
                         }
-                        result.append(item)
+
+                        if item not in result:
+                            result.append(item)
 
             return result
 
@@ -507,7 +509,8 @@ class GQLQueryResolver(GQLResolver):
                     "review": review
                 }
 
-                result.append(item)
+                if item not in result:
+                    result.append(item)
 
             return result
 
@@ -542,7 +545,8 @@ class GQLQueryResolver(GQLResolver):
                     "course_title": course,
                 }
 
-                result.append(item)
+                if item not in result:
+                    result.append(item)
 
             return result
 
