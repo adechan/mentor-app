@@ -1,6 +1,8 @@
 import { makeStyles, Typography, TextField } from "@material-ui/core";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import FooterButtons from "../../../StudentAccount/components/Settings/FooterButtons";
+import useGetMentorSettingsInfo from "./hooks/useGetMentorSettingsInfo";
+import useUpdateMentorSettingsInfo from "./hooks/useUpdateMentorSettingsInfo";
 
 const customStyles = makeStyles((theme) => ({
   title: {
@@ -43,18 +45,51 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const Settings = () => {
+const Settings = ({graphQLClient}) => {
   const customClasses = customStyles();
+  const initialSettings = useGetMentorSettingsInfo(graphQLClient);
+
   const [accountInfo, setAccountInfo] = useState({
-    firstName: "Andreea",
-    lastName: "Rindasu",
-    email: "ade.enter@yagoo.com",
-    country: "Romania",
-    city: "Bacau",
-    description: "I am a very cute cat",
-    hobbies: "painting, drawing",
-    quote: "This is my quote",
+    firstName: "",
+    lastName: "",
+    email: "",
+    country: "",
+    city: "",
+    description: "",
+    hobbies: "",
+    quote: "",
   });
+
+  useEffect(() => {
+   if (initialSettings) {
+     setAccountInfo({
+      firstName: initialSettings.firstName,
+      lastName: initialSettings.lastName,
+      email: initialSettings.email,
+      country: initialSettings.country,
+      city: initialSettings.city,
+      description: initialSettings.description,
+      hobbies: initialSettings.hobbies,
+      quote: initialSettings.quote,
+     })
+   }
+  }, [initialSettings])
+
+
+  const updateMentorSettings = useUpdateMentorSettingsInfo(graphQLClient, accountInfo)
+
+  const cancelUpdateMentorSettings = () => {
+      setAccountInfo({
+       firstName: initialSettings.firstName,
+       lastName: initialSettings.lastName,
+       email: initialSettings.email,
+       country: initialSettings.country,
+       city: initialSettings.city,
+       description: initialSettings.description,
+       hobbies: initialSettings.hobbies,
+       quote: initialSettings.quote,
+      })
+  }
 
   return (
     <div className={customClasses.container}>
@@ -92,7 +127,7 @@ const Settings = () => {
           className={customClasses.textField}
         />
         <TextField
-          label="Email"
+          label="Mentor Email"
           variant="outlined"
           value={accountInfo.email}
           onChange={(e) =>
@@ -180,8 +215,8 @@ const Settings = () => {
         />
 
         <FooterButtons
-          handleCancel={() => console.log("cancel")}
-          handleSave={() => console.log("save")}
+          handleCancel={cancelUpdateMentorSettings}
+          handleSave={updateMentorSettings}
         />
       </div>
     </div>
