@@ -2,6 +2,7 @@ import { makeStyles, Typography } from "@material-ui/core";
 import React, { useState } from "react";
 import AddMentoringSubject from "./AddMentoringSubject";
 import MentoringCard from "./MentoringCard";
+import useGetCourses from "./hooks/useGetCourses";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -37,16 +38,19 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Mentoring = () => {
+const Mentoring = ({ graphQLClient }) => {
   const customClasses = customStyles();
   const [openDialog, setOpenDialog] = useState(false);
 
-  const mentoringSubjects = [{
-    title: 'Math',
-    price: 200,
-    availableHours: [8, 9, 12, 13]
-  }, ];
-  const possibleSubjects = ["painting", "sing"];
+  const mentoringSubjects = [
+    {
+      title: "Math",
+      price: 200,
+      availableHours: [8, 9, 12, 13],
+    },
+  ];
+
+  const possibleSubjects = useGetCourses();
 
   return (
     <>
@@ -54,6 +58,7 @@ const Mentoring = () => {
         openDialog={openDialog}
         handleClose={() => setOpenDialog(false)}
         possibleSubjects={possibleSubjects}
+        graphQLClient={graphQLClient}
       />
       <div className={customClasses.container}>
         <div className={customClasses.row}>
@@ -71,8 +76,11 @@ const Mentoring = () => {
 
         <div className={customClasses.interestContainer}>
           {mentoringSubjects.map((mentoringSubject) => (
-          <MentoringCard mentoringSubject={mentoringSubject} onClick={() => console.log('clicking')} />
-        ))}
+            <MentoringCard
+              mentoringSubject={mentoringSubject}
+              onClick={() => console.log("clicking")}
+            />
+          ))}
         </div>
       </div>
     </>

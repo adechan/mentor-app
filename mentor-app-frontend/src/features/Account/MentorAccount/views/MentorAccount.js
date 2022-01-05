@@ -12,12 +12,12 @@ const customStyles = makeStyles((theme) => ({
     }
 }))
 
-const MentorAccount = () => {
+const MentorAccount = ({ graphQLClient }) => {
     const customClasses = customStyles();
     return (
         <div className={customClasses.container}>
             <Sidebar />
-            <Container />
+            <Container graphQLClient={graphQLClient}/>
         </div>
     )
 }

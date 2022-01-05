@@ -62,7 +62,7 @@ const App = () => {
             />
             <Route
               path="/mentor-account"
-              component={() => <MentorAccount />}
+              component={() => <MentorAccount graphQLClient={graphQLClient}/>}
             />
 
             <Route

@@ -20,13 +20,13 @@ const customStyles = makeStyles((theme) => ({
     }
 }))
 
-const Container = () => {
+const Container = ({ graphQLClient }) => {
     const customClasses = customStyles();
     return (
         <div className={customClasses.scrollableContaienr}>
             <Switch>
                 <Route path="/mentor-account/reviews" component={() => <Reviews />} />
-                <Route path="/mentor-account/mentoring" component={() => <Mentoring />} />
+                <Route path="/mentor-account/mentoring" component={() => <Mentoring graphQLClient={graphQLClient}/>} />
                 <Route path="/mentor-account/settings" component={() => <Settings />}/>
                 <Route path="/mentor-account/appointments" component={() => <Appointments />}/>
                 <Route path="/mentor-account/my-students" component={() => <Students />}/>
