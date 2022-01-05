@@ -7,7 +7,9 @@ const useCreateAppointment = (
   graphQLClient,
   mentorId,
   courseId,
-  selectedHourId
+  selectedHourId,
+  setSelectedHourId,
+  handleClose,
 ) => {
   const profiles = useSelector((store) => store.account.profiles);
   const selectedProfileId = useSelector(
@@ -53,6 +55,9 @@ const useCreateAppointment = (
     };
 
     await graphQLClient.request(mutation, variables);
+
+    setSelectedHourId('');
+    handleClose();
   };
 
   return createAppointment;

@@ -56,7 +56,9 @@ const CreateAppointment = ({
     graphQLClient,
     mentorId,
     courseId,
-    selectedHourId
+    selectedHourId,
+    setSelectedHourId,
+    handleClose,
   )
 
   return (
