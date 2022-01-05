@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import AppointmentCard from "./AppointmentCard";
+import useGetAllAppointments from "./hooks/useGetAllAppointments";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -29,38 +30,26 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Appointments = () => {
+const Appointments = ({ graphQLClient }) => {
   const customClasses = customStyles();
 
-  const appoitments = [
-    {
-      student: "Student1",
-      subject: 'Math',
-      price: "34 lei",
-      date: "16 November",
-      hour: '8:00',
-      status: "Accepted",
-      studentEmail: 'ade.enter@yahoo.com'
-    },
-    {
-      student: "Student1",
-      subject: 'Drawing',
-      price: "34 lei",
-      date: "16 November",
-      hour: '8:00',
-      status: "Pending",
-      studentEmail: 'ade.enter@yahoo.com'
-    },
-  ];
+  const { allAppointments, setAllAppointments } =
+    useGetAllAppointments(graphQLClient);
+
   return (
     <div className={customClasses.container}>
       <Typography variant="h5" className={customClasses.title}>
-        My Appoitments
+        My Appointments
       </Typography>
 
       <div className={customClasses.appoitmentsContainer}>
-        {appoitments.map((appoitment) => (
-            <AppointmentCard  appoitment={appoitment}/>
+        {allAppointments.map((appointment) => (
+          <AppointmentCard
+            appointment={appointment}
+            graphQLClient={graphQLClient}
+            allAppointments={allAppointments}
+            setAllAppointments={setAllAppointments}
+          />
         ))}
       </div>
     </div>

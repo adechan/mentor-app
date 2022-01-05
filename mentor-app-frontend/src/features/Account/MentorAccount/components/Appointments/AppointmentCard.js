@@ -1,7 +1,11 @@
 import React from "react";
-import { makeStyles, Typography } from "@material-ui/core";
+import { makeStyles, Typography, Button } from "@material-ui/core";
 import DeleteIcon from "@material-ui/icons/Delete";
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check";
+import { getDayName } from "../../../../../utils/helpers";
+import useCancelAppointment from "./hooks/useCancelAppointment";
+import useAcceptAppointment from "./hooks/useAcceptAppointment";
+import useFinishAppointment from "./hooks/useFinishAppointment";
 
 const customStyles = makeStyles((theme) => ({
   title: {
@@ -26,7 +30,7 @@ const customStyles = makeStyles((theme) => ({
   },
   container: {
     height: "auto",
-    width: 250,
+    width: 300,
     backgroundColor: "white",
     margin: 20,
     paddingLeft: 20,
@@ -48,37 +52,75 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const AppointmentCard = ({ appoitment }) => {
+const AppointmentCard = ({
+  appointment,
+  graphQLClient,
+  allAppointments,
+  setAllAppointments,
+}) => {
   const customClasses = customStyles();
+
+  const cancelAppointment = useCancelAppointment(
+    graphQLClient,
+    appointment.appointmentId,
+    allAppointments,
+    setAllAppointments
+  );
+
+  const acceptAppointment = useAcceptAppointment(
+    graphQLClient,
+    appointment.appointmentId,
+    allAppointments,
+    setAllAppointments
+  );
+
+  const finishAppointment = useFinishAppointment(
+    graphQLClient,
+    appointment.appointmentId,
+    allAppointments,
+    setAllAppointments
+  );
+
   return (
     <div className={customClasses.container}>
       <div style={{ display: "flex", flexDirection: "column" }}>
         <Typography variant="h5" className={customClasses.title}>
-          {appoitment.student} - {appoitment.subject}
+          {appointment.studentName} - {appointment.courseTitle}
         </Typography>
         <Typography variant="h5" className={customClasses.byMentor}>
-          Student email: <b>{appoitment.studentEmail}</b>
+          Student email: <b>{appointment.studentEmail}</b>
         </Typography>
         <Typography variant="h5" className={customClasses.byMentor}>
-          Price: <b>{appoitment.price}</b>
+          Price: <b>{appointment.price}</b>
         </Typography>
 
         <Typography variant="h5" className={customClasses.date}>
-          Date: <b>{appoitment.date}</b>
+          Date:{" "}
+          <b>
+            {getDayName(appointment.day)}: {appointment.hour}:00 -{" "}
+            {appointment.hour + 1}:00{" "}
+          </b>
         </Typography>
 
         <Typography variant="h5" className={customClasses.date}>
-          Hour: <b>{appoitment.hour}</b>
-        </Typography>
-
-        <Typography variant="h5" className={customClasses.date}>
-          Status: <b>{appoitment.status}</b>
+          Status: <b>{appointment.status}</b>
         </Typography>
       </div>
 
-      <div>
-        <CheckIcon />
-        <DeleteIcon />
+      <div style={{ display: "flex", flexDirection: "column" }}>
+        {appointment.status !== "ACCEPTED" && (
+          <>
+            <CheckIcon onClick={acceptAppointment} />
+          </>
+        )}
+
+        <DeleteIcon onClick={cancelAppointment} />
+
+        {appointment.status === "ACCEPTED" && (
+          <Button type="button" onClick={finishAppointment}>
+            Done
+          </Button>
+        )}
       </div>
     </div>
   );
