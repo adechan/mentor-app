@@ -274,6 +274,7 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_get_student_all_recommendations(self, _, info, student_id):
         try:
+            # TODO: SOMETHING DOESNT WORK PROPERLY HERE
             result = []
 
             studentInterestRows = self.db.session.query(self.api.StudentInterests) \

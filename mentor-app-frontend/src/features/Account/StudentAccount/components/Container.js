@@ -33,7 +33,7 @@ const Container = ({graphQLClient}) => {
                 <Route path="/student-account/appointments" component={() => <Appointments />}/>
                 <Route path="/student-account/my-mentors" component={() => <Mentors />}/>
                 <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo />}/>
-                <Route path="/student-account/recommendations" component={() => <Recommendations />}/>
+                <Route path="/student-account/recommendations" component={() => <Recommendations graphQLClient={graphQLClient}/>}/>
                 <Route path="/student-account/settings" component={() => <Settings graphQLClient={graphQLClient}/>}/>
                 <Route path="/student-account/create-mentor" component={() => <OnboardingMentor graphQLClient={graphQLClient}/>}/>
             </Switch>

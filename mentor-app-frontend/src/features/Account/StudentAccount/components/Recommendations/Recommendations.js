@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import MentorCard from "./MentorCard";
+import useGetAllRecommendations from "./hooks/useGetAllRecommendations";
+import RecommendationCard from "./RecommendationCard";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -34,45 +35,21 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Recommendations = () => {
+const Recommendations = ({ graphQLClient }) => {
   const customClasses = customStyles();
+  const recommendations = useGetAllRecommendations(graphQLClient);
 
-  const mentors = [{
-      name: 'Mentor1',
-      subject: 'Math',
-      review: 'He was a nice mentor!'
-  },
-  {
-    name: 'Mentor2',
-    subject: 'Math',
-    review: null
-},
-{
-    name: 'Mentor2',
-    subject: 'Math',
-    review: null
-},
-{
-    name: 'Mentor2',
-    subject: 'Math',
-    review: null
-}];
   return (
     <div className={customClasses.container}>
       <div className={customClasses.row}>
         <Typography variant="h5" className={customClasses.title}>
-        Recommendations
+          Recommendations
         </Typography>
       </div>
 
-      <MentorCard mentor={{
-        id: 1,
-        name: 'mentor1',
-        subject: 'Math',
-        price: 300,
-        email: 'ade.enter@yahoo.com'
-      }}/>
-
+      {recommendations.map((recommendation) => (
+        <RecommendationCard recommendation={recommendation} graphQLClient={graphQLClient}/>
+      ))}
     </div>
   );
 };
