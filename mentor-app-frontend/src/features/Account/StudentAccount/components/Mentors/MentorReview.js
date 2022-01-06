@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
   DialogTitle,
@@ -8,6 +8,8 @@ import {
   DialogActions,
   makeStyles,
 } from "@material-ui/core";
+import useReviewMentor from "./hooks/useReviewMentor";
+import useEditReviewMentor from "./hooks/useEditReviewMentor";
 
 const customStyle = makeStyles(() => ({
   title: {
@@ -16,28 +18,74 @@ const customStyle = makeStyles(() => ({
     fontFamily: "Urbanist",
     fontWeight: 900,
   },
+  dialogStyle: {
+    minWidth: 700,
+  },
 }));
 
-const MentorReview = ({ openDialog, handleClose, mentor }) => {
+const MentorReview = ({
+  openDialog,
+  handleClose,
+  mentor,
+  graphQLClient,
+  allMentors,
+  setAllMentors,
+  type,
+}) => {
   const customClasses = customStyle();
+
+  const [review, setReview] = useState("");
+
+  const reviewMentor = useReviewMentor(
+    graphQLClient,
+    mentor,
+    review,
+    handleClose,
+    allMentors,
+    setAllMentors
+  );
+
+  const editReviewMentor = useEditReviewMentor(
+    graphQLClient,
+    mentor,
+    review,
+    handleClose,
+    allMentors,
+    setAllMentors
+  );
   return (
-    <Dialog open={openDialog} onClose={handleClose}>
+    <Dialog
+      open={openDialog}
+      onClose={handleClose}
+      className={customClasses.dialogStyle}
+    >
       <DialogTitle className={customClasses.title}>
-        Do you want to review <b>{mentor.name}</b>?
+        Do you want to review <b>{mentor.mentorName}</b>?
       </DialogTitle>
       <DialogContent>
         <TextareaAutosize
           maxRows={5}
           aria-label="Review"
           placeholder="Write your review here:"
-          defaultValue={mentor.review}
+          defaultValue={review ? review : mentor.review}
+          onChange={(e) => setReview(e.target.value)}
           style={{ width: "90%" }}
         />
       </DialogContent>
 
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
-        <Button onClick={handleClose}>Save</Button>
+        <Button
+          onClick={() => {
+            if (type === "REVIEW") {
+              reviewMentor();
+            } else {
+              editReviewMentor()
+            }
+          }}
+        >
+          Save
+        </Button>
       </DialogActions>
     </Dialog>
   );

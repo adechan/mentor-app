@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import MentorReview from "./MentorReview"
+import MentorReview from "./MentorReview";
 import { Button, makeStyles, Typography } from "@material-ui/core";
 
 const customStyles = makeStyles((theme) => ({
@@ -11,7 +11,7 @@ const customStyles = makeStyles((theme) => ({
   },
   container: {
     padding: 20,
-    width: 200,
+    width: 330,
     backgroundColor: "white",
     margin: 20,
     display: "flex",
@@ -19,10 +19,9 @@ const customStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
 
-    
-    [theme.breakpoints.down('xs')]: {
-      width: '80vw'
-  }
+    [theme.breakpoints.down("xs")]: {
+      width: "80vw",
+    },
   },
   subContainer: {
     marginBottom: 10,
@@ -41,9 +40,10 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const MentorCard = ({ mentor }) => {
+const MentorCard = ({ mentor, graphQLClient, allMentors, setAllMentors }) => {
   const customClasses = customStyles();
   const [isOpenReviewDialog, setIsOpenReviewDialog] = useState(false);
+  const [isOpenEditDialog, setIsOpenEditDialog] = useState(false);
 
   return (
     <>
@@ -51,7 +51,22 @@ const MentorCard = ({ mentor }) => {
         openDialog={isOpenReviewDialog}
         handleClose={() => setIsOpenReviewDialog(false)}
         mentor={mentor}
+        graphQLClient={graphQLClient}
+        allMentors={allMentors}
+        setAllMentors={setAllMentors}
+        type="REVIEW"
       />
+
+      <MentorReview
+        openDialog={isOpenEditDialog}
+        handleClose={() => setIsOpenEditDialog(false)}
+        mentor={mentor}
+        graphQLClient={graphQLClient}
+        allMentors={allMentors}
+        setAllMentors={setAllMentors}
+        type="EDIT"
+      />
+
       <div className={customClasses.container}>
         <div className={customClasses.subContainer}>
           <Typography variant="h5" className={customClasses.title}>
@@ -76,7 +91,14 @@ const MentorCard = ({ mentor }) => {
           className={customClasses.button}
           variant="contained"
           color="primary"
-          onClick={() => setIsOpenReviewDialog(true)}
+          onClick={() => {
+            if (mentor.review) {
+              setIsOpenEditDialog(true);
+            }
+            else {
+              setIsOpenReviewDialog(true);
+            }
+          }}
         >
           {mentor.review ? "Edit Review" : "Review"}
         </Button>

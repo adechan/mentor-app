@@ -38,7 +38,7 @@ const customStyles = makeStyles(() => ({
 const Mentors = ({ graphQLClient }) => {
   const customClasses = customStyles();
 
-  const {allMentors, setAllMentors} = useGetAllMentors(graphQLClient);
+  const { allMentors, setAllMentors } = useGetAllMentors(graphQLClient);
 
   return (
     <div className={customClasses.container}>
@@ -50,7 +50,12 @@ const Mentors = ({ graphQLClient }) => {
 
       <div className={customClasses.interestContainer}>
         {allMentors.map((mentor) => (
-          <MentorCard mentor={mentor} />
+          <MentorCard
+            mentor={mentor}
+            graphQLClient={graphQLClient}
+            allMentors={allMentors}
+            setAllMentors={setAllMentors}
+          />
         ))}
       </div>
     </div>

@@ -499,7 +499,8 @@ class GQLQueryResolver(GQLResolver):
 
                 review = ""
                 if len(reviewRow) > 0:
-                    review = reviewRow.review
+                    logger.debug(reviewRow)
+                    review = reviewRow[0].review
 
                 item = {
                     "mentor_id": appointmentRow.mentor_id,
