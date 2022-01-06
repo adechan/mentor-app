@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Button, makeStyles, Typography } from "@material-ui/core";
+import useAwardStudent from "./hooks/useAwardStudent";
 
 const customStyles = makeStyles((theme) => ({
   title: {
@@ -18,10 +19,9 @@ const customStyles = makeStyles((theme) => ({
     justifyContent: "space-between",
     alignItems: "center",
 
-    
-    [theme.breakpoints.down('xs')]: {
-      width: '80vw'
-  }
+    [theme.breakpoints.down("xs")]: {
+      width: "80vw",
+    },
   },
   subContainer: {
     marginBottom: 10,
@@ -40,28 +40,45 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const StudentCard = ({ student }) => {
+const StudentCard = ({
+  student,
+  graphQLClient,
+  allStudents,
+  setAllStudents,
+}) => {
   const customClasses = customStyles();
+
+  const awardStudent = useAwardStudent(
+    graphQLClient,
+    student,
+    allStudents,
+    setAllStudents
+  );
 
   return (
     <>
       <div className={customClasses.container}>
         <div className={customClasses.subContainer}>
           <Typography variant="h5" className={customClasses.title}>
-            <b>{student.name}</b>
+            <b>{student.studentName}</b>
           </Typography>
           <Typography variant="h5" className={customClasses.title}>
-            {student.subject}
+            {student.courseTitle}
           </Typography>
         </div>
 
-        <Button
-          className={customClasses.button}
-          variant="contained"
-          color="primary"
-        >
-          Award Student
-        </Button>
+        {student.awarded ? (
+          <p>Awarded</p>
+        ) : (
+          <Button
+            className={customClasses.button}
+            variant="contained"
+            color="primary"
+            onClick={awardStudent}
+          >
+            Award Student
+          </Button>
+        )}
       </div>
     </>
   );

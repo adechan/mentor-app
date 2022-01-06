@@ -539,11 +539,22 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.Course.course_id == appointmentRow.course_id) \
                     .one().title
 
+                awardRows = self.db.session.query(self.api.StudentAward) \
+                    .filter(self.api.Student.student_id == appointmentRow.student_id) \
+                    .filter(self.api.Course.course_id == appointmentRow.course_id) \
+                    .filter(self.api.Mentor.mentor_id == mentor_id) \
+                    .all()
+
+                awarded = False
+                if len(awardRows) > 0:
+                    awarded = awardRows[0].awarded
+
                 item = {
                     "student_id": appointmentRow.student_id,
                     "username": studentUsername,
                     "course_id": appointmentRow.course_id,
                     "course_title": course,
+                    "awarded": awarded
                 }
 
                 if item not in result:
@@ -997,6 +1008,7 @@ class GQLMutationResolver(GQLResolver):
                 student_id=student_id,
                 course_id=course_id,
                 mentor_id=mentor_id,
+                awarded=True,
                 date=datetime.datetime.now()
             )
 

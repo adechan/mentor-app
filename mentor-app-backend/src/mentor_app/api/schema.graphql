@@ -144,6 +144,7 @@ type MentorAllStudentsResult {
     course_id: ID!
     username: String!
     course_title: String!
+    awarded: Boolean
 }
 
 type StudentRecommendationsResult {

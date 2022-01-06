@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
-import StudentCard from "./StudentCard"
+import useGetAllStudents from "./hooks/useGetAllStudents";
+import StudentCard from "./StudentCard";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -34,18 +35,12 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Students = () => {
+const Students = ({ graphQLClient }) => {
   const customClasses = customStyles();
 
-  const students = [{
-      name: 'Student1',
-      subject: 'Math',
-  },
-  {
-    name: 'Student2',
-    subject: 'Math',
-},
-];
+  const { allStudents, setAllStudents } = useGetAllStudents(graphQLClient);
+
+  console.log(allStudents);
   return (
     <div className={customClasses.container}>
       <div className={customClasses.row}>
@@ -55,8 +50,13 @@ const Students = () => {
       </div>
 
       <div className={customClasses.interestContainer}>
-        {students.map((student) => (
-          <StudentCard student={student}/>
+        {allStudents.map((student) => (
+          <StudentCard
+            student={student}
+            graphQLClient={graphQLClient}
+            allStudents={allStudents}
+            setAllStudents={setAllStudents}
+          />
         ))}
       </div>
     </div>

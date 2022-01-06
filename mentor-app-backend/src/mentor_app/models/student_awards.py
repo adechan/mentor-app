@@ -4,6 +4,7 @@ def define_student_award_table(db):
         student_id = db.Column(db.Integer)
         mentor_id = db.Column(db.Integer)
         course_id = db.Column(db.Integer)
+        awarded = db.Column(db.Boolean)
         date = db.Column(db.Date)
 
         def to_dict(self):
@@ -12,6 +13,7 @@ def define_student_award_table(db):
                 student_id=self.student_id,
                 mentor_id=self.mentor_id,
                 course_id=self.course_id,
+                awarded=self.awarded,
                 date=self.date
             )
 
