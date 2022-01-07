@@ -26,7 +26,7 @@ const Container = ({ graphQLClient }) => {
     return (
         <div className={customClasses.scrollableContaienr}>
             <Switch>
-                <Route path="/mentor-account/reviews" component={() => <Reviews />} />
+                <Route path="/mentor-account/reviews" component={() => <Reviews graphQLClient={graphQLClient} />} />
                 <Route path="/mentor-account/mentoring" component={() => <Mentoring graphQLClient={graphQLClient}/>} />
                 <Route path="/mentor-account/settings" component={() => <Settings  graphQLClient={graphQLClient}/>}/>
                 <Route path="/mentor-account/appointments" component={() => <Appointments graphQLClient={graphQLClient}/>}/>

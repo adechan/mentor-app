@@ -53,7 +53,7 @@ const ReviewCard = ({ review }) => {
     <div className={customClasses.container}>
       <div className={customClasses.subContainer}>
         <Typography variant="h5" className={customClasses.title}>
-          {review.title}
+          {review.courseTitle}
         </Typography>
         <Typography variant="h5" className={customClasses.byMentor}>
           {review.review}
@@ -62,7 +62,7 @@ const ReviewCard = ({ review }) => {
 
       <div>
         <Typography variant="h5" className={customClasses.byMentor}>
-          - by <b>{review.student}</b>
+          - by <b>{review.studentName}</b>
         </Typography>
         <Typography variant="h5" className={customClasses.date}>
           {review.date}

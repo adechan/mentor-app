@@ -34,7 +34,6 @@ const useGetAllStudents = (graphQLClient) => {
       return;
     }
 
-    console.log(result);
     let students = [];
     result.forEach((resultItem) => {
       const item = {

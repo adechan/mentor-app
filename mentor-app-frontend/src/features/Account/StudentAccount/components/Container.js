@@ -29,7 +29,7 @@ const Container = ({graphQLClient}) => {
         <div className={customClasses.scrollableContaienr}>
             <Switch>
                 <Route path="/student-account/interests" component={() => <Interests graphQLClient={graphQLClient}/>}/>
-                <Route path="/student-account/awards" component={() => <Awards />}/>
+                <Route path="/student-account/awards" component={() => <Awards  graphQLClient={graphQLClient} />}/>
                 <Route path="/student-account/appointments" component={() => <Appointments graphQLClient={graphQLClient} />}/>
                 <Route path="/student-account/my-mentors" component={() => <Mentors  graphQLClient={graphQLClient}  />}/>
                 <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo />}/>

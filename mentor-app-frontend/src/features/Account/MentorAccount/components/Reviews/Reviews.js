@@ -1,5 +1,6 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
+import useGetAllReviews from "./hooks/useGetAllReviews";
 import ReviewCard from "./ReviewCard";
 
 const customStyles = makeStyles(() => ({
@@ -29,23 +30,11 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Reviews = () => {
+const Reviews = ({ graphQLClient }) => {
   const customClasses = customStyles();
 
-  const reviews = [
-    {
-      title: "Math",
-      review: 'She was the best mentor I\'ve ever had!',
-      date: "27 november 2021",
-      student: "Student1",
-    },
-    {
-        title: "Math",
-        review: 'She was the best mentor I\'ve ever had!',
-        date: "27 november 2021",
-        student: "Student1",
-      },
-  ];
+  const allReviews = useGetAllReviews(graphQLClient)
+
   return (
     <div className={customClasses.container}>
       <Typography variant="h5" className={customClasses.title}>
@@ -53,7 +42,7 @@ const Reviews = () => {
       </Typography>
 
       <div className={customClasses.reviewsContainer}>
-        {reviews.map((review) => (
+        {allReviews.map((review) => (
           <ReviewCard review={review} />
         ))}
       </div>

@@ -1,6 +1,7 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import AwardCard from "./AwardCard";
+import useGetAllAwards from "./hooks/useGetAllAwards";
 
 const customStyles = makeStyles(() => ({
   title: {
@@ -29,21 +30,11 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const Awards = () => {
+const Awards = ({ graphQLClient }) => {
   const customClasses = customStyles();
 
-  const awards = [
-    {
-      title: "Math",
-      date: "27 november 2021",
-      mentor: "Ade Chan",
-    },
-    {
-      title: "Biology",
-      date: "27 november 2021",
-      mentor: "Ade Chan",
-    },
-  ];
+  const allAwards = useGetAllAwards(graphQLClient);
+
   return (
     <div className={customClasses.container}>
       <Typography variant="h5" className={customClasses.title}>
@@ -51,7 +42,7 @@ const Awards = () => {
       </Typography>
 
       <div className={customClasses.awardsContainer}>
-        {awards.map((award) => (
+        {allAwards.map((award) => (
           <AwardCard award={award} />
         ))}
       </div>

@@ -53,10 +53,10 @@ const AwardCard = ({award}) => {
         <div className={customClasses.container}>
             <div className={customClasses.subContainer}>
             <Typography variant="h5" className={customClasses.title}>
-                {award.title}
+                {award.courseTitle}
             </Typography>
             <Typography variant="h5" className={customClasses.byMentor} >
-               Awarded by <b>{award.mentor}</b>
+               Awarded by <b>{award.mentorName}</b>
             </Typography>
             </div>
         
