@@ -75,7 +75,7 @@ const Sidebar = () => {
         <SidebarItem
           itemTitle="Switch to student"
           onClick={() => {
-            history.push("/student-account");
+            history.push("/student-account/awards");
             setSelected("Switch profile");
             dispatch(accountActions.SET_SELECTED_PROFILE_ID(profiles?.studentId));
           }}

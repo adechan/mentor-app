@@ -7,12 +7,14 @@ import Registration from "./features/Registration/views/Registration";
 import CreateProfile from "./features/Registration/components/common/CreateProfile/CreateProfile";
 import OnboardingStudent from "./features/Registration/components/OnboardingStudent/views/OnboardingStudent";
 import StudentAccount from "./features/Account/StudentAccount/views/StudentAccount";
-import Login from "./features/Login/views/Login"
-import { useState } from "react";
+import Login from "./features/Login/views/Login";
 import MentorAccount from "./features/Account/MentorAccount/views/MentorAccount";
 import OnboardingMentor from "./features/Registration/components/OnboardingMentor/views/OnboardingMentor";
 import { GraphQLClient } from "graphql-request";
-
+import PrivateRoute from "./features/common/PrivateRoute/PrivateRoute";
+import useCheckIfUserHasSession from "./hooks/useCheckIfUserHasSession";
+import ConditionalRoute from "./features/common/ConditionalRoute/ConditionalRoute";
+import { useSelector } from "react-redux";
 
 const customStyles = makeStyles((theme) => ({
   appContainer: {
@@ -20,10 +22,10 @@ const customStyles = makeStyles((theme) => ({
     width: "100vw",
     backgroundImage: "linear-gradient(to right, #e8cbc0 , #636fa4);",
 
-    [theme.breakpoints.down('xs')]: {
-      height: '100%',
-      minHeight: '100vh'
-    }
+    [theme.breakpoints.down("xs")]: {
+      height: "100%",
+      minHeight: "100vh",
+    },
   },
   container: {
     marginTop: 40,
@@ -50,44 +52,77 @@ const App = () => {
     mode: "cors",
   });
 
+  const profiles = useSelector((store) => store.account.profiles);
+  const getRoute = (profiles, defaultRoute) => {
+    if (profiles.studentId) {
+      return "/student-account/awards";
+    }
+
+    if (profiles.mentorId) {
+      return "/mentor-account/reviews";
+    }
+
+    return defaultRoute;
+  };
+
+  useCheckIfUserHasSession(graphQLClient);
+
   return (
     <div className={customClasses.appContainer}>
       <Router>
-        <ApplicationHeader graphQLClient={graphQLClient}/>
+        <ApplicationHeader graphQLClient={graphQLClient} />
         <>
           <Switch>
-            <Route
+            <PrivateRoute
               path="/student-account"
-              component={() => <StudentAccount graphQLClient={graphQLClient}/>}
+              component={() => <StudentAccount graphQLClient={graphQLClient} />}
             />
-            <Route
+            <PrivateRoute
               path="/mentor-account"
-              component={() => <MentorAccount graphQLClient={graphQLClient}/>}
+              component={() => <MentorAccount graphQLClient={graphQLClient} />}
             />
 
-            <Route
-              path="/student/:username"
-              component={() => <div>Student Profile </div>}
-            />
-            <Route
-              path="/mentor/:username"
-              component={() => <div>Mentor Profile </div>}
+            <ConditionalRoute
+              condition={!profiles.studentId && !profiles.mentorId}
+              to={getRoute(profiles, "/login")}
+              path="/login"
+              component={() => <Login graphQLClient={graphQLClient} />}
             />
 
-            <Route path="/login" component={() => <Login graphQLClient={graphQLClient}/>} />
-            <Route path="/registration" component={() => <Registration />} />
-            <Route path="/create-profile" component={() => <CreateProfile />} />
-            <Route
+            <ConditionalRoute
+              condition={!profiles.studentId && !profiles.mentorId}
+              to={getRoute(profiles, "/registration")}
+              path="/registration"
+              component={() => <Registration />}
+            />
+
+            <ConditionalRoute
+              condition={!profiles.studentId && !profiles.mentorId}
+              to={getRoute(profiles, "/create-profile")}
+              path="/create-profile"
+              component={() => <CreateProfile />}
+            />
+
+            <ConditionalRoute
+              condition={!profiles.studentId && !profiles.mentorId}
+              to={getRoute(profiles, "/create-profile-student")}
               path="/create-profile-student"
               component={() => <OnboardingStudent />}
             />
 
-            <Route
+            <ConditionalRoute
+              condition={!profiles.studentId && !profiles.mentorId}
+              to={getRoute(profiles, "/create-profile-mentor")}
               path="/create-profile-mentor"
               component={() => <OnboardingMentor />}
             />
 
-            <Route path="/" component={() => <Welcome />} />
+            <ConditionalRoute
+              condition={!profiles.studentId && !profiles.mentorId}
+              to={getRoute(profiles, "/")}
+              path="/"
+              component={() => <Welcome />}
+            />
           </Switch>
         </>
       </Router>

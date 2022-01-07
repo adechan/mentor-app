@@ -84,7 +84,7 @@ const Sidebar = () => {
         <SidebarItem
           itemTitle="Switch to mentor"
           onClick={() => {
-            history.push("/mentor-account");
+            history.push("/mentor-account/reviews");
             setSelected("Switch profile");
             dispatch(accountActions.SET_SELECTED_PROFILE_ID(profiles?.mentorId));
           }}
