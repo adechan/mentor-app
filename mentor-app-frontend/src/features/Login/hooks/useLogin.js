@@ -37,10 +37,12 @@ export const useLogin = (accountInfo, graphQLClient) => {
       password: "",
     },
     validationSchema: Yup.object({
-      email: Yup.string().email("Invalid email address").required("Required"),
+      email: Yup.string()
+        .email("Invalid email address")
+        .required("Email is required"),
       password: Yup.string()
         .min(5, "Email or password invalid")
-        .required("Required"),
+        .required("Password is required"),
     }),
     onSubmit: () => {
       handleLogin();
