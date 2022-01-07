@@ -19,11 +19,11 @@ const useCheckIfUserHasSession = (graphQLClient) => {
   `;
 
   const setAccountInfo = async (accountInfo) => {
-    dispatch(accountActions.SET_ACCOUNT_ID(accountInfo.account_id));
+    dispatch(accountActions.SET_ACCOUNT_ID(accountInfo?.account_id));
 
     let profiles = [];
 
-    if (accountInfo.student_id || accountInfo.mentor_id) {
+    if (accountInfo?.student_id || accountInfo?.mentor_id) {
       dispatch(
         accountActions.SET_PROFILES({
           ...profiles,
@@ -33,8 +33,8 @@ const useCheckIfUserHasSession = (graphQLClient) => {
       );
     }
 
-    if (accountInfo.student_id) {
-      dispatch(accountActions.SET_SELECTED_PROFILE_ID(accountInfo?.student_id));
+    if (accountInfo?.student_id) {
+      dispatch(accountActions.SET_SELECTED_PROFILE_ID(accountInfo.student_id));
       return;
     }
 
@@ -47,7 +47,7 @@ const useCheckIfUserHasSession = (graphQLClient) => {
   const getAccountId = async () => {
     try {
       const data = await graphQLClient.request(query);
-      setAccountInfo(data.account_info);
+      setAccountInfo(data?.account_info);
     } catch (e) {
       console.log("not authenticated");
     }

@@ -9,7 +9,7 @@ export const useSetAccountInfo = (graphQLClient) => {
   const history = useHistory();
 
   const getAccountInfoQuery = gql`
-    query getAccountInfo {
+    query getAccountInfoInLogin {
       account_info {
         account_id
         mentor_id

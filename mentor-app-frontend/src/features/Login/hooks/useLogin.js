@@ -24,7 +24,7 @@ export const useLogin = (accountInfo, graphQLClient) => {
   const handleLogin = async () => {
     try {
       await graphQLClient.request(mutation, variables);
-      setAccountInfo();
+      await setAccountInfo();
     } catch (e) {
       formik.setFieldError("email", "Invaid email or password");
       formik.setFieldError("password", "Invaid email or password");
