@@ -1,11 +1,10 @@
-import { gql,  } from "graphql-request";
+import { gql } from "graphql-request";
 
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useSetAccountInfo } from "./useSetAccountInfo";
 
 export const useLogin = (accountInfo, graphQLClient) => {
-
   const setAccountInfo = useSetAccountInfo(graphQLClient);
 
   const mutation = gql`
@@ -23,8 +22,13 @@ export const useLogin = (accountInfo, graphQLClient) => {
   };
 
   const handleLogin = async () => {
-     await graphQLClient.request(mutation, variables);
-    setAccountInfo();
+    try {
+      await graphQLClient.request(mutation, variables);
+      setAccountInfo();
+    } catch (e) {
+      formik.setFieldError("email", "Invaid email or password");
+      formik.setFieldError("password", "Invaid email or password");
+    }
   };
 
   const formik = useFormik({
