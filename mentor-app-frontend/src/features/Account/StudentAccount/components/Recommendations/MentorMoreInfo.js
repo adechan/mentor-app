@@ -34,7 +34,7 @@ const customStyles = makeStyles(() => ({
   },
   subContainer: {
     padding: 20,
-    height: "100%",
+    height: "auto",
     width: "calc(100% - 80px)",
     backgroundColor: "white",
     margin: 20,

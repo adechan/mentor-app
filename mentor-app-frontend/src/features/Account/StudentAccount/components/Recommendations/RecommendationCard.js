@@ -29,6 +29,7 @@ const customStyles = makeStyles((theme) => ({
     cursor: "pointer",
 
     width: "100%",
+    height: 'auto',
     display: "flex",
     flexDirection: "column",
     justifyContent: "space-between",
