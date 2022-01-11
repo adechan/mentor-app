@@ -7,6 +7,7 @@ const useEditReviewMentor = (
   graphQLClient,
   mentor,
   review,
+  stars,
   handleClose,
   allMentors,
   setAllMentors
@@ -30,12 +31,14 @@ const useEditReviewMentor = (
       $course_id: ID!
       $mentor_id: ID!
       $review: String!
+      $stars: Int!
     ) {
       student_edit_review_mentor(
         student_id: $student_id
         course_id: $course_id
         mentor_id: $mentor_id
         review: $review
+        stars: $stars
       ) {
         result
       }
@@ -52,6 +55,7 @@ const useEditReviewMentor = (
       mentor_id: mentor.mentorId,
       course_id: mentor.courseId,
       review: review,
+      stars: stars,
     };
 
     await graphQLClient.request(mutation, variables);
@@ -62,25 +66,12 @@ const useEditReviewMentor = (
         mentorItem.courseId === mentor.courseId
     );
 
-
-
     let item = allMentors[index];
 
+    item['review'] = review
+    item['stars'] = stars
 
-    let _allMentors = allMentors;
-    _allMentors = _allMentors.filter(
-      (mentorItem) =>
-        mentorItem.mentorId === mentor.mentorId &&
-        mentorItem.courseId === mentor.courseId
-    );
-    
-      console.log(_allMentors)
-    _allMentors.push({
-      ...item,
-      review: review,
-    });
-
-    setAllMentors(_allMentors);
+    setAllMentors(allMentors);
 
     handleClose();
   };

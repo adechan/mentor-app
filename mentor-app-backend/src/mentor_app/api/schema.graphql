@@ -141,6 +141,7 @@ type StudentAllMentorsResult {
     username: String!
     course_title: String!
     review: String
+    stars: Int
 }
 
 type MentorAllStudentsResult {
@@ -272,8 +273,8 @@ type Mutation {
     mentor_accept_appointment(appointment_id: ID!): Result! # Authenticated
     mentor_finish_appointment(appointment_id: ID!): Result! # Authenticated
 
-    student_review_mentor(student_id: ID!, mentor_id: ID!, course_id: ID!, review: String!): Result! # Authenticated
-    student_edit_review_mentor(student_id: ID!, mentor_id: ID!, course_id: ID!, review: String!): Result! # Authenticated
+    student_review_mentor(student_id: ID!, mentor_id: ID!, course_id: ID!, review: String!, stars: Int!): Result! # Authenticated
+    student_edit_review_mentor(student_id: ID!, mentor_id: ID!, course_id: ID!, review: String!, stars: Int!): Result! # Authenticated
 
     mentor_award_student(student_id: ID!, mentor_id: ID!, course_id: ID!): Result! # Authenticated
 

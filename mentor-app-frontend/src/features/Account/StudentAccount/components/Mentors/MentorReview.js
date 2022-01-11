@@ -10,6 +10,7 @@ import {
 } from "@material-ui/core";
 import useReviewMentor from "./hooks/useReviewMentor";
 import useEditReviewMentor from "./hooks/useEditReviewMentor";
+import StarRating from "./common/StarRating";
 
 const customStyle = makeStyles(() => ({
   title: {
@@ -35,11 +36,13 @@ const MentorReview = ({
   const customClasses = customStyle();
 
   const [review, setReview] = useState("");
+  const [stars, setStars] = useState(null);
 
   const reviewMentor = useReviewMentor(
     graphQLClient,
     mentor,
     review,
+    stars,
     handleClose,
     allMentors,
     setAllMentors
@@ -49,6 +52,7 @@ const MentorReview = ({
     graphQLClient,
     mentor,
     review,
+    stars,
     handleClose,
     allMentors,
     setAllMentors
@@ -72,6 +76,13 @@ const MentorReview = ({
           style={{ width: "90%" }}
         />
       </DialogContent>
+      <DialogContent>
+        <StarRating
+          initialRating={mentor.stars}
+          stars={stars}
+          setStars={setStars}
+        />
+      </DialogContent>
 
       <DialogActions>
         <Button onClick={handleClose}>Cancel</Button>
@@ -80,7 +91,7 @@ const MentorReview = ({
             if (type === "REVIEW") {
               reviewMentor();
             } else {
-              editReviewMentor()
+              editReviewMentor();
             }
           }}
         >

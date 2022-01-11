@@ -15,6 +15,7 @@ const useGetAllMentors = (graphQLClient) => {
         course_id
         course_title
         review
+        stars
       }
     }
   `;
@@ -34,8 +35,6 @@ const useGetAllMentors = (graphQLClient) => {
       return;
     }
 
-    console.log(result);
-
     let mentors = [];
     result.forEach((resultItem) => {
       const item = {
@@ -44,6 +43,7 @@ const useGetAllMentors = (graphQLClient) => {
         courseId: resultItem.course_id,
         courseTitle: resultItem.course_title,
         review: resultItem.review,
+        stars: resultItem.stars,
       };
 
       mentors.push(item);

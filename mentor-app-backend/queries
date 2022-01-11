@@ -344,7 +344,8 @@ mutation getAccountInfo {
     student_id: 1,
     course_id: 0,
     mentor_id: 1,
-    review: "Love this mentor yayssssss"
+    review: "Love this mentor yayssssss",
+    star
   ) {
     result
   }

@@ -500,16 +500,19 @@ class GQLQueryResolver(GQLResolver):
                     .all()
 
                 review = ""
+                stars = 0
                 if len(reviewRow) > 0:
                     logger.debug(reviewRow)
                     review = reviewRow[0].review
+                    stars = reviewRow[0].stars
 
                 item = {
                     "mentor_id": appointmentRow.mentor_id,
                     "username": mentorUsername,
                     "course_id": appointmentRow.course_id,
                     "course_title": course,
-                    "review": review
+                    "review": review,
+                    "stars": stars
                 }
 
                 if item not in result:
@@ -966,7 +969,7 @@ class GQLMutationResolver(GQLResolver):
 
     @convert_kwargs_to_snake_case
     def resolve_mutation_student_review_mentor(self, _,
-        info, student_id, mentor_id, course_id, review
+        info, student_id, mentor_id, course_id, review, stars
     ):
         try:
             review = self.api.MentorReview(
@@ -974,7 +977,7 @@ class GQLMutationResolver(GQLResolver):
                 course_id=course_id,
                 mentor_id=mentor_id,
                 review=review,
-                stars=0,
+                stars=stars,
                 date=datetime.datetime.now()
             )
 
@@ -988,14 +991,15 @@ class GQLMutationResolver(GQLResolver):
 
     @convert_kwargs_to_snake_case
     def resolve_mutation_student_edit_review_mentor(self, _,
-        info, student_id, mentor_id, course_id, review
+        info, student_id, mentor_id, course_id, review, stars
     ):
         try:
             self.db.session.query(self.api.MentorReview) \
                 .filter(self.api.MentorReview.student_id == student_id) \
                 .filter(self.api.MentorReview.course_id == course_id) \
                 .filter(self.api.MentorReview.mentor_id == mentor_id) \
-                .update({"review": review})
+                .update({"review": review,
+                         "stars": stars})
             self.db.session.commit()
 
             return dict(result=True)

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import MentorReview from "./MentorReview";
 import { Button, makeStyles, Typography } from "@material-ui/core";
+import StarIcon from "@mui/icons-material/Star";
 
 const customStyles = makeStyles((theme) => ({
   title: {
@@ -87,6 +88,41 @@ const MentorCard = ({ mentor, graphQLClient, allMentors, setAllMentors }) => {
           </Typography>
         )}
 
+        <Typography
+          variant="h5"
+          className={customClasses.title}
+          style={{ marginBottom: 10, display: "flex" }}
+        >
+          Rating:
+          <>
+            <StarIcon
+              style={{
+                color: mentor.stars >= 1 ? "orange" : "lavender",
+              }}
+            />
+            <StarIcon
+              style={{
+                color: mentor.stars >= 2 ? "orange" : "lavender",
+              }}
+            />
+            <StarIcon
+              style={{
+                color: mentor.stars >= 3 ? "orange" : "lavender",
+              }}
+            />
+            <StarIcon
+              style={{
+                color: mentor.stars >= 4 ? "orange" : "lavender",
+              }}
+            />
+            <StarIcon
+              style={{
+                color: mentor.stars >= 5 ? "orange" : "lavender",
+              }}
+            />
+          </>
+        </Typography>
+
         <Button
           className={customClasses.button}
           variant="contained"
@@ -94,8 +130,7 @@ const MentorCard = ({ mentor, graphQLClient, allMentors, setAllMentors }) => {
           onClick={() => {
             if (mentor.review) {
               setIsOpenEditDialog(true);
-            }
-            else {
+            } else {
               setIsOpenReviewDialog(true);
             }
           }}
