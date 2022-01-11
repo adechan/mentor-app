@@ -158,6 +158,8 @@ type StudentRecommendationsResult {
     mentor_username: String!
     mentor_country: String!
     mentor_city: String!
+    average_rating: Float!
+    number_of_reviews: Int!
     course: String!
     course_id: ID!
     price: Float!
@@ -229,24 +231,24 @@ type CreateProfileResult {
 type Query {
     is_email_in_use(email: String!): Result!
 
-    get_student_awards(student_id: ID!): [StudentAwardResult!]!  # Authenticated
+    get_student_awards(student_id: ID!): [StudentAwardResult!]  # Authenticated
     get_student_interests(student_id: ID!): [StudentInterestResult!]  # Authenticated
     get_all_courses: [StudentInterestResult!]!
 
-    get_mentor_reviews(mentor_id: ID!): [MentorReviewResult!]! # Authenticated
+    get_mentor_reviews(mentor_id: ID!): [MentorReviewResult!] # Authenticated
     get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!] # Authenticated - REDO??
 
     get_student_settings_info(account_id: ID!): StudentSettingsResult! # Authenticated
     get_mentor_settings_info(account_id: ID!): MentorSettingsResult! # Authenticated
 
-    get_mentor_all_students(mentor_id: ID!): [MentorAllStudentsResult!]! # Authenticated
-    get_student_all_mentors(student_id: ID!): [StudentAllMentorsResult!]! # Authenticated
+    get_mentor_all_students(mentor_id: ID!): [MentorAllStudentsResult!] # Authenticated
+    get_student_all_mentors(student_id: ID!): [StudentAllMentorsResult!] # Authenticated
 
-    get_student_all_recommendations(student_id: ID!): [StudentRecommendationsResult!]! # Authenticated
+    get_student_all_recommendations(student_id: ID!): [StudentRecommendationsResult!] # Authenticated
     get_create_appointment_info(mentor_id: ID!, course_id: ID!): StudentGetCreateAppointmentInfoResult! # Authenticated
 
-    get_student_all_appointments(student_id: ID!): [StudentGetAllAppointmentsType!]! # Authenticated
-    get_mentor_all_appointments(mentor_id: ID!): [MentorGetAllAppointmentsType!]! # Authenticated
+    get_student_all_appointments(student_id: ID!): [StudentGetAllAppointmentsType!] # Authenticated
+    get_mentor_all_appointments(mentor_id: ID!): [MentorGetAllAppointmentsType!] # Authenticated
 
     get_mentor_details(mentor_id: ID!): MentorDetailsResult! # Authenticated
 

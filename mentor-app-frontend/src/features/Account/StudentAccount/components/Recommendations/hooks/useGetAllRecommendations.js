@@ -18,6 +18,8 @@ const useGetAllRecommendations = (graphQLClient) => {
         course
         course_id
         price
+        average_rating
+        number_of_reviews
       }
     }
   `;
@@ -37,6 +39,7 @@ const useGetAllRecommendations = (graphQLClient) => {
         return;
     }
 
+    console.log(result);
     let recommendations = []
     result.forEach(resultItem => {
         const item = {
@@ -46,6 +49,8 @@ const useGetAllRecommendations = (graphQLClient) => {
             mentorCity: resultItem.mentor_city,
             mentorCountry: resultItem.mentor_country,
             courseId: resultItem.course_id,
+            averageRating: resultItem.average_rating,
+            numberOfReviews: resultItem.number_of_reviews,
             courseTitle: resultItem.course,
             price: resultItem.price,
         }

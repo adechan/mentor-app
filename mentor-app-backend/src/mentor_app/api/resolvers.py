@@ -276,7 +276,6 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_get_student_all_recommendations(self, _, info, student_id):
         try:
-            # TODO: SOMETHING DOESNT WORK PROPERLY HERE
             result = []
 
             studentInterestRows = self.db.session.query(self.api.StudentInterests) \
@@ -313,6 +312,22 @@ class GQLQueryResolver(GQLResolver):
                             .filter(self.api.Course.course_id == mentorRow.course_id) \
                             .one()  # get course info from here
 
+                        mentorReviews = self.db.session.query(self.api.MentorReview) \
+                            .filter(self.api.MentorReview.mentor_id == mentorRow.mentor_id) \
+                            .filter(self.api.MentorReview.course_id == mentorRow.course_id) \
+                            .all()
+
+                        average_rating = 0
+                        number_of_reviews = 0
+
+                        sum_of_rating = 0
+                        for row in mentorReviews:
+                            sum_of_rating += row.stars
+                            number_of_reviews += 1
+
+                        if (sum_of_rating is not 0 and number_of_reviews is not 0):
+                            average_rating = sum_of_rating / number_of_reviews
+
                         item = {
                             "mentor_id": mentorInfo.mentor_id,
                             "mentor_profile_image": mentorInfo.profile_image,
@@ -321,12 +336,15 @@ class GQLQueryResolver(GQLResolver):
                             "mentor_city": mentorInfo.city,
                             "course_id": courseInfo.course_id,
                             "course": courseInfo.title,
-                            "price": mentorRow.price
+                            "price": mentorRow.price,
+                            "average_rating": average_rating,
+                            "number_of_reviews": number_of_reviews,
                         }
 
                         if item not in result:
                             result.append(item)
 
+            result.sort(key=lambda item: item["average_rating"], reverse=True)
             return result
 
         except Exception as e:

@@ -104,6 +104,17 @@ const RecommendationCard = ({ recommendation, graphQLClient }) => {
           >
             Price per hour:<b> {recommendation.price} LEI</b>
           </Typography>
+
+          <Typography variant="h5" className={customClasses.title}>
+            Average rating:<b> {recommendation.averageRating}</b>
+          </Typography>
+          <Typography
+            variant="h5"
+            className={customClasses.title}
+            style={{ marginBottom: 15 }}
+          >
+            Number of reviews:<b> {recommendation.numberOfReviews}</b>
+          </Typography>
         </div>
 
         <Button
