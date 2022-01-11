@@ -62,15 +62,19 @@ const useEditReviewMentor = (
         mentorItem.courseId === mentor.courseId
     );
 
+
+
     let item = allMentors[index];
+
 
     let _allMentors = allMentors;
     _allMentors = _allMentors.filter(
       (mentorItem) =>
         mentorItem.mentorId === mentor.mentorId &&
-        mentorItem.couseId === mentor.courseId
+        mentorItem.courseId === mentor.courseId
     );
-
+    
+      console.log(_allMentors)
     _allMentors.push({
       ...item,
       review: review,
