@@ -15,7 +15,14 @@ const customStyles = makeStyles(() => ({
     fontSize: 24,
     lineHeight: "30px",
     textAlign: "end",
-
+  },
+  course: {
+    color: "#585858",
+    fontFamily: "Urbanist",
+    fontWeight: 400,
+    fontSize: 20,
+    lineHeight: "30px",
+    textAlign: "start",
   },
   container: {
     marginBottom: 15,
@@ -32,10 +39,16 @@ const ReviewCard = ({ review }) => {
   const customClasses = customStyles();
   return (
     <div className={customClasses.container}>
-      <Typography variant="h5" className={customClasses.title}>{review.text}</Typography>
-      <Typography variant="h5"
-      className={customClasses.subtitle}
-      >{`- by ${review.name}`}</Typography>
+      <Typography variant="h5" className={customClasses.title}>
+        {review.review}
+      </Typography>
+      <Typography variant="h5" className={customClasses.course}>
+        - {review.course_title} -
+      </Typography>
+      <Typography
+        variant="h5"
+        className={customClasses.subtitle}
+      >{`- by ${review.student_username}`}</Typography>
     </div>
   );
 };

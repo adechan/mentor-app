@@ -43,8 +43,7 @@ const customStyles = makeStyles(() => ({
 
     marginBottom: 15,
   },
-  buttonContainer: {
-  },
+  buttonContainer: {},
   button: {
     fontSize: 12,
     border: "1px solid black",
@@ -57,40 +56,23 @@ const customStyles = makeStyles(() => ({
   },
 }));
 
-const MentorMoreInfoContainer = ({ mentor }) => {
+const MentorMoreInfoContainer = ({ graphQLClient, profileInfo }) => {
   const customClasses = customStyles();
-
-  const courses = [
-    { course: "Biology", price: 10 },
-    { course: "Math", price: 20 },
-  ];
-  const reviews = [
-    {
-      name: "studet1",
-      text: "The nicest teacher in the worl!",
-    },
-    {
-      name: "student2",
-      text: "Loved studying biology with her!",
-    },
-  ];
 
   return (
     <>
       <div className={customClasses.container}>
         <div className={customClasses.subContainer}>
           <Typography variant="h5" className={customClasses.title}>
-            <b>Mentor #1</b>
+            <b>{profileInfo.username}</b>
           </Typography>
           <Typography variant="h5" className={customClasses.title}>
-            Bacau, Romania
+            {profileInfo.city}, {profileInfo.country}
           </Typography>
         </div>
 
         <Typography variant="h5" className={customClasses.quote}>
-          "Maecenas lobortis nibh eu mi tempus, at aliquam odio euismod. Quisque
-          malesuada ultricies massa, tincidunt semper arcu ornare id. Donec
-          sagittis vestibulum leo, "
+          "{profileInfo.quote}"
         </Typography>
 
         <div className={customClasses.bottomSubcontainer}>
@@ -103,9 +85,9 @@ const MentorMoreInfoContainer = ({ mentor }) => {
           </Typography>
 
           <div>
-            {courses.map((course) => (
+            {profileInfo.courses.map((course) => (
               <Typography variant="h5" className={customClasses.title}>
-                {`- ${course.course} : ${course.price} Lei`}
+                {`- ${course.course_title} : ${course.price} Lei`}
               </Typography>
             ))}
           </div>
@@ -121,13 +103,13 @@ const MentorMoreInfoContainer = ({ mentor }) => {
           </Typography>
 
           <div>
-            {reviews.map((review) => (
-              <ReviewCard review={review}/>
+            {profileInfo.reviews.map((review) => (
+              <ReviewCard review={review} />
             ))}
           </div>
         </div>
 
-        <div className={customClasses.buttonContainer}>
+        {/* <div className={customClasses.buttonContainer}>
           <Button
             className={customClasses.button}
             variant="contained"
@@ -135,7 +117,7 @@ const MentorMoreInfoContainer = ({ mentor }) => {
           >
             Create appointment
           </Button>
-        </div>
+        </div> */}
       </div>
     </>
   );

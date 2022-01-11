@@ -1,10 +1,10 @@
 import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
-import { useHistory } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import MentorMoreInfoContainer from "./MentorMoreInfoContainer";
+import useGetMenorProfileDetails from "./hooks/useGetMentorProfileDetails";
 
-// TODO
 const customStyles = makeStyles(() => ({
   title: {
     padding: 20,
@@ -34,7 +34,7 @@ const customStyles = makeStyles(() => ({
   },
   subContainer: {
     padding: 20,
-    height: '100%',
+    height: "100%",
     width: "calc(100% - 80px)",
     backgroundColor: "white",
     margin: 20,
@@ -42,30 +42,37 @@ const customStyles = makeStyles(() => ({
     flexDirection: "column",
     justifyContent: "space-between",
     alignItems: "center",
-
   },
 }));
 
-const MentorMoreInfo = () => {
+const MentorMoreInfo = ({ graphQLClient }) => {
   const customClasses = customStyles();
   const history = useHistory();
+  const params = useParams();
+
+  const profileInfo = useGetMenorProfileDetails(graphQLClient, params.id);
 
   return (
-    <div className={customClasses.container}>
-      <div className={customClasses.row}>
-        <ArrowBackIosNewIcon
-          style={{ cursor: "pointer" }}
-          onClick={() => history.goBack()}
-        />
-        <Typography variant="h5" className={customClasses.title}>
-          Back
-        </Typography>
-      </div>
+    <>
+      <div className={customClasses.container}>
+        <div className={customClasses.row}>
+          <ArrowBackIosNewIcon
+            style={{ cursor: "pointer" }}
+            onClick={() => history.goBack()}
+          />
+          <Typography variant="h5" className={customClasses.title}>
+            Back
+          </Typography>
+        </div>
 
-      <div className={customClasses.subContainer}>
-        <MentorMoreInfoContainer />
+        <div className={customClasses.subContainer}>
+          <MentorMoreInfoContainer
+            graphQLClient={graphQLClient}
+            profileInfo={profileInfo}
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
