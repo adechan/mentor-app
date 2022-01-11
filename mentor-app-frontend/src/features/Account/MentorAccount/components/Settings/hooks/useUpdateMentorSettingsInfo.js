@@ -9,6 +9,7 @@ const useUpdateMentorSettingsInfo = (graphQLClient, updatedSettings) => {
       $account_id: ID!
       $first_name: String!
       $last_name: String!
+      $username: String!
       $mentor_email: String!
       $country: String!
       $city: String!
@@ -21,6 +22,7 @@ const useUpdateMentorSettingsInfo = (graphQLClient, updatedSettings) => {
         settings_info: {
           first_name: $first_name
           last_name: $last_name
+          username: $username
           mentor_email: $mentor_email
           country: $country
           city: $city
@@ -39,6 +41,7 @@ const useUpdateMentorSettingsInfo = (graphQLClient, updatedSettings) => {
       account_id: accountId,
       first_name: updatedSettings.firstName,
       last_name: updatedSettings.lastName,
+      username: updatedSettings.mentorUsername,
       mentor_email: updatedSettings.email,
       country: updatedSettings.country,
       city: updatedSettings.city,

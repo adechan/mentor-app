@@ -92,6 +92,7 @@ type MentorReviewResult {
 type StudentSettingsResult {
     first_name: String
     last_name: String
+    student_username: String
     student_email: String
     country: String
     city: String
@@ -102,6 +103,7 @@ type StudentSettingsResult {
 type MentorSettingsResult {
     first_name: String
     last_name: String
+    mentor_username: String
     mentor_email: String
     country: String
     city: String
@@ -113,6 +115,7 @@ type MentorSettingsResult {
 input StudentSettingsInfo {
     first_name: String!
     last_name: String!
+    username: String!
     student_email: String!
     country: String!
     city: String!
@@ -123,6 +126,7 @@ input StudentSettingsInfo {
 input MentorSettingsInfo {
     first_name: String!
     last_name: String!
+    username: String!
     mentor_email: String!
     country: String!
     city: String!

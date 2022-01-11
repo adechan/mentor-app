@@ -9,6 +9,7 @@ const useUpdateStudentSettingsInfo = (graphQLClient, updatedSettings) => {
       $account_id: ID!
       $first_name: String!
       $last_name: String!
+      $username: String!
       $student_email: String!
       $country: String!
       $city: String!
@@ -20,6 +21,7 @@ const useUpdateStudentSettingsInfo = (graphQLClient, updatedSettings) => {
         settings_info: {
           first_name: $first_name
           last_name: $last_name
+          username: $username
           student_email: $student_email
           country: $country
           city: $city
@@ -33,10 +35,12 @@ const useUpdateStudentSettingsInfo = (graphQLClient, updatedSettings) => {
   `;
 
   const updateStudentSettings = async () => {
+    console.log(updatedSettings)
     const variables = {
       account_id: accountId,
       first_name: updatedSettings.firstName,
       last_name: updatedSettings.lastName,
+      username: updatedSettings.studentUsername,
       student_email: updatedSettings.email,
       country: updatedSettings.country,
       city: updatedSettings.city,

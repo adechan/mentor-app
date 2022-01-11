@@ -52,6 +52,7 @@ const Settings = ({graphQLClient}) => {
   const [accountInfo, setAccountInfo] = useState({
     firstName: "",
     lastName: "",
+    studentUsername: "",
     email: "",
     country: "",
     city: "",
@@ -64,6 +65,7 @@ const Settings = ({graphQLClient}) => {
       setAccountInfo({
        firstName: initialSettings.firstName,
        lastName: initialSettings.lastName,
+       studentUsername: initialSettings.studentUsername,
        email: initialSettings.email,
        country: initialSettings.country,
        city: initialSettings.city,
@@ -80,6 +82,7 @@ const Settings = ({graphQLClient}) => {
        setAccountInfo({
         firstName: initialSettings.firstName,
         lastName: initialSettings.lastName,
+        studentUsername: initialSettings.studentUsername,
         email: initialSettings.email,
         country: initialSettings.country,
         city: initialSettings.city,
@@ -131,6 +134,19 @@ const Settings = ({graphQLClient}) => {
             setAccountInfo((prev) => ({
               ...prev,
               email: e.target.value,
+            }))
+          }
+          fullWidth={true}
+          className={customClasses.textField}
+        />
+          <TextField
+          label="Username"
+          variant="outlined"
+          value={accountInfo.studentUsername}
+          onChange={(e) =>
+            setAccountInfo((prev) => ({
+              ...prev,
+              studentUsername: e.target.value,
             }))
           }
           fullWidth={true}

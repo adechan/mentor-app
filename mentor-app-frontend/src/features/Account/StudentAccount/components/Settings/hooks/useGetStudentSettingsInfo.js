@@ -8,6 +8,7 @@ const useGetStudentSettingsInfo = (graphQLClient) => {
   const [initialSettings, setInitialSettings] = useState({
     firstName: "",
     lastName: "",
+    studentUsername: "",
     email: "",
     country: "",
     city: "",
@@ -20,6 +21,7 @@ const useGetStudentSettingsInfo = (graphQLClient) => {
       get_student_settings_info(account_id: $account_id) {
         first_name
         last_name
+        student_username
         student_email
         country
         city
@@ -45,6 +47,7 @@ const useGetStudentSettingsInfo = (graphQLClient) => {
       ...prev,
       firstName: result.first_name,
       lastName: result.last_name,
+      studentUsername: result.student_username,
       email: result.student_email,
       country: result.country,
       city: result.city,

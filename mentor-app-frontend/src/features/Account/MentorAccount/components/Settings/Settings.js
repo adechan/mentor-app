@@ -52,6 +52,7 @@ const Settings = ({graphQLClient}) => {
   const [accountInfo, setAccountInfo] = useState({
     firstName: "",
     lastName: "",
+    mentorUsername: "",
     email: "",
     country: "",
     city: "",
@@ -65,6 +66,7 @@ const Settings = ({graphQLClient}) => {
      setAccountInfo({
       firstName: initialSettings.firstName,
       lastName: initialSettings.lastName,
+      mentorUsername: initialSettings.mentorUsername,
       email: initialSettings.email,
       country: initialSettings.country,
       city: initialSettings.city,
@@ -73,6 +75,7 @@ const Settings = ({graphQLClient}) => {
       quote: initialSettings.quote,
      })
    }
+   console.log(initialSettings)
   }, [initialSettings])
 
 
@@ -82,6 +85,7 @@ const Settings = ({graphQLClient}) => {
       setAccountInfo({
        firstName: initialSettings.firstName,
        lastName: initialSettings.lastName,
+       mentorUsername: initialSettings.mentorUsername,
        email: initialSettings.email,
        country: initialSettings.country,
        city: initialSettings.city,
@@ -121,6 +125,19 @@ const Settings = ({graphQLClient}) => {
             setAccountInfo((prev) => ({
               ...prev,
               lastName: e.target.value,
+            }))
+          }
+          fullWidth={true}
+          className={customClasses.textField}
+        />
+            <TextField
+          label="Username"
+          variant="outlined"
+          value={accountInfo.mentorUsername}
+          onChange={(e) =>
+            setAccountInfo((prev) => ({
+              ...prev,
+              mentorUsername: e.target.value,
             }))
           }
           fullWidth={true}

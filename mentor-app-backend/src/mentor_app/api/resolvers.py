@@ -230,6 +230,7 @@ class GQLQueryResolver(GQLResolver):
             result = {
                 "first_name": accountRow.first_name,
                 "last_name": accountRow.last_name,
+                "student_username": studentRow.username,
                 "student_email": studentRow.student_email,
                 "country": studentRow.country,
                 "city": studentRow.city,
@@ -257,6 +258,7 @@ class GQLQueryResolver(GQLResolver):
             result = {
                 "first_name": accountRow.first_name,
                 "last_name": accountRow.last_name,
+                "mentor_username": mentorRow.username,
                 "mentor_email": mentorRow.mentor_email,
                 "country": mentorRow.country,
                 "city": mentorRow.city,
@@ -831,7 +833,8 @@ class GQLMutationResolver(GQLResolver):
                          "country": settings_info["country"],
                          "city": settings_info["city"],
                          "hobbies": settings_info["hobbies"],
-                         "statement": settings_info["statement"]})
+                         "statement": settings_info["statement"],
+                         "username": settings_info["username"]})
             self.db.session.commit()
 
             return dict(result=True)
@@ -861,7 +864,8 @@ class GQLMutationResolver(GQLResolver):
                          "city": settings_info["city"],
                          "hobbies": settings_info["hobbies"],
                          "statement": settings_info["statement"],
-                         "quote": settings_info["quote"]})
+                         "quote": settings_info["quote"],
+                         "username": settings_info["username"]})
             self.db.session.commit()
 
             return dict(result=True)

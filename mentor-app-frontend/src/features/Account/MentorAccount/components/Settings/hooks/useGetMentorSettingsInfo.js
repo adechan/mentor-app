@@ -8,6 +8,7 @@ const useGetMentorSettingsInfo = (graphQLClient) => {
   const [initialSettings, setInitialSettings] = useState({
     firstName: "",
     lastName: "",
+    mentorUsername: "",
     email: "",
     country: "",
     city: "",
@@ -21,6 +22,7 @@ const useGetMentorSettingsInfo = (graphQLClient) => {
       get_mentor_settings_info(account_id: $account_id) {
         first_name
         last_name
+        mentor_username
         mentor_email
         country
         city
@@ -47,6 +49,7 @@ const useGetMentorSettingsInfo = (graphQLClient) => {
       ...prev,
       firstName: result.first_name,
       lastName: result.last_name,
+      mentorUsername: result.mentor_username,
       email: result.mentor_email,
       country: result.country,
       city: result.city,
