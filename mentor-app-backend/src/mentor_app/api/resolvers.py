@@ -125,8 +125,12 @@ class GQLQueryResolver(GQLResolver):
     @convert_kwargs_to_snake_case
     def resolve_query_get_all_courses(self, _, info):
         try:
+            start = datetime.datetime.now()
             courses = self.db.session.query(self.api.Course) \
                 .all()
+
+            end = datetime.datetime.now()
+            logger.debug(f'Course.all() time: {end - start}')
 
             result = []
             for course in courses:

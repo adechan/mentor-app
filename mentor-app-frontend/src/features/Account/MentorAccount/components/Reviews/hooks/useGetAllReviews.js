@@ -29,7 +29,7 @@ const useGetAllReviews = (graphQLClient) => {
       return;
     }
 
-    const result = data?.get_mentor_reviews;
+    const result = data?.get_mentor_reviews || [];
     if (!result.length) {
       return;
     }

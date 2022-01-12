@@ -31,6 +31,8 @@ const useGetAllCourses = () => {
       foundCourses.push(course);
     });
 
+    console.log(foundCourses);
+
     setCourses(foundCourses);
   };
 

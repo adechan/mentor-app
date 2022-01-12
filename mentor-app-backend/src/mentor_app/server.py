@@ -49,15 +49,15 @@ class MentorServer:
             logger.debug(f'{flask.session=}')
 
             def check_auth_middleware(resolver, obj, info, **kwargs):
-                logger.debug(f'{info.path=}')
+                # logger.debug(f'{info.path=}')
                 if MentorAPI.is_authenticated_query(info.path):
                     if session_id is None:
                         raise ServerError('Not authenticated!')
 
                 return resolver(obj, info, **kwargs)
 
-            logger.debug(f'{data=}')
-            logger.debug(f'{session_id=}')
+            logger.trace(f'{data=}')
+            logger.trace(f'{session_id=}')
 
             success, result = graphql_sync(
                 self.api.schema, data,
@@ -66,14 +66,5 @@ class MentorServer:
                 middleware=MiddlewareManager(check_auth_middleware)
             )
 
-            logger.debug(f'{success=} {result=}')
-            response = make_response(jsonify(result), 200)
-            if 'id' in flask.session:
-                logger.debug(f'Cookie set!')
-                # response.set_cookie(
-                #     key='session_id', value=flask.session['id'],
-                #     max_age=flask.session['duration'],
-                #     httponly=True
-                # )
-
-            return response
+            logger.trace(f'{success=} {result=}')
+            return make_response(jsonify(result), 200)

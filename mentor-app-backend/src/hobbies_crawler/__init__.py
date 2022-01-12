@@ -1,0 +1,1 @@
+from hobbies_crawler import crawler

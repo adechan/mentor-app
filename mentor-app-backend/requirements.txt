@@ -7,3 +7,6 @@ PyJWT
 bcrypt
 SQLAlchemy
 graphql
+requests
+beautifulsoup4
+

@@ -27,7 +27,7 @@ const useGetAllAwards = (graphQLClient) => {
       return;
     }
 
-    const result = data?.get_student_awards;
+    const result = data?.get_student_awards || [];
     if (!result.length) {
       return;
     }
