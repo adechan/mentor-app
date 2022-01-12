@@ -1,1 +1,1 @@
-from hobbies_crawler import crawler
+from . import crawler

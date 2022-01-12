@@ -1,10 +1,10 @@
-import { Typography, FormControl } from "@material-ui/core";
-import { makeStyles, InputLabel, Select, MenuItem } from "@material-ui/core";
+import { Typography } from "@material-ui/core";
+import { makeStyles, TextField } from "@material-ui/core";
 import FooterButtons from "../../common/components/FooterButtons";
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { useGetProfileThirdStep } from "../hooks/useGetProfileThirdStep";
 import useGetAllCourses from "../hooks/useGetAllCourses";
+import Autocomplete from "@mui/material/Autocomplete";
 
 const customStyles = makeStyles((theme) => ({
   description: {
@@ -21,7 +21,6 @@ const customStyles = makeStyles((theme) => ({
 }));
 
 const StudentProfileInterests = () => {
-  const history = useHistory();
   const customClasses = customStyles();
   const courses = useGetAllCourses();
   const [subject, setSubject] = useState({
@@ -33,8 +32,8 @@ const StudentProfileInterests = () => {
   useEffect(() => {
     setSubject({
       id: formik.values.interest,
-    })
-   }, [formik.values])
+    });
+  }, [formik.values]);
 
   return (
     <formik onSubmit={formik.onSubmit}>
@@ -43,22 +42,17 @@ const StudentProfileInterests = () => {
           Pick one subject you are interested in learning.
         </Typography>
 
-        <FormControl style={{ width: "50%" }}>
-          <InputLabel id="subject">Subjects</InputLabel>
-          <Select
-            labelId="subject-label"
-            id="subject-id"
-            label="Subject"
-            value={formik.values.interest}
-            onChange={(event) => formik.setFieldValue("interest", event.target.value)}
-          >
-            {
-              courses.map(course => (
-                <MenuItem value={course.id}>{course.title}</MenuItem>
-              ))
-            }
-          </Select>
-        </FormControl>
+        <Autocomplete
+          disablePortal
+          id="combo-box-demo"
+          options={courses}
+          onChange={(event, value) => {
+            formik.setFieldValue("interest", value !== null ? value.id : null);
+          }} // prints the selected value
+          sx={{ width: "auto" }}
+          getOptionLabel={(option) => option.title}
+          renderInput={(params) => <TextField {...params} label="Interest" />}
+        />
         {formik.touched.interest && formik.errors.interest && (
           <p className={customClasses.error}>{formik.errors.interest}</p>
         )}
