@@ -20,8 +20,8 @@ def get_a_tags_from_url(hobobies_url):
 
     return found_a_s
 
-def parse_hobbies_url(hobobies_url) :
-    a_s = get_a_tags_from_url(hobobies_url)
+def parse_hobbies_url(hobbies_url):
+    a_s = get_a_tags_from_url(hobbies_url)
 
     found_hobbies = []
     for a in a_s:
