@@ -28,18 +28,9 @@ const useAcceptAppointment = (
     const index = allAppointments.findIndex(appointment => appointment.appointmentId === appointmentId);
 
     let item = allAppointments[index];
+    item["status"] = "ACCEPTED"
 
-    let _allAppointments = allAppointments;
-    _allAppointments = _allAppointments.filter(
-      (appointment) => appointment.appointmentId !== appointmentId
-    );
-
-    _allAppointments.push({
-        ...item,
-        status: 'ACCEPTED'
-    })
-
-    setAllAppointments(_allAppointments);
+    setAllAppointments(allAppointments);
   };
 
   return acceptAppointment;
