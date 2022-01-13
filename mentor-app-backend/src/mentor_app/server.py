@@ -1,19 +1,18 @@
-import datetime
-import functools
 import os
-from typing import Union
 
 import flask
-import graphql.error
 from ariadne import graphql_sync
 from ariadne.constants import PLAYGROUND_HTML
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
-from graphql import MiddlewareManager, GraphQLResolveInfo
+from graphql import MiddlewareManager
 from loguru import logger
+
+from . import file_server
 from .api import MentorAPI
-from .error import ServerError
+from .error import ServerError, InvalidFileType
+
 
 class MentorServer:
     def __init__(self, db_name: str = 'mentor_app'):
@@ -22,6 +21,7 @@ class MentorServer:
         self.app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.getcwd()}/{db_name}.db"
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         self.app.config['SECRET_KEY'] = os.urandom(32).hex()
+        self.app.config['UPLOAD_FOLDER'] = os.path.abspath('./avatars')
         # self.app.config['SESSION_COOKIE_SECURE'] = True
         logger.debug(f'database uri: {self.app.config["SQLALCHEMY_DATABASE_URI"]}')
 
@@ -40,6 +40,28 @@ class MentorServer:
         @cross_origin(supports_credentials=True)
         def graphql_playground():
             return PLAYGROUND_HTML, 200
+            # logger.debug(f'{filename=}')
+
+        @self.app.route("/upload", methods=["POST"])
+        @cross_origin(supports_credentials=True)
+        def upload_file():
+            logger.debug(f'{request=}')
+            logger.debug(f'{request.data=}')
+            try:
+                filename = file_server.save_file(request.data)
+                logger.debug(f'{filename=}')
+                return make_response(jsonify(filename), 200)
+
+            except InvalidFileType as e:
+                logger.exception(e)
+                return make_response(jsonify(e), 415)
+
+        @self.app.route("/avatar/<path:filename>", methods=["GET"])
+        @cross_origin(supports_credentials=True)
+        def get_avatar(filename):
+            logger.debug(f'{request=}')
+            logger.debug(f'{filename=}')
+            return file_server.upload_file(filename, upload_folder=self.app.config['UPLOAD_FOLDER'])
 
         @self.app.route("/graphql", methods=["POST"])
         @cross_origin(supports_credentials=True)

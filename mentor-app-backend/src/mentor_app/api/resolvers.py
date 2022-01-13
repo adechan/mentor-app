@@ -329,7 +329,7 @@ class GQLQueryResolver(GQLResolver):
                             sum_of_rating += row.stars
                             number_of_reviews += 1
 
-                        if (sum_of_rating is not 0 and number_of_reviews is not 0):
+                        if (sum_of_rating != 0 and number_of_reviews != 0):
                             average_rating = sum_of_rating / number_of_reviews
 
                         item = {

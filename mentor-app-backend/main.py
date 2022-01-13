@@ -1,3 +1,5 @@
+import magic
+
 from mentor_app import MentorServer
 from loguru import logger
 import crawler

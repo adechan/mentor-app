@@ -22,7 +22,7 @@ const UploadAvatar = ({avatar, setAvatar}) => {
         type="file"
         id="myFile"
         name="filename"
-        value={avatar}
+        accept="image/*"
         onChange={setAvatar}
       ></input>
     </>

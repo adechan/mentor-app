@@ -6,3 +6,6 @@ class ServerError(Exception):
 
 class InvalidLogin(ServerError):
     pass
+
+class InvalidFileType(ServerError):
+    pass
