@@ -39,11 +39,12 @@ const useGetAllRecommendations = (graphQLClient) => {
         return;
     }
 
-    console.log(result);
+    // console.log(result);
+
     let recommendations = []
     result.forEach(resultItem => {
         const item = {
-            mentorAvatar: resultItem.mentor_profile_image,
+            mentorAvatar: `http://127.0.0.1:8080/avatar/${resultItem.mentor_profile_image}`,
             mentorId: resultItem.mentor_id,
             mentorName: resultItem.mentor_username,
             mentorCity: resultItem.mentor_city,

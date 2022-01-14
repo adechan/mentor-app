@@ -22,7 +22,7 @@ const StudentProfileBasic = ({ setActiveStep }) => {
   const customClasses = customStyles();
 
   const [profileBasic, setProfileBasic] = useState({
-    avatar: "",
+    avatar: null,
     username: "",
     studentEmail: "",
     country: "",
@@ -49,7 +49,7 @@ const StudentProfileBasic = ({ setActiveStep }) => {
       <div style={{ marginTop: 30 }}>
         <UploadAvatar
           avatar={formik.values.avatar}
-          setAvatar={(e) => formik.setFieldValue("avatar", e.target.value)}
+          setAvatar={(e) => formik.setFieldValue("avatar", e.target.files[0])}
         />
 
         <TextField

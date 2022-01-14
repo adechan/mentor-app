@@ -43,10 +43,6 @@ const useRegisterStudent = () => {
   `;
 
   const register = async () => {
-
-    var fileToUpload = new FormData()
-    // fileToUpload.append('file', registrationInfo.studentProfile.avatar)
-    // fileToUpload.append('name', registrationInfo.studentProfile.avatar?.name)
   
     const requestOptions = {
       method: "POST",

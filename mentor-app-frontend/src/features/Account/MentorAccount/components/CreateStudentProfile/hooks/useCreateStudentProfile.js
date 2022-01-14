@@ -6,7 +6,7 @@ import { registrationActions } from "../../../../../../store/slices/registration
 const useCreateStudentProfile = (graphQLClient) => {
   const dispatch = useDispatch();
   const registrationInfo = useSelector((store) => store.registration);
-  const accountId = useSelector((store) => store.account.accountId)
+  const accountId = useSelector((store) => store.account.accountId);
   const profiles = useSelector((store) => store.account.profiles);
 
   const mutation = gql`
@@ -22,15 +22,15 @@ const useCreateStudentProfile = (graphQLClient) => {
       $course_id: ID
     ) {
       create_student_profile(
-        account_id: $account_id,
+        account_id: $account_id
         profile: {
-          username: $username,
-          profile_image: $profile_image,
-          country: $country,
-          city: $city,
-          student_email: $student_email,
-          hobbies: $hobbies,
-          statement: $statement,
+          username: $username
+          profile_image: $profile_image
+          country: $country
+          city: $city
+          student_email: $student_email
+          hobbies: $hobbies
+          statement: $statement
           course_id: $course_id
         }
       ) {
@@ -39,31 +39,43 @@ const useCreateStudentProfile = (graphQLClient) => {
     }
   `;
 
-  const variables = {
-    account_id: accountId,
-    username: registrationInfo.studentProfile.username,
-    profile_image: registrationInfo.studentProfile.avatar,
-    student_email: registrationInfo.studentProfile.studentEmail,
-    country: registrationInfo.studentProfile.country,
-    city: registrationInfo.studentProfile.city,
-    statement: registrationInfo.studentProfile.statement,
-    hobbies: registrationInfo.studentProfile.hobbies,
-    course_id: registrationInfo.studentProfile.interest,
-  };
-
   const createStudentProfile = async () => {
+    const requestOptions = {
+      method: "POST",
+      body: registrationInfo.studentProfile.avatar,
+    };
+
+    const response = await fetch(
+      "http://127.0.0.1:8080/upload",
+      requestOptions
+    );
+    const filename = await response.json();
+
+    const variables = {
+      account_id: accountId,
+      username: registrationInfo.studentProfile.username,
+      profile_image: filename,
+      student_email: registrationInfo.studentProfile.studentEmail,
+      country: registrationInfo.studentProfile.country,
+      city: registrationInfo.studentProfile.city,
+      statement: registrationInfo.studentProfile.statement,
+      hobbies: registrationInfo.studentProfile.hobbies,
+      course_id: registrationInfo.studentProfile.interest,
+    };
+
     const data = await graphQLClient.request(mutation, variables);
 
     const result = data?.create_student_profile?.result;
     if (result) {
-      dispatch(accountActions.SET_PROFILES({
-        ...profiles,
-        studentId: result    
-    }));
+      dispatch(
+        accountActions.SET_PROFILES({
+          ...profiles,
+          studentId: result,
+        })
+      );
     }
 
     dispatch(registrationActions.RESET());
-
   };
 
   return createStudentProfile;

@@ -27,7 +27,7 @@ export const useGetProfileStep1 = (step1) => {
 
     const formik = useFormik({
         initialValues: {
-            avatar: '',
+            avatar: null,
             username: '',
             mentorEmail: '',
             country: '',

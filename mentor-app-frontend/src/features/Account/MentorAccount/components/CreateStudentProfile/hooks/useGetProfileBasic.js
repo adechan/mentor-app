@@ -27,7 +27,7 @@ export const useGetProfileBasic = (profileBasic) => {
 
     const formik = useFormik({
         initialValues: {
-            avatar: '',
+            avatar: null,
             username: '',
             studentEmail: '',
             country: '',

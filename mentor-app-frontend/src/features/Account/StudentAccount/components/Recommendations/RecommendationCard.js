@@ -78,7 +78,7 @@ const RecommendationCard = ({ recommendation, graphQLClient }) => {
             )
           }
         >
-          <Avatar src="dasd" style={{ marginBottom: 10 }} />
+          <Avatar src={recommendation.mentorAvatar} style={{ marginBottom: 10 }} />
           <Typography variant="h5" className={customClasses.title}>
             <b>{recommendation.mentorName}</b>
           </Typography>
