@@ -39,8 +39,8 @@ input NewStudentProfile {
     username: String!
     profile_image: String
     student_email: String
-    country: String!
-    city: String!
+    country: String
+    city: String
     hobbies: String
     statement: String
     course_id: ID
@@ -50,8 +50,8 @@ input NewMentorProfile {
     username: String!
     profile_image: String
     mentor_email: String
-    country: String!
-    city: String!
+    country: String
+    city: String
     hobbies: String
     statement: String
     quote: String
@@ -145,10 +145,10 @@ type StudentAllMentorsResult {
 }
 
 type MentorAllStudentsResult {
-    student_id: ID!
-    course_id: ID!
-    username: String!
-    course_title: String!
+    student_id: ID
+    course_id: ID
+    username: String
+    course_title: String
     awarded: Boolean
 }
 

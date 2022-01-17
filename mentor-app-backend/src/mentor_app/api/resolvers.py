@@ -83,13 +83,19 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.Mentor.mentor_id == award.mentor_id) \
                     .one()
 
+                account_row = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.mentor_id == mentor_row.mentor_id) \
+                    .one()
+
                 course_row = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == award.course_id) \
                     .one()
 
+                name = account_row.first_name + ' ' + account_row.last_name
+
                 item = {
                    "course_title": course_row.title,
-                    "mentor_username": mentor_row.username,
+                    "mentor_username": name,
                     "date": award.date
                 }
 
@@ -205,11 +211,17 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.Student.student_id == reviewRow.student_id) \
                     .one() # get student_username from here
 
+                accountRow = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.student_id == studentRow.student_id) \
+                    .one()
+
+                name = accountRow.first_name + ' ' + accountRow.last_name
+
                 item = {
                     "course_title": courseRow.title,
                     "review": reviewRow.review,
                     "stars": reviewRow.stars,
-                    "student_username": studentRow.username,
+                    "student_username": name,
                     "date": reviewRow.date
                 }
                 result.append(item)
@@ -332,10 +344,16 @@ class GQLQueryResolver(GQLResolver):
                         if (sum_of_rating != 0 and number_of_reviews != 0):
                             average_rating = sum_of_rating / number_of_reviews
 
+                        accountRow = self.db.session.query(self.api.Account) \
+                            .filter(self.api.Account.mentor_id == mentorRow.mentor_id) \
+                            .one()
+
+                        name = accountRow.first_name + ' ' + accountRow.last_name
+
                         item = {
                             "mentor_id": mentorInfo.mentor_id,
                             "mentor_profile_image": mentorInfo.profile_image,
-                            "mentor_username": mentorInfo.username,
+                            "mentor_username": name,
                             "mentor_country": mentorInfo.country,
                             "mentor_city": mentorInfo.city,
                             "course_id": courseInfo.course_id,
@@ -386,8 +404,14 @@ class GQLQueryResolver(GQLResolver):
                 }
                 hours.append(item)
 
+            accountRow = self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.mentor_id == mentor_info.mentor_id) \
+                .one()
+
+            name = accountRow.first_name + ' ' + accountRow.last_name
+
             item = {
-                "mentor_username": mentor_info.username,
+                "mentor_username": name,
                 "mentor_email": mentor_info.mentor_email,
                 "course": course_info.title,
                 "course_id": course_info.course_id,
@@ -430,9 +454,15 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.AppointmentAvailableHours.id == appointmentRow.available_hours_id) \
                     .one()  # mentor info from here
 
+                accountRow = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.mentor_id == mentorRow.mentor_id) \
+                    .one()
+
+                name = accountRow.first_name + ' ' + accountRow.last_name
+
                 item = {
                     "appointment_id": appointmentRow.id,
-                    "mentor_username": mentorRow.username,
+                    "mentor_username": name,
                     "mentor_email": mentorRow.mentor_email,
                     "course": courseTitle,
                     "price": price,
@@ -477,9 +507,15 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.AppointmentAvailableHours.id == appointmentRow.available_hours_id) \
                     .one()  # mentor info from here
 
+                accountRow = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.student_id == studentRow.student_id) \
+                    .one()
+
+                name = accountRow.first_name + ' ' + accountRow.last_name
+
                 item = {
                     "appointment_id": appointmentRow.id,
-                    "student_username": studentRow.username,
+                    "student_username": name,
                     "student_email": studentRow.student_email,
                     "course": courseTitle,
                     "price": price,
@@ -507,9 +543,9 @@ class GQLQueryResolver(GQLResolver):
                 .all()
 
             for appointmentRow in appointmentRows:
-                mentorUsername = self.db.session.query(self.api.Mentor) \
+                mentorRow = self.db.session.query(self.api.Mentor) \
                     .filter(self.api.Mentor.mentor_id == appointmentRow.mentor_id) \
-                    .one().username
+                    .one()
 
                 course = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == appointmentRow.course_id) \
@@ -521,6 +557,10 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.MentorReview.student_id == student_id) \
                     .all()
 
+                accountRow = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.mentor_id == appointmentRow.mentor_id) \
+                    .one()
+
                 review = ""
                 stars = 0
                 if len(reviewRow) > 0:
@@ -528,9 +568,11 @@ class GQLQueryResolver(GQLResolver):
                     review = reviewRow[0].review
                     stars = reviewRow[0].stars
 
+                name = accountRow.first_name + ' ' + accountRow.last_name
+
                 item = {
                     "mentor_id": appointmentRow.mentor_id,
-                    "username": mentorUsername,
+                    "username": name,
                     "course_id": appointmentRow.course_id,
                     "course_title": course,
                     "review": review,
@@ -558,9 +600,9 @@ class GQLQueryResolver(GQLResolver):
                 .all()
 
             for appointmentRow in appointmentRows:
-                studentUsername = self.db.session.query(self.api.Student) \
+                studentRow = self.db.session.query(self.api.Student) \
                     .filter(self.api.Student.student_id == appointmentRow.student_id) \
-                    .one().username
+                    .one()
 
                 course = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == appointmentRow.course_id) \
@@ -576,9 +618,15 @@ class GQLQueryResolver(GQLResolver):
                 if len(awardRows) > 0:
                     awarded = awardRows[0].awarded
 
+                accountRow = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.student_id == studentRow.student_id) \
+                    .one()
+
+                name = accountRow.first_name + ' ' + accountRow.last_name
+
                 item = {
                     "student_id": appointmentRow.student_id,
-                    "username": studentUsername,
+                    "username": name,
                     "course_id": appointmentRow.course_id,
                     "course_title": course,
                     "awarded": awarded
@@ -625,23 +673,34 @@ class GQLQueryResolver(GQLResolver):
 
             reviews = []
             for row in reviews_rows:
-                student_username = self.db.session.query(self.api.Student) \
+                studentRow = self.db.session.query(self.api.Student) \
                     .filter(self.api.Student.student_id == row.student_id) \
-                    .one().username
+                    .one()
 
                 course_title = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == row.course_id) \
                     .one().title
+
+                accountRow = self.db.session.query(self.api.Account) \
+                    .filter(self.api.Account.student_id == studentRow.student_id) \
+                    .one()
+
+                name = accountRow.first_name + ' ' + accountRow.last_name
                 item = {
                     "review": row.review,
                     "course_title": course_title,
-                    "student_username": student_username,
+                    "student_username": name,
                 }
 
                 reviews.append(item)
 
+            accountRow = self.db.session.query(self.api.Account) \
+                .filter(self.api.Account.mentor_id == mentor.mentor_id) \
+                .one()
+
+            name = accountRow.first_name + ' ' + accountRow.last_name
             result = {
-                "mentor_username": mentor.username,
+                "mentor_username": name,
                 "country": mentor.country,
                 "city": mentor.city,
                 "quote": mentor.quote,
