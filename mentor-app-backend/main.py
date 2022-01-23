@@ -26,4 +26,5 @@ def hello():
 # server.db.create_all()
 # create_course_table(server.db, server.api)
 # crawler.populate_course_table(server.db, server.api)
-server.serve()
+# server.serve()
+
