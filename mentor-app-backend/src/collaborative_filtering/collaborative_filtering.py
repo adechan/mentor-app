@@ -1,18 +1,20 @@
-import math
+import itertools
+from loguru import logger
 
-users = [("User1", ["Math", "Biology"]),
-         ("User2", ["Math"]),
-         ("User3", ["Biology", "Painting", "Math"])]
+from .predictions import predict_weighted_sum
+from .similiarity import pearson_similarity
 
-ratings = [("User1", [("M1", 5), ("M2", 5)]),
-           ("User2", [("M1", 5)]),
-           ("User3", [("M1", 5), ("M2", 5), ("M3", 0)])]
 
-books = [("Math", ["M1", "M2", "M3", "M4"]),
-         ("Biology", ["B1", "B2", "B3", "B4"]),
-         ("Painting", ["P1", "P2", "P3"])]
 
-def get_user_interests(users):
+def get_books_within_given_interest(interest, books):
+    books_within_interest = []
+    for book in books:
+        if book[0] == interest:
+            books_within_interest.extend(book[1])
+
+    return books_within_interest
+
+def get_all_possible_interests_for_all_users(users):
     interests = []
     for user in users:
         user_interests = user[1]
@@ -20,7 +22,7 @@ def get_user_interests(users):
 
     return list(set(interests))
 
-def get_users_with_same_interests(users, interest):
+def get_users_that_have_same_interest(users, interest):
     users_with_same_interest = []
     for user in users:
         intersts = user[1]
@@ -29,7 +31,7 @@ def get_users_with_same_interests(users, interest):
 
     return users_with_same_interest
 
-def get_rating_for_given_book_and_user(user, book):
+def get_rating_for_given_book_and_user(user, book, ratings):
     for rating in ratings:
         if rating[0] == user:
             given_ratings = rating[1]
@@ -40,84 +42,85 @@ def get_rating_for_given_book_and_user(user, book):
                     return given_rating[1]
     return 0
 
-def create_similarity_matrix(similar_users, books):
+def create_ranking_table_for_given_books(similar_users, books, ratings):
     matrix = []
-    #       M1 M2 M3 M4
-    # U1
-    # U2
-    # No rating = 0
+
     for user in similar_users:
         row = []
         for book in books:
-            rating = get_rating_for_given_book_and_user(user, book)
+            rating = get_rating_for_given_book_and_user(user, book, ratings)
             row.append(rating)
 
         matrix.append(row)
 
     return matrix
 
-def get_books_within_interst(interest, books):
-    books_within_interest = []
-    for book in books:
-        if book[0] == interest:
-            books_within_interest.extend(book[1])
+def transpose(matrix):
+    transposed_matrix = []
+    rows = len(matrix)
+    columns = len(matrix[0])
 
-    return books_within_interest
+    for i in range(0, columns):
+        new_row = []
+        for j in range(0, rows):
+            new_row.append(matrix[j][i])
 
-def get_product_between_2_vectors(v1, v2):
-    final_product = 0
-    for i in range(0, len(v1)):
-        prod = v1[i] * v2[i]
-        final_product += prod
+        transposed_matrix.append(new_row)
 
-    return final_product
+    return transposed_matrix
 
-def get_length_of_vector(v):
-    # 2 norm
-    sum = 0
-    for i in range(0, len(v)):
-        sum += v[i] * v[i]
+def get_full_ratings_matrix(matrix):
+    new_matrix = []
+    for col in transpose(matrix):
+        if 0 not in col:
+            new_matrix.append(col)
 
-    return sum
+    return transpose(new_matrix)
 
-def get_similarity_between_2_users(user1_ratings, user2_ratings):
-    product_of_norms =  math.sqrt(get_length_of_vector(user1_ratings)) * math.sqrt(get_length_of_vector(user2_ratings))
-    similarity = get_product_between_2_vectors(user1_ratings, user2_ratings) / product_of_norms
+def make_similarity_matrix(full_ratings_matrix, similarity_fn):
+    num_rows = len(full_ratings_matrix)
 
-    return similarity
+    similarities = [[1] * num_rows for _ in range(num_rows)]
+    user_combinations = list(itertools.combinations(range(len(full_ratings_matrix)), 2))
+    logger.trace(f'{list(user_combinations)=}')
+    for i, j in user_combinations:
+        ui = full_ratings_matrix[i]
+        uj = full_ratings_matrix[j]
+        logger.trace(f"calculate similarity between {i} {j}: {ui} {uj}")
+        similarity = similarity_fn(full_ratings_matrix[i], full_ratings_matrix[j])
+        logger.trace(f'{similarity=}')
+        similarities[i][j] = similarity
+        similarities[j][i] = similarity
+    logger.trace(f'{similarities=}')
 
-def get_best_similarity(user_ratings, matrix):
-    best_similarity_for_user = 0
-    index = 0
-    for i in range(0, len(matrix)):
-        if user_ratings == matrix[i]:
-            continue
+    return similarities
 
-        similarity = get_similarity_between_2_users(user_ratings, matrix[i])
+def get_similarity(users, books, ratings, similarity_fn=pearson_similarity):
+    all_interests = get_all_possible_interests_for_all_users(users)
 
-        if best_similarity_for_user < similarity:
-            best_similarity_for_user = similarity
-            index = i
-
-    print(user_ratings)
-    print(matrix[index])
-    return similarity
-
-
-def get_simmilarity():
-    all_intersts = get_user_interests(users)
-
-    for interest in all_intersts:
+    for interest in all_interests:
         if interest != "Math":
             continue
 
-        users_with_same_intersts = get_users_with_same_interests(users, interest)
-        books_within_interest = get_books_within_interst(interest, books)
-        matrix = create_similarity_matrix(users_with_same_intersts, books_within_interest)
+        users_with_same_interests = get_users_that_have_same_interest(users, interest)
+        books_within_interest = get_books_within_given_interest(interest, books)
+        matrix = create_ranking_table_for_given_books(users_with_same_interests, books_within_interest, ratings)
+        logger.trace(f'{matrix=}')
 
-        for i in range(0, len(matrix)):
-            print(get_best_similarity(matrix[i], matrix))
+        full_ratings_matrix = get_full_ratings_matrix(matrix)
+        logger.trace(f'{full_ratings_matrix=}')
+
+        similarities = make_similarity_matrix(full_ratings_matrix, similarity_fn)
+
+        prediction = predict_weighted_sum(
+            user_index=0,
+            item_index=4,
+            similarity=similarities,
+            ratings=full_ratings_matrix,
+            original_ratings=matrix
+        )
+
+        logger.debug(f'{prediction=}')
 
 
-get_simmilarity()
-
+# get_similarity(users, books, ratings)
