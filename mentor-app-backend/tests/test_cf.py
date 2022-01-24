@@ -50,6 +50,6 @@ def test_example():
              ("Biology", ["B1", "B2", "B3", "B4"]),
              ("Painting", ["P1", "P2", "P3"])]
 
-    get_similarity(users, books, ratings)
+    get_similarity(users, books, ratings, "Math")
 
 

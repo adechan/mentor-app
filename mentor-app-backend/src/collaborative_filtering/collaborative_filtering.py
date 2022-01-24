@@ -95,32 +95,31 @@ def make_similarity_matrix(full_ratings_matrix, similarity_fn):
 
     return similarities
 
-def get_similarity(users, books, ratings, similarity_fn=pearson_similarity):
-    all_interests = get_all_possible_interests_for_all_users(users)
+def make_feedback_matrix(users, books, ratings, interest):
+    users_with_same_interests = get_users_that_have_same_interest(users, interest)
+    books_within_interest = get_books_within_given_interest(interest, books)
+    matrix = create_ranking_table_for_given_books(users_with_same_interests, books_within_interest, ratings)
 
-    for interest in all_interests:
-        if interest != "Math":
-            continue
+    return matrix
 
-        users_with_same_interests = get_users_that_have_same_interest(users, interest)
-        books_within_interest = get_books_within_given_interest(interest, books)
-        matrix = create_ranking_table_for_given_books(users_with_same_interests, books_within_interest, ratings)
-        logger.trace(f'{matrix=}')
+def get_similarity(users, books, ratings, interest, similarity_fn=pearson_similarity):
+    feedback_matrix = make_feedback_matrix(users, books, ratings, interest)
+    logger.trace(f'{feedback_matrix=}')
 
-        full_ratings_matrix = get_full_ratings_matrix(matrix)
-        logger.trace(f'{full_ratings_matrix=}')
+    full_ratings_matrix = get_full_ratings_matrix(feedback_matrix)
+    logger.trace(f'{full_ratings_matrix=}')
 
-        similarities = make_similarity_matrix(full_ratings_matrix, similarity_fn)
+    similarities = make_similarity_matrix(full_ratings_matrix, similarity_fn)
 
-        prediction = predict_weighted_sum(
-            user_index=0,
-            item_index=4,
-            similarity=similarities,
-            ratings=full_ratings_matrix,
-            original_ratings=matrix
-        )
+    prediction = predict_weighted_sum(
+        user_index=0,
+        item_index=4,
+        similarity=similarities,
+        ratings=full_ratings_matrix,
+        original_ratings=feedback_matrix
+    )
 
-        logger.debug(f'{prediction=}')
+    logger.debug(f'{prediction=}')
 
 
 # get_similarity(users, books, ratings)

@@ -1,0 +1,3 @@
+class CannotMakeCFPrediction(Exception):
+    pass
+
