@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1347583415i/4623249._SX50_.jpg", "book_name": "Reader in Archaeological Theory: Post-Processual and Cognitive Approaches", "author_name": "David S. Whitley", "avg_rating": 3.33, "number_ratings": 6}]

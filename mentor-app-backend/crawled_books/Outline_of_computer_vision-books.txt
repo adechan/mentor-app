@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1393815374i/20950635._SX50_.jpg", "book_name": "Outline of Computer Vision", "author_name": "John Moore", "avg_rating": 2.0, "number_ratings": 1}]

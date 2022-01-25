@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1355032409i/15001503._SX50_.jpg", "book_name": "Running with the Fairies: Towards a Transpersonal Anthropology of Religion", "author_name": "Dennis Gaffin", "avg_rating": 3.67, "number_ratings": 3}]

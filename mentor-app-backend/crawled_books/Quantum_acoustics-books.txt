@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348294456i/13728288._SY75_.jpg", "book_name": "New Directions in Linear Acoustics and Vibration: Quantum Chaos, Random Matrix Theory, and Complexity", "author_name": "Matthew  Wright", "avg_rating": 3.0, "number_ratings": 1}]

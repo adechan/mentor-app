@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1355818303i/16634407._SX50_.jpg", "book_name": "Jel Classification Codes", "author_name": "Jesse Russell", "avg_rating": 0.0, "number_ratings": 0}]

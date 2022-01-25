@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1506743629i/36327478._SX50_.jpg", "book_name": "Outline Of Anthropology In India", "author_name": "B.M. Das", "avg_rating": 4.6, "number_ratings": 5}]

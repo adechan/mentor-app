@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328840038i/102079._SX50_.jpg", "book_name": "No Holds Barred Fighting: The Clinch: Offensive and Defensive Concepts Inside NHB's Most Grueling Position", "author_name": "Mark Hatmaker", "avg_rating": 3.81, "number_ratings": 21}]

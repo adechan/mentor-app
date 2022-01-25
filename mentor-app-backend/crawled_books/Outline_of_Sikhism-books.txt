@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1507535485i/2785369._SY75_.jpg", "book_name": "Outlines of Sikh Thought", "author_name": "Surindar Singh Kohli", "avg_rating": 0.0, "number_ratings": 0}]

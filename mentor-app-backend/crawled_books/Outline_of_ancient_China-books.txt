@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1450052016i/28189742._SY75_.jpg", "book_name": "An Outline History of China: ancient china history", "author_name": "Herbert Henry Gowen", "avg_rating": 0.0, "number_ratings": 0}]

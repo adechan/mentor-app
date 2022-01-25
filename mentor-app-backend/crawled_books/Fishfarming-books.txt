@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348215356i/14416851._SX50_.jpg", "book_name": "Aquaculture Technology: Fishfarming & Equipment", "author_name": "Martin Hochleithner", "avg_rating": 0.0, "number_ratings": 0}]

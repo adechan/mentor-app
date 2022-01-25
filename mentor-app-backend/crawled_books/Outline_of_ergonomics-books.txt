@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1446489665i/27415198._SX50_.jpg", "book_name": "Bodyspace: Anthropometry, Ergonomics and the Design of Work by Stephen Pheasant, ISBN 9780415285209--Study Guide", "author_name": "Cram101 Textbook Outlines", "avg_rating": 0.0, "number_ratings": 0}]

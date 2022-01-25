@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1478724720i/32912602._SY75_.jpg", "book_name": "Homeokinetics: The Basics", "author_name": "Arthur S Iberall", "avg_rating": 0.0, "number_ratings": 0}]

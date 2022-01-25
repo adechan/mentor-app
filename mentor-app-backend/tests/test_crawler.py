@@ -9,6 +9,5 @@ def test_goodreads_crawler():
 
     books = books_crawler.crawler.parse_top_10_books(content)
     pprint(books)
-    # assert books[0]['book_name'] == 'The Cat in the Hat (The Cat in the Hat, #1)'
-    # assert books[-1]['book_name'] == 'Cat Among the Pigeons (Hercule Poirot, #36)'
-    books_crawler.crawler.write_books_to_file(books)
+    assert books[0]['book_name'] == 'The Cat in the Hat and Other Dr. Seuss Favorites'
+    assert books[-1]['book_name'] == 'Will My Cat Eat My Eyeballs? And other Questions about Dead Bodies'

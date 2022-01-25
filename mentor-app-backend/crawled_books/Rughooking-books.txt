@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1328859922i/2249592._SX50_.jpg", "book_name": "Rug Hooking for the first time\u00ae", "author_name": "Donna Lovelady", "avg_rating": 3.64, "number_ratings": 28}]

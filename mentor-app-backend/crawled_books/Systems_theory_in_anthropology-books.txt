@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1634715374i/3585578._SX50_.jpg", "book_name": "The Origins of Israel and Mankind: A Unified Cosmogonic Theory; A systems study in cult, pre-history, mythology, anthropology, archaeology, the arts, exegesis and sciences", "author_name": "Brendan Stannard", "avg_rating": 0.0, "number_ratings": 0}]

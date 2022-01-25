@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1455256338i/29076445._SY75_.jpg", "book_name": "Hoarding: Digital Hoarding, Animal Hoarding and Junk Hoarding: When Our Belongings Grow into an Obsession (Transcend Mediocrity Book 118)", "author_name": "J.B. Snow", "avg_rating": 4.0, "number_ratings": 4}]

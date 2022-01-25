@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1413564386i/23388340._SX50_.jpg", "book_name": "A Beginner's Guide to Apiology.", "author_name": "VictoryCandescence", "avg_rating": 4.28, "number_ratings": 18}]

@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1492762283i/34918242._SX50_.jpg", "book_name": "The Socio-Political Complex: An Interdisciplinary Approach to Political Life (Pergamon international library of science, technology, engineering, and social studies)", "author_name": "A. Khoshkish", "avg_rating": 0.0, "number_ratings": 0}]

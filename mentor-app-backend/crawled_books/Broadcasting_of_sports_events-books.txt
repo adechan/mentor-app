@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/nophoto/book/111x148._SX50_.png", "book_name": "Sportscasting Awards: Broadcasting of Sports Events, Sports Emmy Award, Ford C. Frick Award, Foster Hewitt Memorial Award", "author_name": "Books, LLC", "avg_rating": 0.0, "number_ratings": 0}]

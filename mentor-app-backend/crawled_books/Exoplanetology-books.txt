@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1347562469i/9963586._SX50_.jpg", "book_name": "Exoplanetology: Extrasolar Planet, Kepler, Methods of Detecting Extrasolar Planets, Discoveries of Extrasolar Planets, Habitable Zone, Corot", "author_name": "Source Wikipedia", "avg_rating": 0.0, "number_ratings": 0}]

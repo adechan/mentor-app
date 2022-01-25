@@ -2,6 +2,7 @@ import itertools
 from typing import Dict, Tuple
 from loguru import logger
 
+from .errors import CannotMakeCFPrediction
 from .math import transpose
 from .predictions import predict_weighted_sum
 from .similiarity import pearson_similarity
@@ -92,28 +93,30 @@ def make_feedback_matrix(users, books, ratings, interest):
 
 def get_unrated_items(user: int, feedback_matrix):
     unrated_columns = []
-
     for j in range(len(feedback_matrix[0])):
         if feedback_matrix[user][j] == 0:
             unrated_columns.append(j)
 
     return unrated_columns
 
-# def get_best_predicted_item_for_
-
 def get_best_predicted_item_for_user(user, unrated_items, similarities, full_ratings_matrix, feedback_matrix) \
         -> Tuple[int, float]:
     predictions: Dict[int, float] = {}
-    for index in unrated_items:
-        prediction = predict_weighted_sum(
-            user_index=user,
-            item_index=index,
-            similarity=similarities,
-            ratings=full_ratings_matrix,
-            original_ratings=feedback_matrix
-        )
-        predictions[index] = prediction
+    try:
+        for index in unrated_items:
+            prediction = predict_weighted_sum(
+                user_index=user,
+                item_index=index,
+                similarity=similarities,
+                ratings=full_ratings_matrix,
+                original_ratings=feedback_matrix
+            )
+            predictions[index] = prediction
+    except ZeroDivisionError as e:
+        raise CannotMakeCFPrediction(str(e))
 
+    # m = max(predictions, key=lambda x: predictions[x])
+    logger.trace(f'{user=} {predictions=}')
     prediction, item = 0, 0
     for key in predictions:
         if predictions[key] > prediction:
@@ -127,6 +130,9 @@ def get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedbac
 
     for user in range(len(similarities)):
         unrated_items = get_unrated_items(user, feedback_matrix)
+        if len(unrated_items) == 0:
+            continue
+
         item, prediction = get_best_predicted_item_for_user(
             user, unrated_items, similarities, full_ratings_matrix, feedback_matrix
         )

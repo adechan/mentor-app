@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/nophoto/book/111x148._SX50_.png", "book_name": "\u201cWhat\u2019s a Heaven For?\u201d: National Public Culture\u2019s Role in Shaping US Space Policy, Aerospace Doctrine, and the Future of the Dyna-Soar, 1957-61", "author_name": "Nicholas Michael Sambaluk", "avg_rating": 0.0, "number_ratings": 0}]

@@ -41,7 +41,7 @@ def test_pearson_similarity():
         make_similarity_matrix(full_ratings_4x2, pearson_similarity)
 
 def test_pearson_predictions():
-    feedback_matrix = [[5, 4, 1, 4, 0], [3, 1, 2, 3, 3], [4, 3, 4, 3, 5], [3, 3, 1, 5, 4, ]]
+    feedback_matrix = [[5, 4, 1, 4, 0], [3, 1, 2, 3, 3], [4, 3, 4, 3, 5], [3, 3, 1, 5, 4]]
     full_ratings_matrix = [[5, 4, 1, 4], [3, 1, 2, 3], [4, 3, 4, 3], [3, 3, 1, 5]]
     similarities = [
         [1, 0.30151134457776363, -0.3333333333333333, 0.7071067811865475],
@@ -51,7 +51,21 @@ def test_pearson_predictions():
     ]
 
     predictions = get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix)
-    assert predictions == {0: (4, 3.8228434878793527), 1: (0, 0), 2: (0, 0), 3: (0, 0)}
+    assert predictions == {0: (4, 3.8228434878793527)}
+
+def test_pearson_predictions_2_users():
+    feedback_matrix = [[5, 4, 1, 0, 0], [3, 1, 2, 0, 3], [4, 3, 4, 3, 5], [3, 3, 1, 5, 4]]
+    full_ratings_matrix = [[5, 4, 1], [3, 1, 2], [4, 3, 4], [3, 3, 1]]
+    similarities = make_similarity_matrix(full_ratings_matrix, pearson_similarity)
+    assert similarities == [
+        [1, 0.24019223070763066, -0.2773500981126145, 0.9707253433941508],
+        [0.24019223070763066, 1, 0.8660254037844385, 0.0],
+        [-0.2773500981126145, 0.8660254037844385, 1, -0.5000000000000001],
+        [0.9707253433941508, 0.0, -0.5000000000000001, 1]
+    ]
+
+    predictions = get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix)
+    assert predictions == {0: (3, 4.874129093748495), 1: (3, 0.7543219387857802)}
 
 def test_example():
     users = [("Alice", ["Math", "Biology"]),
@@ -66,7 +80,7 @@ def test_example():
         ("U3", [("I1", 3), ("I2", 3), ("I3", 1), ("I4", 5), ("I5", 4)]),
     ]
 
-    books = [("Math", ["I1", "I2", "I3", "I4", "I5", "I6"]),
+    books = [("Math", ["I1", "I2", "I3", "I4", "I5"]),
              ("Biology", ["B1", "B2", "B3", "B4"]),
              ("Painting", ["P1", "P2", "P3"])]
 

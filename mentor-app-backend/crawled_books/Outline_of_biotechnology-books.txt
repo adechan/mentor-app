@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1472085861i/31676481._SX50_.jpg", "book_name": "Essentials of Biostatistics in Public Health: Biology, Biotechnology", "author_name": "Cram101 Textbook Outlines", "avg_rating": 0.0, "number_ratings": 0}]

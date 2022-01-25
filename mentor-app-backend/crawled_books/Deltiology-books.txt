@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/nophoto/book/111x148._SX50_.png", "book_name": "The Deltiology of Robert Burns", "author_name": "Peter J. Westwood", "avg_rating": 0.0, "number_ratings": 0}]

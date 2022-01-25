@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/nophoto/book/111x148._SX50_.png", "book_name": "Dance, Gender, and Meanings / Contemporizing Traditional Dance: Proceedings of the 26th Symposium of the ICTM Study Group on Ethnochoreology 2010 Trest, Czech Republic", "author_name": "Nihal \u00d6tken", "avg_rating": 5.0, "number_ratings": 1}]

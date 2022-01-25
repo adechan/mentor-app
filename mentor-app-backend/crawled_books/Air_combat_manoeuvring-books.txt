@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1348086746i/5488060._SX50_.jpg", "book_name": "Air Combat Manoeuvres: The Technique and History of Air Fighting for Flight Simulation", "author_name": "J. Steve Thompson", "avg_rating": 3.1, "number_ratings": 10}]

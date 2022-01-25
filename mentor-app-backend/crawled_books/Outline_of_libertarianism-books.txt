@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/nophoto/book/111x148._SX50_.png", "book_name": "Humean Libertarianism: Outline of a Revisionist Account of the Joint Problem of Free Will, Determinism & Laws of Nature", "author_name": "Marius Backmann", "avg_rating": 0.0, "number_ratings": 0}]

@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1640040261i/59898739._SX50_.jpg", "book_name": "Delhoste's observation on Sind", "author_name": "E Delhoste", "avg_rating": 0.0, "number_ratings": 0}]

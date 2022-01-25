@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1426102632i/25123056._SX50_.jpg", "book_name": "e-Study Guide for: Fundamentals of Forensic Science: National security, Law enforcement", "author_name": "Cram101 Textbook Outlines", "avg_rating": 2.0, "number_ratings": 1}]

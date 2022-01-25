@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/nophoto/book/111x148._SX50_.png", "book_name": "The Woodfuel Market in Nicaragua: The Economics, Sociology, and Management of a Natural Energy Resource", "author_name": "Ariane van Buren", "avg_rating": 0.0, "number_ratings": 0}]

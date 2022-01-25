@@ -1,5 +1,9 @@
+import functools
 import json
+import os.path
+from pprint import pprint
 
+import trio
 import requests
 from bs4 import BeautifulSoup
 import re
@@ -10,10 +14,23 @@ base_url = 'https://www.goodreads.com/search?utf8=%E2%9C%93&q='
 # https://www.goodreads.com/search?utf8=%E2%9C%93&q=painting+and+&search_type=books <- url example
 numbers_pattern = r'([0-9][0-9,.]*)'
 
-def get_top_10_books(to_search):
+async def save_top_10_books(to_search, proxies=None):
     url = base_url + to_search + '+&search_type=books'
-    page = requests.get(url)
-    return parse_top_10_books(page.content)
+    for i in range(10):
+        try:
+            logger.debug(f'Crawling {to_search} over {proxies=}')
+            page = await trio.to_thread.run_sync(functools.partial(requests.get, url, proxies=proxies))
+            try:
+                books = parse_top_10_books(page.content)
+                logger.trace(f'Writing {books=} to file...')
+                await write_books_to_file(books, to_search.replace(' ', '_'))
+                logger.debug(f'{to_search} crawler finished')
+            except Exception as e:
+                logger.exception(e)
+            break
+        except requests.exceptions.ConnectionError:
+            logger.error(f'Connecion error, retrying attempt {i}...')
+            await trio.sleep(10)
 
 def parse_top_10_books(content: bytes):
     body = BeautifulSoup(content, "html.parser")
@@ -54,12 +71,39 @@ def parse_top_10_books(content: bytes):
     books.sort(key=lambda book: book['avg_rating'], reverse=True)
     return books[:10]
 
-def write_books_to_file(books):
-    with open('file', 'w') as f:
-        f.write(json.dumps(books))
+async def write_books_to_file(books, interest: str):
+    book_filename = f'crawled_books/{interest}-books.txt'
+    if os.path.exists(book_filename) and os.path.getsize(book_filename) > 10:
+        return
 
-# ALG FOR RECOMMENDATION
+    async with await trio.open_file(f'crawled_books/{interest}-books.txt', 'w') as f:
+        await f.write(json.dumps(books))
 
+async def run_crawler(interests: list):
+    proxy = dict(
+        http='socks5://127.0.0.1:9050',
+        https='socks5://127.0.0.1:9050',
+    )
+
+    # pprint(interests)
+    async with trio.open_nursery() as n:
+        for interest in interests:
+            book_filename = f'crawled_books/{interest.replace(" ", "_")}-books.txt'
+            if os.path.exists(book_filename) and os.path.getsize(book_filename) > 10:
+                continue
+
+            n.start_soon(functools.partial(save_top_10_books, interest, proxies=proxy))
+            await trio.sleep(0.2)
+
+def get_interests_from_db(db, api):
+    interests = []
+    course_row = db.session.query(api.Course) \
+        .all()
+
+    for row in course_row:
+        interests.append(row.title)
+
+    return interests
 
 if __name__ == '__main__':
-    get_top_10_books('cat')
+    trio.run(run_crawler)

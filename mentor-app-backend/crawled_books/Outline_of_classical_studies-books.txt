@@ -1,0 +1,1 @@
+[{"image": "https://i.gr-assets.com/images/S/compressed.photo.goodreads.com/books/1433539230i/25673090._SX50_.jpg", "book_name": "The Classical Theory of Fields: Volume 2, textbook by L.D. Landau--Study Guide", "author_name": "Cram101 Textbook Outlines", "avg_rating": 0.0, "number_ratings": 0}]
