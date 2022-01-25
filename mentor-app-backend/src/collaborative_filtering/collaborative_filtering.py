@@ -1,9 +1,10 @@
 import itertools
+from typing import Dict, Tuple
 from loguru import logger
 
+from .math import transpose
 from .predictions import predict_weighted_sum
 from .similiarity import pearson_similarity
-
 
 
 def get_books_within_given_interest(interest, books):
@@ -55,19 +56,6 @@ def create_ranking_table_for_given_books(similar_users, books, ratings):
 
     return matrix
 
-def transpose(matrix):
-    transposed_matrix = []
-    rows = len(matrix)
-    columns = len(matrix[0])
-
-    for i in range(0, columns):
-        new_row = []
-        for j in range(0, rows):
-            new_row.append(matrix[j][i])
-
-        transposed_matrix.append(new_row)
-
-    return transposed_matrix
 
 def get_full_ratings_matrix(matrix):
     new_matrix = []
@@ -102,6 +90,52 @@ def make_feedback_matrix(users, books, ratings, interest):
 
     return matrix
 
+def get_unrated_items(user: int, feedback_matrix):
+    unrated_columns = []
+
+    for j in range(len(feedback_matrix[0])):
+        if feedback_matrix[user][j] == 0:
+            unrated_columns.append(j)
+
+    return unrated_columns
+
+# def get_best_predicted_item_for_
+
+def get_best_predicted_item_for_user(user, unrated_items, similarities, full_ratings_matrix, feedback_matrix) \
+        -> Tuple[int, float]:
+    predictions: Dict[int, float] = {}
+    for index in unrated_items:
+        prediction = predict_weighted_sum(
+            user_index=user,
+            item_index=index,
+            similarity=similarities,
+            ratings=full_ratings_matrix,
+            original_ratings=feedback_matrix
+        )
+        predictions[index] = prediction
+
+    prediction, item = 0, 0
+    for key in predictions:
+        if predictions[key] > prediction:
+            prediction = predictions[key]
+            item = key
+
+    return item, prediction
+
+def get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix):
+    predictions = {}
+
+    for user in range(len(similarities)):
+        unrated_items = get_unrated_items(user, feedback_matrix)
+        item, prediction = get_best_predicted_item_for_user(
+            user, unrated_items, similarities, full_ratings_matrix, feedback_matrix
+        )
+
+        predictions[user] = (item, prediction)
+
+    logger.trace(f'{predictions=}')
+    return predictions
+
 def get_similarity(users, books, ratings, interest, similarity_fn=pearson_similarity):
     feedback_matrix = make_feedback_matrix(users, books, ratings, interest)
     logger.trace(f'{feedback_matrix=}')
@@ -110,16 +144,7 @@ def get_similarity(users, books, ratings, interest, similarity_fn=pearson_simila
     logger.trace(f'{full_ratings_matrix=}')
 
     similarities = make_similarity_matrix(full_ratings_matrix, similarity_fn)
-
-    prediction = predict_weighted_sum(
-        user_index=0,
-        item_index=4,
-        similarity=similarities,
-        ratings=full_ratings_matrix,
-        original_ratings=feedback_matrix
-    )
-
-    logger.debug(f'{prediction=}')
-
+    predictions = get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix)
+    logger.debug(f'{predictions=}')
 
 # get_similarity(users, books, ratings)

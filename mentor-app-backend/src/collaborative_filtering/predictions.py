@@ -1,8 +1,7 @@
 import math
 
 from loguru import logger
-
-from collaborative_filtering.similiarity import mean
+from .math import mean
 
 
 def predict_weighted_sum(user_index, item_index, ratings, similarity, original_ratings):

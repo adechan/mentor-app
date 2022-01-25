@@ -1,8 +1,13 @@
 import pytest
-from collaborative_filtering.collaborative_filtering import get_similarity, make_similarity_matrix
+from collaborative_filtering.collaborative_filtering import get_similarity, make_similarity_matrix, get_unrated_items, \
+    get_best_predicted_item_for_users
 from collaborative_filtering.similiarity import pearson_similarity
 
-def test_pearson():
+def test_unrated_items():
+    feedback_matrix = [[5, 4, 1, 0, 0], [3, 1, 2, 3, 3], [4, 3, 4, 3, 5], [3, 3, 1, 5, 4]]
+    assert get_unrated_items(0, feedback_matrix) == [3, 4]
+
+def test_pearson_similarity():
     full_ratings_4x4 = [[5, 4, 1, 4], [3, 1, 2, 3], [4, 3, 4, 3], [3, 3, 1, 5]]
     similarity = make_similarity_matrix(full_ratings_4x4, pearson_similarity)
     assert similarity == [
@@ -11,6 +16,8 @@ def test_pearson():
         [-0.3333333333333333, 0.30151134457776363, 1, -0.7071067811865475],
         [0.7071067811865475, 0.42640143271122083, -0.7071067811865475, 1]
     ]
+
+    # get_best_predicted_item_for_user
 
     # prediction = predict_weighted_sum(
     #     user_index=0,
@@ -33,6 +40,19 @@ def test_pearson():
     with pytest.raises(ZeroDivisionError):
         make_similarity_matrix(full_ratings_4x2, pearson_similarity)
 
+def test_pearson_predictions():
+    feedback_matrix = [[5, 4, 1, 4, 0], [3, 1, 2, 3, 3], [4, 3, 4, 3, 5], [3, 3, 1, 5, 4, ]]
+    full_ratings_matrix = [[5, 4, 1, 4], [3, 1, 2, 3], [4, 3, 4, 3], [3, 3, 1, 5]]
+    similarities = [
+        [1, 0.30151134457776363, -0.3333333333333333, 0.7071067811865475],
+        [0.30151134457776363, 1, 0.30151134457776363, 0.42640143271122083],
+        [-0.3333333333333333, 0.30151134457776363, 1, -0.7071067811865475],
+        [0.7071067811865475, 0.42640143271122083, -0.7071067811865475, 1]
+    ]
+
+    predictions = get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix)
+    assert predictions == {0: (4, 3.8228434878793527), 1: (0, 0), 2: (0, 0), 3: (0, 0)}
+
 def test_example():
     users = [("Alice", ["Math", "Biology"]),
              ("U1", ["Math"]),
@@ -46,7 +66,7 @@ def test_example():
         ("U3", [("I1", 3), ("I2", 3), ("I3", 1), ("I4", 5), ("I5", 4)]),
     ]
 
-    books = [("Math", ["I1", "I2", "I3", "I4", "I5"]),
+    books = [("Math", ["I1", "I2", "I3", "I4", "I5", "I6"]),
              ("Biology", ["B1", "B2", "B3", "B4"]),
              ("Painting", ["P1", "P2", "P3"])]
 
