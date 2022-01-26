@@ -1,6 +1,8 @@
+from loguru import logger
 import pytest
-from collaborative_filtering.collaborative_filtering import get_similarity, make_similarity_matrix, get_unrated_items, \
+from collaborative_filtering.collaborative_filtering import calculate_predictions, make_similarity_matrix, get_unrated_items, \
     get_best_predicted_item_for_users
+from collaborative_filtering.recommend_item import recommend_item_to_user
 from collaborative_filtering.similiarity import pearson_similarity
 
 def test_unrated_items():
@@ -84,6 +86,28 @@ def test_example():
              ("Biology", ["B1", "B2", "B3", "B4"]),
              ("Painting", ["P1", "P2", "P3"])]
 
-    get_similarity(users, books, ratings, "Math")
+    calculate_predictions(users, books, ratings, "Math")
 
+def test_recommend_book():
+    users = [("Alice", ["Math", "Biology"]),
+             ("U1", ["Math"]),
+             ("U2", ["Biology", "Painting", "Math"]),
+             ("U3", ["Biology", "Painting", "Math"])]
+
+    ratings = [
+        ("Alice", [("I1", 5), ("I2", 4), ("I3", 1), ("I4", 4)]),
+        ("U1", [("I1", 3), ("I2", 1), ("I3", 2), ("I4", 3), ("I5", 3)]),
+        ("U2", [("I1", 4), ("I2", 3), ("I3", 4), ("I4", 3), ("I5", 5)]),
+        ("U3", [("I1", 3), ("I2", 3), ("I3", 1), ("I4", 5), ("I5", 4)]),
+    ]
+
+    books = [("Math", ["I1", "I2", "I3", "I4", "I5"]),
+             ("Biology", ["B1", "B2", "B3", "B4"]),
+             ("Painting", ["P1", "P2", "P3"])]
+
+    predictions = calculate_predictions(users, books, ratings, "Math")
+    # for key in predictions:
+    #     prediction = predictions[key]
+    #     recommended_book = recommend_item_to_user(key, prediction[0], prediction[1], "Math")
+    #     logger.debug(f'{recommended_book=}')
 

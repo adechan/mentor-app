@@ -11,6 +11,8 @@ from ..error import ServerError, InvalidLogin
 from ..models import define_account_table, define_appointments_table, define_courses_table, define_mentors_table, \
     define_student_table, define_student_interests_table, define_student_award_table, define_mentor_reviews_table, \
     define_available_hours_table, define_mentor_courses_table
+from ..models.book import define_books_table
+from ..models.student_recommended_books import define_student_recommended_books_table
 from ..session import new_session
 
 
@@ -40,6 +42,9 @@ class MentorAPI:
         self.AppointmentAvailableHours = define_available_hours_table(db)
         self.Course = define_courses_table(db)
         self.Mentor = define_mentors_table(db)
+
+        self.Book = define_books_table(db)
+        self.StudentRecommendedBooks = define_student_recommended_books_table(db)
 
         self.MentorReview = define_mentor_reviews_table(db)
         self.MentorCourses = define_mentor_courses_table(db)

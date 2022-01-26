@@ -125,6 +125,7 @@ def get_best_predicted_item_for_user(user, unrated_items, similarities, full_rat
 
     return item, prediction
 
+
 def get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix):
     predictions = {}
 
@@ -142,7 +143,7 @@ def get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedbac
     logger.trace(f'{predictions=}')
     return predictions
 
-def get_similarity(users, books, ratings, interest, similarity_fn=pearson_similarity):
+def calculate_predictions(users, books, ratings, interest, similarity_fn=pearson_similarity):
     feedback_matrix = make_feedback_matrix(users, books, ratings, interest)
     logger.trace(f'{feedback_matrix=}')
 
@@ -153,4 +154,5 @@ def get_similarity(users, books, ratings, interest, similarity_fn=pearson_simila
     predictions = get_best_predicted_item_for_users(similarities, full_ratings_matrix, feedback_matrix)
     logger.debug(f'{predictions=}')
 
-# get_similarity(users, books, ratings)
+    return predictions
+

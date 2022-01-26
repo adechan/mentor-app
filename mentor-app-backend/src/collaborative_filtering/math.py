@@ -1,5 +1,8 @@
 import math
 
+from loguru import logger
+
+
 def mean(values: list) -> float:
     return sum(values) / len(values)
 
