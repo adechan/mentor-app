@@ -1,17 +1,13 @@
-import os
-
-import trio
-
-from collaborative_filtering.recommend_item import recommend_book_to_users
+from recommender.recommend_item import recommend_book_to_users
 from mentor_app import MentorServer
-import books_crawler.crawler
 
 server = MentorServer()
 
 server.db.create_all()
+server.serve()
+
 # crawler.populate_course_table(server.db, server.api)
 
-# server.serve()
 
 # CRAWL AND POPULATE COURSE TABLE
 # create_course_table(server.db, server.api)
@@ -23,4 +19,5 @@ server.db.create_all()
 # POPULATE BOOKS TABLE BASED ON FOLDER
 # books_crawler.populate_books.populate_books_table(server.db, server.api)
 
-recommend_book_to_users(server.db, server.api)
+# RECOMMEND BOOKS
+# recommend_book_to_users(server.db, server.api)

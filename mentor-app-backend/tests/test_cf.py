@@ -1,9 +1,7 @@
-from loguru import logger
 import pytest
-from collaborative_filtering.collaborative_filtering import calculate_predictions, make_similarity_matrix, get_unrated_items, \
-    get_best_predicted_item_for_users
-from collaborative_filtering.recommend_item import recommend_item_to_user
-from collaborative_filtering.similiarity import pearson_similarity
+from recommender.collaborative_filtering.collaborative_filtering import calculate_predictions, make_similarity_matrix, \
+    get_unrated_items, get_best_predicted_item_for_users
+from recommender.collaborative_filtering.similiarity import pearson_similarity
 
 def test_unrated_items():
     feedback_matrix = [[5, 4, 1, 0, 0], [3, 1, 2, 3, 3], [4, 3, 4, 3, 5], [3, 3, 1, 5, 4]]
