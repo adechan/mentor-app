@@ -68,6 +68,37 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='Error finding e-mail in database!')
 
     @convert_kwargs_to_snake_case
+    def resolve_query_get_all_recommended_books(self, _, info, student_id):
+        try:
+            recommended_books_rows = self.db.session.query(self.api.StudentRecommendedBooks) \
+                .filter(self.api.StudentRecommendedBooks.student_id == student_id) \
+                .all()
+
+            result = []
+
+            for recommended_book in recommended_books_rows:
+                book_row = self.db.session.query(self.api.Book) \
+                    .filter(self.api.Book.id == recommended_book.book_id) \
+                    .one()
+
+                item = {
+                    "book_id": recommended_book.book_id,
+                    "image": book_row.image,
+                    "title": book_row.title,
+                    "author": book_row.author,
+                    "rating": recommended_book.rating
+                }
+
+                logger.debug(f'{item=}')
+
+                result.append(item)
+            return result if len(result) > 0 else None
+
+        except Exception as e:
+            logger.exception(e)
+            return dict(error='No matches')
+
+    @convert_kwargs_to_snake_case
     def resolve_query_get_student_awards(self, _, info, student_id):
         try:
             awards = self.db.session.query(self.api.StudentAward) \
@@ -1102,6 +1133,24 @@ class GQLMutationResolver(GQLResolver):
             )
 
             self.db.session.add(award)
+            self.db.session.commit()
+
+            return dict(result=True)
+
+        except Exception as e:
+            logger.exception(e)
+
+    @convert_kwargs_to_snake_case
+    def resolve_mutation_student_rate_book(self, _,
+    info, student_id, book_id, rating
+    ):
+        try:
+
+            self.db.session.query(self.api.StudentRecommendedBooks) \
+                .filter(self.api.StudentRecommendedBooks.student_id == student_id) \
+                .filter(self.api.StudentRecommendedBooks.book_id == book_id) \
+                .update({"rating": rating})
+
             self.db.session.commit()
 
             return dict(result=True)

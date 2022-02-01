@@ -8,6 +8,7 @@ import Interests from './Interests/Interests/Interests';
 import Mentors from './Mentors/Mentors';
 import MentorMoreInfo from './Recommendations/MentorMoreInfo';
 import Recommendations from './Recommendations/Recommendations';
+import RecommendedBooks from './RecommendedBooks/RecommendedBooks';
 import Settings from './Settings/Settings';
 
 const customStyles = makeStyles((theme) => ({
@@ -34,6 +35,7 @@ const Container = ({graphQLClient}) => {
                 <Route path="/student-account/my-mentors" component={() => <Mentors  graphQLClient={graphQLClient}  />}/>
                 <Route path="/student-account/recommendations/:id" component={() => <MentorMoreInfo graphQLClient={graphQLClient} />}/>
                 <Route path="/student-account/recommendations" component={() => <Recommendations graphQLClient={graphQLClient}/>}/>
+                <Route path="/student-account/recommended-books" component={() => <RecommendedBooks graphQLClient={graphQLClient}/>}/>
                 <Route path="/student-account/settings" component={() => <Settings graphQLClient={graphQLClient}/>}/>
                 <Route path="/student-account/create-mentor" component={() => <OnboardingMentor graphQLClient={graphQLClient}/>}/>
             </Switch>

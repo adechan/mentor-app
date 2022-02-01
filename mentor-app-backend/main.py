@@ -2,9 +2,9 @@ from recommender.recommend_item import recommend_book_to_users
 from mentor_app import MentorServer
 
 server = MentorServer()
-
-server.db.create_all()
 server.serve()
+
+# server.db.create_all()
 
 # crawler.populate_course_table(server.db, server.api)
 

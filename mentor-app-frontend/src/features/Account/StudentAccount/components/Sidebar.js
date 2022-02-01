@@ -13,10 +13,10 @@ const customStyles = makeStyles((theme) => ({
     backgroundColor: "#ffffff5c",
     backdropFilter: "blur(10px)",
 
-    [theme.breakpoints.down('xs')]: {
-      height: 'auto',
-      width: '100vw'
-    }
+    [theme.breakpoints.down("xs")]: {
+      height: "auto",
+      width: "100vw",
+    },
   },
 }));
 
@@ -25,9 +25,8 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("");
   const history = useHistory();
 
-  const  dispatch = useDispatch();
+  const dispatch = useDispatch();
   const profiles = useSelector((store) => store.account.profiles);
-
 
   return (
     <div className={customClasses.container}>
@@ -80,13 +79,24 @@ const Sidebar = () => {
         selected={selected}
       />
 
+      <SidebarItem
+        itemTitle="Recommended Books"
+        onClick={() => {
+          history.push("/student-account/recommended-books");
+          setSelected("Recommended Books");
+        }}
+        selected={selected}
+      />
+
       {profiles?.mentorId ? (
         <SidebarItem
           itemTitle="Switch to mentor"
           onClick={() => {
             history.push("/mentor-account/reviews");
             setSelected("Switch profile");
-            dispatch(accountActions.SET_SELECTED_PROFILE_ID(profiles?.mentorId));
+            dispatch(
+              accountActions.SET_SELECTED_PROFILE_ID(profiles?.mentorId)
+            );
           }}
           selected={selected}
         />
