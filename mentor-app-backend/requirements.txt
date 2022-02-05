@@ -3,12 +3,9 @@ flask-cors
 flask-sqlalchemy
 loguru
 ariadne
-PyJWT
 bcrypt
 SQLAlchemy
 graphql
 requests
 beautifulsoup4
-opencv-python==4.5.4.60
-easyocr
-
+trio

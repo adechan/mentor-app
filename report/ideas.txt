@@ -1,0 +1,43 @@
+Used tools: 
+- React 
+- Python
+
+- Graphql
+==============================================================================================
+The application was created using Python for the backend, and React for the frontend. 
+
+Python libraries:
+	- Flask
+        is a web framework that was used to create the API server (server runs an API ~ 
+        API is some code that runs on the server)
+	- SQLAlchemy:
+		is an SQL Object Relational Mapper (ORM) for writing SQL queries at a high 
+        level in Python. 
+	- Ariadne
+        is a library for implementing GraphQL servers
+	- Trio
+        library for handling asynchronous code (for example doing requests, crawling,
+        writing to a file, and then reading from the fide and add in db)
+        it helps you do multiple things at the same time
+	- Requests/Beautifulsoup4
+        a library to scrape information from the internet 
+
+
+REACT
+I decided to use React because I wanted to improve my skills in JavaScript. React is a great library 
+for creating beautiful and fast applications. What I loved about it is that it is easy to learn, it is 
+performant, and it is very popular lately because of its features.  
+Using React you can create views for every state in the application, and every time one state changes,
+React knowns how to re-render and update only the components that use that one state. 
+There are 2 ways of writing components in React: functional or class. I decided to use the functional 
+components since they are the most used nowdays, and the team that developed React seems to invest more 
+time in creating hooks specially designed for the functional component.
+What is a hook? They are the main features to handle states in React. Also you can create 
+your own custom hook which gives you the property to extract some logic from a component so 
+it can be easily reused and tested. 
+I used the hooks: useState (to mentain states in the application), useEffect (to update the state when 
+needed). I also used createStore (which is a Redux store - can be descriped as a container for
+globa state around the application) to store some important information that i can reuse in the whole 
+application, otherwise i would have had to use props-drilling, which is the process of sending a certain 
+variable (props) from a higher component to a lower one. This process can become repetitive when you need
+to give some components this prop because childs are the only ones who need it. 
