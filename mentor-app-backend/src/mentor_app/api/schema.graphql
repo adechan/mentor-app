@@ -236,6 +236,7 @@ type RecommendedBooksResult {
     rating: Float
 }
 
+# toate operatiile definite si tipurile pe care acestea le returneaza
 type Query {
     is_email_in_use(email: String!): Result!
 

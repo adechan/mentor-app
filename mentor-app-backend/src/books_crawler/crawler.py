@@ -14,12 +14,12 @@ base_url = 'https://www.goodreads.com/search?utf8=%E2%9C%93&q='
 # https://www.goodreads.com/search?utf8=%E2%9C%93&q=painting+and+&search_type=books <- url example
 numbers_pattern = r'([0-9][0-9,.]*)'
 
-async def save_top_10_books(to_search, proxies=None):
+async def save_top_10_books(to_search):
     url = base_url + to_search + '+&search_type=books'
     for i in range(10):
         try:
-            logger.debug(f'Crawling {to_search} over {proxies=}')
-            page = await trio.to_thread.run_sync(functools.partial(requests.get, url, proxies=proxies))
+            logger.debug(f'Crawling {to_search}')
+            page = await trio.to_thread.run_sync(functools.partial(requests.get, url))
             try:
                 books = parse_top_10_books(page.content)
                 logger.trace(f'Writing {books=} to file...')
@@ -80,11 +80,6 @@ async def write_books_to_file(books, interest: str):
         await f.write(json.dumps(books))
 
 async def run_crawler(interests: list):
-    proxy = dict(
-        http='socks5://127.0.0.1:9050',
-        https='socks5://127.0.0.1:9050',
-    )
-
     # pprint(interests)
     async with trio.open_nursery() as n:
         for interest in interests:
@@ -92,8 +87,8 @@ async def run_crawler(interests: list):
             if os.path.exists(book_filename) and os.path.getsize(book_filename) > 10:
                 continue
 
-            n.start_soon(functools.partial(save_top_10_books, interest, proxies=proxy))
-            await trio.sleep(0.2)
+            n.start_soon(functools.partial(save_top_10_books, interest))
+            await trio.sleep(2)
 
 def get_interests_from_db(db, api):
     interests = []

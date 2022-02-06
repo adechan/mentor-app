@@ -10,32 +10,38 @@ class GQLResolver:
     def __init__(self, db, api, typename: str):
         self.db = db
         self.api = api
-        self.gql_object_type = ObjectType(typename)
+        self.gql_object_type = ObjectType(typename) # Query or Mutation
         self.typename = typename
-        self._setup_subresolvers()
+        self._setup_handlers()
 
-    # Find resolvers in self and attach them to gql schema objects
-    def _setup_subresolvers(self):
+    # Find handlers in self and attach them to gql schema objects
+    def _setup_handlers(self):
         logger.debug(f'{self.typename=}')
 
-        # Find all methods with the following pattern (Ex: 'resolve_query_' in 'resolve_query_account_info')
-        resolver_name_pattern = f'resolve_{self.typename.lower()}_'
+        # Find all methods with the following pattern (Ex: 'handle_query_' in 'handle_query_account_info')
+        handler_name_pattern = f'handle_{self.typename.lower()}_'
 
-        for method_name in dir(self):
-            method = getattr(self, method_name)
-            if resolver_name_pattern in method_name and callable(method):
-                logger.debug(f'resolver found: {method=}')
+        # Find all of our handlers using dir (list all functions and variables inside self)
+        for function_name in dir(self):
+            # Get the handler function
+            function = getattr(self, function_name)
+            # Check that the name follows the handler name pattern, and that we can call it (not a variable).
+            if handler_name_pattern in function_name and callable(function):
+                logger.debug(f'handler found: {function=}')
 
-                # Translate to graphql schema query name (Ex: 'resolver_query_account_info' -> 'account_info')
-                resolver_name = method_name.replace(resolver_name_pattern, '')
-                self.gql_object_type.set_field(resolver_name, method)
+                # Translate to graphql schema query name (Ex: 'handle_query_account_info' -> 'account_info')
+                handler_name = function_name.replace(handler_name_pattern, '')
+
+                # Tell the GQL schema this handler will handle the operation `handler_name`
+                # Example: self.Query.set_field('account_info', self.handle_query_account_info)
+                self.gql_object_type.set_field(handler_name, function)
 
 class GQLQueryResolver(GQLResolver):
     def __init__(self, db, api):
         super().__init__(db, api, 'Query')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_account_info(self, _, info):
+    def handle_query_account_info(self, _, info):
         try:
             account_id = flask.session['account_id']
             logger.debug(f'{info=}')
@@ -52,7 +58,7 @@ class GQLQueryResolver(GQLResolver):
             logger.error(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_query_is_email_in_use(self, _, info, email: str):
+    def handle_query_is_email_in_use(self, _, info, email: str):
         try:
             logger.debug(f'{info=}')
             logger.debug(f'{email=}')
@@ -68,7 +74,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='Error finding e-mail in database!')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_all_recommended_books(self, _, info, student_id):
+    def handle_query_get_all_recommended_books(self, _, info, student_id):
         try:
             recommended_books_rows = self.db.session.query(self.api.StudentRecommendedBooks) \
                 .filter(self.api.StudentRecommendedBooks.student_id == student_id) \
@@ -99,7 +105,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_student_awards(self, _, info, student_id):
+    def handle_query_get_student_awards(self, _, info, student_id):
         try:
             awards = self.db.session.query(self.api.StudentAward) \
                 .filter(self.api.StudentAward.student_id == student_id) \
@@ -138,7 +144,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_student_interests(self, _, info, student_id):
+    def handle_query_get_student_interests(self, _, info, student_id):
         try:
             interests = self.db.session.query(self.api.StudentInterests, self.api.Course) \
                 .filter(self.api.StudentInterests.student_id == student_id) \
@@ -160,7 +166,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_all_courses(self, _, info):
+    def handle_query_get_all_courses(self, _, info):
         try:
             start = datetime.datetime.now()
             courses = self.db.session.query(self.api.Course) \
@@ -184,7 +190,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_mentor_courses(self, _, info, mentor_id):
+    def handle_query_get_mentor_courses(self, _, info, mentor_id):
         try:
 
             result = []
@@ -226,7 +232,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_mentor_reviews(self, _, info, mentor_id):
+    def handle_query_get_mentor_reviews(self, _, info, mentor_id):
         try:
             reviews = self.db.session.query(self.api.MentorReview) \
                 .filter(self.api.MentorReview.mentor_id == mentor_id) \
@@ -264,7 +270,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_student_settings_info(self, _, info, account_id):
+    def handle_query_get_student_settings_info(self, _, info, account_id):
         try:
             accountRow = self.db.session.query(self.api.Account) \
                 .filter(self.api.Account.account_id == account_id) \
@@ -292,7 +298,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_mentor_settings_info(self, _, info, account_id):
+    def handle_query_get_mentor_settings_info(self, _, info, account_id):
         try:
             accountRow = self.db.session.query(self.api.Account) \
                 .filter(self.api.Account.account_id == account_id) \
@@ -321,7 +327,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_student_all_recommendations(self, _, info, student_id):
+    def handle_query_get_student_all_recommendations(self, _, info, student_id):
         try:
             result = []
 
@@ -405,7 +411,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_create_appointment_info(self, _, info, mentor_id, course_id):
+    def handle_query_get_create_appointment_info(self, _, info, mentor_id, course_id):
         try:
             mentor_info = self.db.session.query(self.api.Mentor) \
                 .filter(self.api.Mentor.mentor_id == mentor_id) \
@@ -457,7 +463,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_student_all_appointments(self, _, info, student_id):
+    def handle_query_get_student_all_appointments(self, _, info, student_id):
         try:
             result = []
 
@@ -510,7 +516,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_mentor_all_appointments(self, _, info, mentor_id):
+    def handle_query_get_mentor_all_appointments(self, _, info, mentor_id):
         try:
             result = []
 
@@ -563,7 +569,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_student_all_mentors(self, _, info, student_id):
+    def handle_query_get_student_all_mentors(self, _, info, student_id):
         try:
 
             result = []
@@ -620,7 +626,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_mentor_all_students(self, _, info, mentor_id):
+    def handle_query_get_mentor_all_students(self, _, info, mentor_id):
         try:
 
             result = []
@@ -673,7 +679,7 @@ class GQLQueryResolver(GQLResolver):
             return dict(error='No matches')
 
     @convert_kwargs_to_snake_case
-    def resolve_query_get_mentor_details(self, _, info, mentor_id):
+    def handle_query_get_mentor_details(self, _, info, mentor_id):
         try:
             mentor = self.db.session.query(self.api.Mentor) \
                 .filter(self.api.Mentor.mentor_id == mentor_id) \
@@ -749,7 +755,7 @@ class GQLMutationResolver(GQLResolver):
         super().__init__(db, api, 'Mutation')
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_login(self, _, info, email: str, password: str):
+    def handle_mutation_login(self, _, info, email: str, password: str):
         try:
             self.api.login_account(email, password)
             return dict(result=True)
@@ -758,7 +764,7 @@ class GQLMutationResolver(GQLResolver):
             return dict(error='Invalid username or password')
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_register_student(self, _,
+    def handle_mutation_register_student(self, _,
         info, first_name: str, last_name: str, email: str, password: str,
         profile: dict
     ):
@@ -808,7 +814,7 @@ class GQLMutationResolver(GQLResolver):
             return dict(error='There was an error handling your request')
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_register_mentor(self, _,
+    def handle_mutation_register_mentor(self, _,
         info, first_name: str, last_name: str, email: str, password: str,
         profile: dict
     ):
@@ -844,7 +850,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_delete_student_interest(self, _,
+    def handle_mutation_delete_student_interest(self, _,
         info, student_id, course_id
     ):
         try:
@@ -860,7 +866,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_add_student_interest(self, _,
+    def handle_mutation_add_student_interest(self, _,
         info, student_id, course_id
     ):
         try:
@@ -877,7 +883,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_add_mentor_course(self, _,
+    def handle_mutation_add_mentor_course(self, _,
         info, mentor_id, course_id, price, day, hours
     ):
         try:
@@ -907,7 +913,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_delete_mentor_course(self, _,
+    def handle_mutation_delete_mentor_course(self, _,
     info, mentor_id, course_id
     ):
         try:
@@ -928,7 +934,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_update_student_settings_info(self, _,
+    def handle_mutation_update_student_settings_info(self, _,
     info, account_id, settings_info
     ):
         try:
@@ -958,7 +964,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_update_mentor_settings_info(self, _,
+    def handle_mutation_update_mentor_settings_info(self, _,
     info, account_id, settings_info
     ):
         try:
@@ -989,7 +995,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_create_appointment(self, _,
+    def handle_mutation_create_appointment(self, _,
     info, student_id, course_id, mentor_id, available_hours_id
     ):
         try:
@@ -1017,7 +1023,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_cancel_appointment(self, _,
+    def handle_mutation_cancel_appointment(self, _,
     info, appointment_id
     ):
         try:
@@ -1041,7 +1047,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_mentor_accept_appointment(self, _,
+    def handle_mutation_mentor_accept_appointment(self, _,
         info, appointment_id
     ):
         try:
@@ -1056,7 +1062,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_mentor_finish_appointment(self, _,
+    def handle_mutation_mentor_finish_appointment(self, _,
         info, appointment_id
     ):
         try:
@@ -1080,7 +1086,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_student_review_mentor(self, _,
+    def handle_mutation_student_review_mentor(self, _,
         info, student_id, mentor_id, course_id, review, stars
     ):
         try:
@@ -1102,7 +1108,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_student_edit_review_mentor(self, _,
+    def handle_mutation_student_edit_review_mentor(self, _,
         info, student_id, mentor_id, course_id, review, stars
     ):
         try:
@@ -1120,7 +1126,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_mentor_award_student(self, _,
+    def handle_mutation_mentor_award_student(self, _,
         info, student_id, mentor_id, course_id
     ):
         try:
@@ -1141,7 +1147,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_student_rate_book(self, _,
+    def handle_mutation_student_rate_book(self, _,
     info, student_id, book_id, rating
     ):
         try:
@@ -1159,7 +1165,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_create_student_profile(self, _,
+    def handle_mutation_create_student_profile(self, _,
         info, account_id, profile
     ):
         try:
@@ -1198,7 +1204,7 @@ class GQLMutationResolver(GQLResolver):
             logger.exception(e)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_logout(self, *args):
+    def handle_mutation_logout(self, *args):
         if len(flask.session.keys()) == 0:
             return dict(error='Not logged in')
 
@@ -1206,7 +1212,7 @@ class GQLMutationResolver(GQLResolver):
         return dict(result=True)
 
     @convert_kwargs_to_snake_case
-    def resolve_mutation_create_mentor_profile(self, _,
+    def handle_mutation_create_mentor_profile(self, _,
         info, account_id, profile
     ):
         try:

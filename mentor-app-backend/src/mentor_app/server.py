@@ -71,7 +71,7 @@ class MentorServer:
             logger.debug(f'{flask.session=}')
 
             def check_auth_middleware(resolver, obj, info, **kwargs):
-                # logger.debug(f'{info.path=}')
+                logger.debug(f'{info.path=}')
                 if MentorAPI.is_authenticated_query(info.path):
                     if session_id is None:
                         raise ServerError('Not authenticated!')

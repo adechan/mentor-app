@@ -59,7 +59,9 @@ class MentorAPI:
         self._db = db
 
     def _create_gql_schema(self, schema_path: str):
+        # Load GQL schema from file
         type_defs = load_schema_from_path(schema_path)
+
         return make_executable_schema(
             type_defs, self.query_resolver.gql_object_type, self.mutation_resolver.gql_object_type,
             snake_case_fallback_resolvers
