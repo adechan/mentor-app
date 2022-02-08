@@ -8,6 +8,9 @@ def test_unrated_items():
     assert get_unrated_items(0, feedback_matrix) == [3, 4]
 
 def test_pearson_similarity():
+    u1 = [1, 5]
+    u2 = [3, 3]
+
     full_ratings_4x4 = [[5, 4, 1, 4], [3, 1, 2, 3], [4, 3, 4, 3], [3, 3, 1, 5]]
     similarity = make_similarity_matrix(full_ratings_4x4, pearson_similarity)
     assert similarity == [
