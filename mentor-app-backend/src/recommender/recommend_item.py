@@ -80,21 +80,6 @@ def books_that_are_rated_by_at_least_1_user(db, api):
 
     return books_within_interests
 
-# DB USERS AND THEIR RATED BOOKS TABLE
-#             Book51   Book52     Book53     Book54     Book55
-# User1         5       4           1           4           ??
-# User2         3       1           2           3           3
-# User3         4       3           4           3           5
-# User4         3       3           1           5           4
-
-# SIMILARITY TABLE:
-#               User1   User2       User3       User4
-# User1         1       0.301       -0.333       0.707
-# User2         0.301   1           0.301        0.426
-# User3         -0.333  0.30        1           -0.707
-# User4         0.707   0.426       -0.707       1
-
-
 def recommend_book_to_users(db, api):
     users = get_users(db, api)
     all_ratings = get_ratings(db, api, users)

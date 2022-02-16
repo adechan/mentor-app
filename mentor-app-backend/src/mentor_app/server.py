@@ -22,7 +22,6 @@ class MentorServer:
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
         self.app.config['SECRET_KEY'] = os.urandom(32).hex()
         self.app.config['UPLOAD_FOLDER'] = os.path.abspath('./avatars')
-        # self.app.config['SESSION_COOKIE_SECURE'] = True
         logger.debug(f'database uri: {self.app.config["SQLALCHEMY_DATABASE_URI"]}')
 
         self.db = SQLAlchemy(self.app)
@@ -35,13 +34,6 @@ class MentorServer:
         self.app.run(host, port)
 
     def _define_routes(self):
-        # TODO: remove this route for production
-        @self.app.route("/graphql", methods=["GET"])
-        @cross_origin(supports_credentials=True)
-        def graphql_playground():
-            return PLAYGROUND_HTML, 200
-            # logger.debug(f'{filename=}')
-
         @self.app.route("/upload", methods=["POST"])
         @cross_origin(supports_credentials=True)
         def upload_file():

@@ -30,11 +30,16 @@ const useGetAllRecommendedBooks = (graphQLClient) => {
     }
 
     const result = data?.get_all_recommended_books;
-    if (result && !result.length) {
+    if (result && !result?.length) {
       return;
     }
 
     let recommendations = [];
+
+    if (!result?.length) {
+      return;
+    }
+
     result.forEach((resultItem) => {
       const item = {
         image: resultItem.image,

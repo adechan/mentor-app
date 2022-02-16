@@ -8,9 +8,7 @@ const combinedReducer = combineReducers({
 });
 
 const store = createStore(
-  combinedReducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__
-  && window.__REDUX_DEVTOOLS_EXTENSION__({ trace: true }),
+  combinedReducer
 );
 
 export default store;

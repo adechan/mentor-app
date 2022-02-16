@@ -46,8 +46,6 @@ const StudentProfileInterests = ({graphQLClient}) => {
         <FormControl style={{ width: "50%" }}>
           <InputLabel id="subject">Subjects</InputLabel>
           <Select
-            labelId="subject-label"
-            id="subject-id"
             label="Subject"
             value={formik.values.interest}
             onChange={(event) => formik.setFieldValue("interest", event.target.value)}

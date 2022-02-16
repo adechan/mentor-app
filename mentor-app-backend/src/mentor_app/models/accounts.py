@@ -2,7 +2,6 @@
 def define_account_table(db):
     class Account(db.Model):
         account_id = db.Column(db.Integer, primary_key=True)
-        # TODO: Lookup foreign keys for SQLAlchemy
         mentor_id = db.Column(db.Integer)
         student_id = db.Column(db.Integer)
         first_name = db.Column(db.String)
