@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import { useHistory } from "react-router-dom";
 import React, { useState, useEffect } from "react";
 import { useRegistration } from "../hooks/useRegistration";
+import ErrorMessage from "../../Account/common/ErrorMessage"
 
 const customStyles = makeStyles((theme) => ({
   transparentContainer: {
@@ -81,14 +82,14 @@ const Registration = () => {
   const { formik } = useRegistration(accountInfo);
 
   useEffect(() => {
-    setAccountInfo(prev => ({
+    setAccountInfo((prev) => ({
       ...prev,
       firstName: formik.values.firstName,
       lastName: formik.values.lastName,
       email: formik.values.email,
       password: formik.values.password,
       confirmPassword: formik.values.confirmPassword,
-    }))
+    }));
   }, [formik.values]);
 
   return (
@@ -115,9 +116,12 @@ const Registration = () => {
           value={formik.values.firstName}
           onChange={(e) => formik.setFieldValue("firstName", e.target.value)}
         />
-        {formik.touched.firstName && formik.errors.firstName && (
-          <p className={customClasses.error}>{formik.errors.firstName}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.firstName && formik.errors.firstName}
+          errorMessage={formik.errors.firstName}
+        />
+
         <TextField
           label="Last Name"
           variant="outlined"
@@ -126,9 +130,11 @@ const Registration = () => {
           value={formik.values.lastName}
           onChange={(e) => formik.setFieldValue("lastName", e.target.value)}
         />
-        {formik.touched.lastName && formik.errors.lastName && (
-          <p className={customClasses.error}>{formik.errors.lastName}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.lastName && formik.errors.lastName}
+          errorMessage={formik.errors.lastName}
+        />
         <TextField
           label="Email"
           variant="outlined"
@@ -137,9 +143,11 @@ const Registration = () => {
           value={formik.values.email}
           onChange={(e) => formik.setFieldValue("email", e.target.value)}
         />
-        {formik.touched.email && formik.errors.email && (
-          <p className={customClasses.error}>{formik.errors.email}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.email && formik.errors.email}
+          errorMessage={formik.errors.email}
+        />
         <TextField
           label="Password"
           type={"password"}
@@ -149,9 +157,11 @@ const Registration = () => {
           value={formik.values.password}
           onChange={(e) => formik.setFieldValue("password", e.target.value)}
         />
-        {formik.touched.password && formik.errors.password && (
-          <p className={customClasses.error}>{formik.errors.password}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.password && formik.errors.password}
+          errorMessage={formik.errors.password}
+        />
         <TextField
           label="Confirm Password"
           type={"password"}
@@ -163,9 +173,13 @@ const Registration = () => {
             formik.setFieldValue("confirmPassword", e.target.value)
           }
         />
-        {formik.touched.confirmPassword && formik.errors.confirmPassword && (
-          <p className={customClasses.error}>{formik.errors.confirmPassword}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={
+            formik.touched.confirmPassword && formik.errors.confirmPassword
+          }
+          errorMessage={formik.errors.confirmPassword}
+        />
 
         <div className={customClasses.buttonContainer}>
           <Button
