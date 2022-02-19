@@ -2,7 +2,6 @@ import os
 
 import flask
 from ariadne import graphql_sync
-from ariadne.constants import PLAYGROUND_HTML
 from flask import Flask, request, jsonify, make_response
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS, cross_origin
@@ -20,11 +19,10 @@ class MentorServer:
         CORS(self.app, supports_credentials=True)
         self.app.config['SQLALCHEMY_DATABASE_URI'] = f"sqlite:///{os.getcwd()}/{db_name}.db"
         self.app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-        self.app.config['SECRET_KEY'] = os.urandom(32).hex()
+        self.app.config['SECRET_KEY'] = os.urandom(32).hex() # to generate the session cookie (uses this as a key to encrypt it)
         self.app.config['UPLOAD_FOLDER'] = os.path.abspath('./avatars')
-        logger.debug(f'database uri: {self.app.config["SQLALCHEMY_DATABASE_URI"]}')
 
-        self.db = SQLAlchemy(self.app)
+        self.db = SQLAlchemy(self.app) # interface to use the database
         self.api = MentorAPI(db=self.db, schema_path='src/mentor_app/api/schema.graphql')
 
         self._define_routes()
@@ -41,7 +39,6 @@ class MentorServer:
             logger.debug(f'{request.data=}')
             try:
                 filename = file_server.save_file(request.data)
-                logger.debug(f'{filename=}')
                 return make_response(jsonify(filename), 200)
 
             except InvalidFileType as e:

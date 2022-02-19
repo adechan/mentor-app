@@ -22,25 +22,6 @@ def test_pearson_similarity():
         [4, 2, 1, 1]
     ]
 
-    #           Book1   Book2   Book3   Book4   Book5
-    # User1     1       3       1       4       ???
-    # User2     2       1       2       4       5
-    # User3     4       1       2       5       4
-    # User4     4       2       1       1       1
-
-    #           Book1   Book2   Book3   Book4
-    # User1     1       3       1       4
-    # User2     2       1       2       4
-    # User3     4       1       2       5
-    # User4     4       2       1       1
-
-    #           User1   User2   User3   User4
-    # User1     1       -0.07   0.15    -0.19
-    # User2     -0.07   1       0.75    -0.49
-    # User3     0.15    0.75    1       0.02
-    # User4     -0.19    -0.49  0.02    1
-
-
     similarity = make_similarity_matrix(full_ratings_4x4, pearson_similarity)
     assert similarity == [
         [1, -0.07607257743127306, 0.15214515486254612, -0.19174124721184263],
@@ -62,8 +43,6 @@ def test_pearson_similarity():
         [-0.2773500981126145, 0.8660254037844385, 1, -0.5000000000000001],
         [0.9707253433941508, 0.0, -0.5000000000000001, 1]
     ]
-
-
 
     full_ratings_4x2 = [[3, 2], [1, 1], [1, 3], [3, 3]]
     with pytest.raises(ZeroDivisionError):

@@ -1,7 +1,5 @@
-import functools
 import json
 import os.path
-from pprint import pprint
 
 import trio
 import requests
@@ -11,26 +9,21 @@ import re
 from loguru import logger
 
 base_url = 'https://www.goodreads.com/search?utf8=%E2%9C%93&q='
-# https://www.goodreads.com/search?utf8=%E2%9C%93&q=painting+and+&search_type=books <- url example
 numbers_pattern = r'([0-9][0-9,.]*)'
 
 async def save_top_10_books(to_search):
     url = base_url + to_search + '+&search_type=books'
-    for i in range(10):
-        try:
-            logger.debug(f'Crawling {to_search}')
-            page = await trio.to_thread.run_sync(functools.partial(requests.get, url))
-            try:
-                books = parse_top_10_books(page.content)
-                logger.trace(f'Writing {books=} to file...')
-                await write_books_to_file(books, to_search.replace(' ', '_'))
-                logger.debug(f'{to_search} crawler finished')
-            except Exception as e:
-                logger.exception(e)
-            break
-        except requests.exceptions.ConnectionError:
-            logger.error(f'Connecion error, retrying attempt {i}...')
-            await trio.sleep(10)
+    logger.debug(f'Crawling {to_search}')
+
+    page = await trio.to_thread.run_sync(requests.get, url)
+
+    try:
+        books = parse_top_10_books(page.content)
+        logger.trace(f'Writing {books=} to file...')
+        await write_books_to_file(books, to_search.replace(' ', '_'))
+        logger.debug(f'{to_search} crawler finished')
+    except Exception as e:
+        logger.exception(e)
 
 def parse_top_10_books(content: bytes):
     body = BeautifulSoup(content, "html.parser")
@@ -80,15 +73,14 @@ async def write_books_to_file(books, interest: str):
         await f.write(json.dumps(books))
 
 async def run_crawler(interests: list):
-    # pprint(interests)
     async with trio.open_nursery() as n:
         for interest in interests:
             book_filename = f'crawled_books/{interest.replace(" ", "_")}-books.txt'
             if os.path.exists(book_filename) and os.path.getsize(book_filename) > 10:
                 continue
 
-            n.start_soon(functools.partial(save_top_10_books, interest))
-            await trio.sleep(2)
+            n.start_soon(save_top_10_books, interest)
+            await trio.sleep(2)  # so we dont overload the server with too many requests
 
 def get_interests_from_db(db, api):
     interests = []

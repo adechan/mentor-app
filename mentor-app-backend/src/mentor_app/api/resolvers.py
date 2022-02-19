@@ -10,11 +10,12 @@ class GQLResolver:
     def __init__(self, db, api, typename: str):
         self.db = db
         self.api = api
-        self.gql_object_type = ObjectType(typename) # Query or Mutation
+        self.gql_operation = ObjectType(typename)  # Query or Mutation
         self.typename = typename
         self._setup_handlers()
 
-    # Find handlers in self and attach them to gql schema objects
+    # Find handlers in self (based on the class we are in) and attach them to gql schema objects
+    # -> all the handlers are connected to the real operations
     def _setup_handlers(self):
         logger.debug(f'{self.typename=}')
 
@@ -34,7 +35,7 @@ class GQLResolver:
 
                 # Tell the GQL schema this handler will handle the operation `handler_name`
                 # Example: self.Query.set_field('account_info', self.handle_query_account_info)
-                self.gql_object_type.set_field(handler_name, function)
+                self.gql_operation.set_field(handler_name, function)
 
 class GQLQueryResolver(GQLResolver):
     def __init__(self, db, api):
@@ -46,7 +47,6 @@ class GQLQueryResolver(GQLResolver):
             account_id = flask.session['account_id']
             logger.debug(f'{info=}')
             logger.debug(f'{account_id=}')
-            # .get when using primary key
             query_result = self.db.session.query(self.api.Account).get(dict(
                 account_id=int(account_id)
             ))
@@ -62,12 +62,8 @@ class GQLQueryResolver(GQLResolver):
         try:
             logger.debug(f'{info=}')
             logger.debug(f'{email=}')
-            # .filter when using sql where clause (Ex :"WHERE thing = ?")
             query_results = list(self.db.session.query(self.api.Account).filter(self.api.Account.email == email))
             return dict(result=len(query_results) > 0)
-
-        # except NotAuthenticated as e:
-        #     return dict(error=str(e))
 
         except Exception as e:
             logger.exception(e)
@@ -208,7 +204,6 @@ class GQLQueryResolver(GQLResolver):
                     .filter(self.api.AppointmentAvailableHours.mentor_id == mentor_id) \
                     .all()
 
-                # assuming all values from Day are the same
                 hours = []
                 day = ""
                 for availableHour in availableHours:
@@ -242,11 +237,11 @@ class GQLQueryResolver(GQLResolver):
             for reviewRow in reviews:
                 courseRow = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == reviewRow.course_id) \
-                    .one() # get title from here
+                    .one()
 
                 studentRow = self.db.session.query(self.api.Student) \
                     .filter(self.api.Student.student_id == reviewRow.student_id) \
-                    .one() # get student_username from here
+                    .one()
 
                 accountRow = self.db.session.query(self.api.Account) \
                     .filter(self.api.Account.student_id == studentRow.student_id) \
@@ -353,17 +348,17 @@ class GQLQueryResolver(GQLResolver):
             for mentorId in mentors:
                 mentorRows = self.db.session.query(self.api.MentorCourses) \
                     .filter(self.api.MentorCourses.mentor_id == mentorId) \
-                    .all()  # get price from here
+                    .all()
 
                 for mentorRow in mentorRows:
                     if mentorRow.course_id in interests:
                         mentorInfo = self.db.session.query(self.api.Mentor) \
                             .filter(self.api.Mentor.mentor_id == mentorRow.mentor_id) \
-                            .one()  # get mentor info from here
+                            .one()
 
                         courseInfo = self.db.session.query(self.api.Course) \
                             .filter(self.api.Course.course_id == mentorRow.course_id) \
-                            .one()  # get course info from here
+                            .one()
 
                         mentorReviews = self.db.session.query(self.api.MentorReview) \
                             .filter(self.api.MentorReview.mentor_id == mentorRow.mentor_id) \
@@ -476,7 +471,7 @@ class GQLQueryResolver(GQLResolver):
             for appointmentRow in appointmentRows:
                 mentorRow = self.db.session.query(self.api.Mentor) \
                     .filter(self.api.Mentor.mentor_id == appointmentRow.mentor_id) \
-                    .one() # mentor info from here
+                    .one()
 
                 courseTitle = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == appointmentRow.course_id) \
@@ -485,11 +480,11 @@ class GQLQueryResolver(GQLResolver):
                 price = self.db.session.query(self.api.MentorCourses) \
                     .filter(self.api.MentorCourses.mentor_id == appointmentRow.mentor_id) \
                     .filter(self.api.MentorCourses.course_id == appointmentRow.course_id) \
-                    .one().price # mentor info from here
+                    .one().price
 
                 appointmentHoursRow = self.db.session.query(self.api.AppointmentAvailableHours) \
                     .filter(self.api.AppointmentAvailableHours.id == appointmentRow.available_hours_id) \
-                    .one()  # mentor info from here
+                    .one()
 
                 accountRow = self.db.session.query(self.api.Account) \
                     .filter(self.api.Account.mentor_id == mentorRow.mentor_id) \
@@ -529,7 +524,7 @@ class GQLQueryResolver(GQLResolver):
             for appointmentRow in appointmentRows:
                 studentRow = self.db.session.query(self.api.Student) \
                     .filter(self.api.Student.student_id == appointmentRow.student_id) \
-                    .one()  # mentor info from here
+                    .one()
 
                 courseTitle = self.db.session.query(self.api.Course) \
                     .filter(self.api.Course.course_id == appointmentRow.course_id) \
@@ -538,11 +533,11 @@ class GQLQueryResolver(GQLResolver):
                 price = self.db.session.query(self.api.MentorCourses) \
                     .filter(self.api.MentorCourses.mentor_id == appointmentRow.mentor_id) \
                     .filter(self.api.MentorCourses.course_id == appointmentRow.course_id) \
-                    .one().price  # mentor info from here
+                    .one().price
 
                 appointmentHoursRow = self.db.session.query(self.api.AppointmentAvailableHours) \
                     .filter(self.api.AppointmentAvailableHours.id == appointmentRow.available_hours_id) \
-                    .one()  # mentor info from here
+                    .one()
 
                 accountRow = self.db.session.query(self.api.Account) \
                     .filter(self.api.Account.student_id == studentRow.student_id) \
@@ -683,11 +678,11 @@ class GQLQueryResolver(GQLResolver):
         try:
             mentor = self.db.session.query(self.api.Mentor) \
                 .filter(self.api.Mentor.mentor_id == mentor_id) \
-                .one() # mentor details from here
+                .one()
 
             courses_rows = self.db.session.query(self.api.MentorCourses) \
                 .filter(self.api.MentorCourses.mentor_id == mentor_id) \
-                .all() # get course + course price
+                .all()
 
             courses = []
             for row in courses_rows:
@@ -768,7 +763,6 @@ class GQLMutationResolver(GQLResolver):
         info, first_name: str, last_name: str, email: str, password: str,
         profile: dict
     ):
-        # Add to account + student + student interests tables
         try:
             account_id, session_id = self.api.register_account(first_name, last_name, email, password)
 
@@ -818,7 +812,6 @@ class GQLMutationResolver(GQLResolver):
         info, first_name: str, last_name: str, email: str, password: str,
         profile: dict
     ):
-        # Add to account + mentor tables
         try:
             account_id, session_id = self.api.register_account(first_name, last_name, email, password)
 

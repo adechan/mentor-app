@@ -1,4 +1,4 @@
-from typing import Tuple, Union
+from typing import Tuple
 
 import bcrypt
 import flask
@@ -62,10 +62,11 @@ class MentorAPI:
         # Load GQL schema from file
         type_defs = load_schema_from_path(schema_path)
 
+        # it loads the schema from text and binds the graphql operations (query/ mutation) to the existing resolvers
         return make_executable_schema(
-            type_defs, self.query_resolver.gql_object_type, self.mutation_resolver.gql_object_type,
+            type_defs, self.query_resolver.gql_operation, self.mutation_resolver.gql_operation,
             snake_case_fallback_resolvers
-    )
+        )
 
     def login_account(self, email: str, password: str):
         accounts = self._db.session.query(self.Account).filter(self.Account.email == email).all()

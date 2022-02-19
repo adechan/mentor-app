@@ -12,7 +12,7 @@ def recommend_item_to_user(item, prediction, interest, books, db, api):
         return books[item]
 
     if len(unrecommended_books) > 0:
-        return unrecommended_books[0][0].id # cuz of weird query
+        return unrecommended_books[0][0].id
 
     return None
 
@@ -85,12 +85,7 @@ def recommend_book_to_users(db, api):
     all_ratings = get_ratings(db, api, users)
     books = books_that_are_rated_by_at_least_1_user(db, api)
 
-    logger.debug(f'{users=}')
-    logger.debug(f'{all_ratings=}')
-    logger.debug(f'{books=}')
-
     predictions = calculate_predictions(users, books, all_ratings, 5)
-    logger.debug(f'{predictions}=')
 
     for user in users:
         for key in predictions:
@@ -102,7 +97,14 @@ def recommend_book_to_users(db, api):
 
                 books_within_interest = books[interest_id][1]
 
-                recommended_book = recommend_item_to_user(prediction[0], prediction[1], interest_id, books_within_interest, db, api)
+                recommended_book = recommend_item_to_user(
+                    prediction[0],
+                    prediction[1],
+                    interest_id,
+                    books_within_interest,
+                    db,
+                    api
+                )
             else:
                 interests = db.session.query(api.StudentInterests) \
                     .filter(api.StudentInterests.student_id == user[0]) \

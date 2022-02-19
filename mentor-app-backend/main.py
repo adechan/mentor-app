@@ -8,7 +8,6 @@ server.serve()
 
 # crawler.populate_course_table(server.db, server.api)
 
-
 # CRAWL AND POPULATE COURSE TABLE
 # create_course_table(server.db, server.api)
 

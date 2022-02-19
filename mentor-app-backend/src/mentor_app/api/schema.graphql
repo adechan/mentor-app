@@ -245,7 +245,7 @@ type Query {
     get_all_courses: [StudentInterestResult!]!
 
     get_mentor_reviews(mentor_id: ID!): [MentorReviewResult!] # Authenticated
-    get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!] # Authenticated - REDO??
+    get_mentor_courses(mentor_id: ID!): [MentorCoursesResult!] # Authenticated
 
     get_student_settings_info(account_id: ID!): StudentSettingsResult! # Authenticated
     get_mentor_settings_info(account_id: ID!): MentorSettingsResult! # Authenticated
@@ -264,8 +264,8 @@ type Query {
     get_all_recommended_books(student_id: ID!): [RecommendedBooksResult!] # Authenticated
 
     account_info: Account! # Authenticated
-    student_info(student_id: ID!): StudentProfile!  # Authenticated?
-    mentor_info(mentor_id: ID!): MentorProfile!  # Authenticated?
+    student_info(student_id: ID!): StudentProfile!  # Authenticated
+    mentor_info(mentor_id: ID!): MentorProfile!  # Authenticated
 }
 
 type Mutation {
@@ -275,7 +275,7 @@ type Mutation {
     delete_student_interest(student_id: ID!, course_id: ID!): Result!  # Authenticated
     add_student_interest(student_id: ID!, course_id: ID!): Result! #Authenticated
 
-    add_mentor_course(mentor_id: ID!, course_id: ID!, price: Float!, day: Int!, hours: [Int!]!): Result! # Authenticated - REDO???
+    add_mentor_course(mentor_id: ID!, course_id: ID!, price: Float!, day: Int!, hours: [Int!]!): Result! # Authenticated
     delete_mentor_course(mentor_id: ID!, course_id: ID!): Result! # Authenticated
 
     update_student_settings_info(account_id: ID!, settings_info: StudentSettingsInfo!): Result! # Authenticated
@@ -296,6 +296,6 @@ type Mutation {
 
     student_rate_book(student_id: ID!, book_id: ID!, rating: Float!): Result! # Authenticated
 
-    login(email: String!, password: String!): Result! # This should give me an account_id IDEALLY
+    login(email: String!, password: String!): Result!
     logout: Result! # Authenticated
 }
