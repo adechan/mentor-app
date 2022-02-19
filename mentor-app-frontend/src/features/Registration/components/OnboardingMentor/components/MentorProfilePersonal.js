@@ -1,8 +1,8 @@
 import { makeStyles, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
 import FooterButtons from "../../common/components/FooterButtons";
 import { useGetProfileStep2 } from "../hooks/useGetProfileStep2";
+import ErrorMessage from "../../../../Account/common/ErrorMessage";
 
 const customStyles = makeStyles((theme) => ({
   textfield: {
@@ -18,7 +18,6 @@ const customStyles = makeStyles((theme) => ({
 
 const MentorProfilePersonal = ({ setActiveStep }) => {
   const customClasses = customStyles();
-  const history = useHistory();
 
   const [secondStep, setSecondStep] = useState({
     statement: "",
@@ -31,7 +30,6 @@ const MentorProfilePersonal = ({ setActiveStep }) => {
     setActiveStep(2);
   }, []);
 
-  
   useEffect(() => {
     setSecondStep({
       statement: formik.values.statement,
@@ -52,9 +50,11 @@ const MentorProfilePersonal = ({ setActiveStep }) => {
           value={formik.values.statement}
           onChange={(e) => formik.setFieldValue("statement", e.target.value)}
         />
-        {formik.touched.statement && formik.errors.statement && (
-          <p className={customClasses.error}>{formik.errors.statement}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.statement && formik.errors.statement}
+          errorMessage={formik.errors.statement}
+        />
 
         <TextField
           className={customClasses.textfield}
@@ -67,13 +67,13 @@ const MentorProfilePersonal = ({ setActiveStep }) => {
           value={formik.values.hobbies}
           onChange={(e) => formik.setFieldValue("hobbies", e.target.value)}
         />
-        {formik.touched.hobbies && formik.errors.hobbies && (
-          <p className={customClasses.error}>{formik.errors.hobbies}</p>
-        )}
 
-        <FooterButtons
-          handleNext={formik.handleSubmit}
+        <ErrorMessage
+          showMessage={formik.touched.hobbies && formik.errors.hobbies}
+          errorMessage={formik.errors.hobbies}
         />
+
+        <FooterButtons handleNext={formik.handleSubmit} />
       </div>
     </formik>
   );

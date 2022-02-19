@@ -49,15 +49,15 @@ setInterests }) => {
       <DialogContent className={customClasses.container}>
         <Autocomplete
           disablePortal
-          id="combo-box-demo"
+          id="add-interest-id"
           options={possibleInterests}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             setChosenInterest((prev) => ({
               ...prev,
               courseId: value !== null ? value.id : null,
               courseTitle: value !== null ? value.label : null,
             }));
-          }} // prints the selected value
+          }} 
           sx={{ width: "auto" }}
           renderInput={(params) => <TextField {...params} label="Interest" />}
         />

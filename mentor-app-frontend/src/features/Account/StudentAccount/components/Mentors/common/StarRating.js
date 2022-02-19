@@ -11,7 +11,7 @@ const StarRating = ({ initialRating, stars, setStars }) => {
 
   return (
     <>
-      {possibleStars.map((star, index) => {
+      {possibleStars.map((_, index) => {
         return (
           <StarIcon
             style={{

@@ -1,8 +1,8 @@
 import { makeStyles, TextField } from "@material-ui/core";
 import FooterButtons from "../../../../../../features/Registration/components/common/components/FooterButtons";
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { useGetProfileStep3 } from "../hooks/useGetProfileStep3";
+import ErrorMessage from "../../../../common/ErrorMessage";
 
 const customStyles = makeStyles((theme) => ({
   description: {
@@ -24,7 +24,6 @@ const customStyles = makeStyles((theme) => ({
 }));
 
 const MentorProfileInterests = ({graphQLClient}) => {
-  const history = useHistory();
   const customClasses = customStyles();
 
   const [thirdStep, setThirdStep] = useState({
@@ -53,9 +52,11 @@ const MentorProfileInterests = ({graphQLClient}) => {
           value={formik.values.quote}
           onChange={(e) => formik.setFieldValue("quote", e.target.value)}
         />
-        {formik.touched.quote && formik.errors.quote && (
-          <p className={customClasses.error}>{formik.errors.quote}</p>
-        )}
+        
+        <ErrorMessage
+          showMessage={formik.touched.quote && formik.errors.quote}
+          errorMessage={formik.errors.quote}
+        />
 
         <FooterButtons handleNext={formik.handleSubmit} />
       </div>

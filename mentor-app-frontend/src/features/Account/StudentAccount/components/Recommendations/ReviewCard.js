@@ -1,6 +1,5 @@
 import { makeStyles, Typography } from "@material-ui/core";
 
-// TODO
 const customStyles = makeStyles(() => ({
   title: {
     color: "black",

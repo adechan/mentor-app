@@ -1,7 +1,7 @@
 import { makeStyles } from "@material-ui/core/styles";
 import ApplicationHeader from "./features/common/ApplicationHeader/ApplicationHeader";
 import { BrowserRouter as Router } from "react-router-dom";
-import { Switch, Route } from "react-router-dom";
+import { Switch } from "react-router-dom";
 import Welcome from "./features/WelcomePage/views/Welcome";
 import Registration from "./features/Registration/views/Registration";
 import CreateProfile from "./features/Registration/components/common/CreateProfile/CreateProfile";

@@ -1,8 +1,7 @@
-import { request, gql } from "graphql-request";
-import { useState, useEffect } from "react";
+import { gql } from "graphql-request";
+import {  useEffect } from "react";
 import { useDispatch } from "react-redux";
 
-import { useHistory } from "react-router-dom";
 import { accountActions } from "../store/slices/accountSlice";
 
 const useCheckIfUserHasSession = (graphQLClient) => {

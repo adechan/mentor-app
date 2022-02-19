@@ -2,9 +2,9 @@ import { Typography, FormControl } from "@material-ui/core";
 import { makeStyles, InputLabel, Select, MenuItem } from "@material-ui/core";
 import FooterButtons from "../../../../../../features/Registration/components/common/components/FooterButtons";
 import React, { useState, useEffect } from "react";
-import { useHistory } from "react-router-dom";
 import { useGetProfileThirdStep } from "../hooks/useGetProfileThirdStep";
 import useGetAllCourses from "../hooks/useGetAllCourses";
+import ErrorMessage from "../../../../common/ErrorMessage";
 
 const customStyles = makeStyles((theme) => ({
   description: {
@@ -20,8 +20,7 @@ const customStyles = makeStyles((theme) => ({
   },
 }));
 
-const StudentProfileInterests = ({graphQLClient}) => {
-  const history = useHistory();
+const StudentProfileInterests = ({ graphQLClient }) => {
   const customClasses = customStyles();
   const courses = useGetAllCourses();
   const [subject, setSubject] = useState({
@@ -33,8 +32,8 @@ const StudentProfileInterests = ({graphQLClient}) => {
   useEffect(() => {
     setSubject({
       id: formik.values.interest,
-    })
-   }, [formik.values])
+    });
+  }, [formik.values]);
 
   return (
     <formik onSubmit={formik.onSubmit}>
@@ -48,18 +47,20 @@ const StudentProfileInterests = ({graphQLClient}) => {
           <Select
             label="Subject"
             value={formik.values.interest}
-            onChange={(event) => formik.setFieldValue("interest", event.target.value)}
-          >
-            {
-              courses.map(course => (
-                <MenuItem value={course.id}>{course.title}</MenuItem>
-              ))
+            onChange={(event) =>
+              formik.setFieldValue("interest", event.target.value)
             }
+          >
+            {courses.map((course) => (
+              <MenuItem value={course.id}>{course.title}</MenuItem>
+            ))}
           </Select>
         </FormControl>
-        {formik.touched.interest && formik.errors.interest && (
-          <p className={customClasses.error}>{formik.errors.interest}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.interest && formik.errors.interest}
+          errorMessage={formik.errors.interest}
+        />
 
         <FooterButtons handleNext={formik.handleSubmit} />
       </div>

@@ -1,4 +1,4 @@
-import { request, gql } from "graphql-request";
+import {  gql } from "graphql-request";
 import { useSelector } from "react-redux";
 import { useEffect, useState } from "react";
 

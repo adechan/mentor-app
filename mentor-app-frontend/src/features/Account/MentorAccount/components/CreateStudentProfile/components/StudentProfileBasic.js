@@ -2,6 +2,7 @@ import { makeStyles, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import FooterButtons from "../../../../../../features/Registration/components/common/components/FooterButtons";
 import UploadAvatar from "../../../../../../features/Registration/components/common/components/UploadAvatar";
+import ErrorMessage from "../../../../common/ErrorMessage";
 import { useGetProfileBasic } from "../hooks/useGetProfileBasic";
 
 const customStyles = makeStyles((theme) => ({
@@ -35,14 +36,14 @@ const StudentProfileBasic = ({ setActiveStep }) => {
   }, []);
 
   useEffect(() => {
-   setProfileBasic({
-     avatar: formik.values.avatar,
-     username: formik.values.username,
-     studentEmail: formik.values.studentEmail,
-     country: formik.values.country,
-     city: formik.values.city
-   })
-  }, [formik.values])
+    setProfileBasic({
+      avatar: formik.values.avatar,
+      username: formik.values.username,
+      studentEmail: formik.values.studentEmail,
+      country: formik.values.country,
+      city: formik.values.city,
+    });
+  }, [formik.values]);
 
   return (
     <formik onSubmit={formik.onSubmit}>
@@ -61,9 +62,11 @@ const StudentProfileBasic = ({ setActiveStep }) => {
           onChange={(e) => formik.setFieldValue("username", e.target.value)}
           className={customClasses.textfield}
         />
-        {formik.touched.username && formik.errors.username && (
-          <p className={customClasses.error}>{formik.errors.username}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.username && formik.errors.username}
+          errorMessage={formik.errors.username}
+        />
 
         <TextField
           variant="outlined"
@@ -74,9 +77,13 @@ const StudentProfileBasic = ({ setActiveStep }) => {
           value={formik.values.studentEmail}
           onChange={(e) => formik.setFieldValue("studentEmail", e.target.value)}
         />
-        {formik.touched.studentEmail && formik.errors.studentEmail && (
-          <p className={customClasses.error}>{formik.errors.studentEmail}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={
+            formik.touched.studentEmail && formik.errors.studentEmail
+          }
+          errorMessage={formik.errors.studentEmail}
+        />
 
         <TextField
           variant="outlined"
@@ -87,9 +94,11 @@ const StudentProfileBasic = ({ setActiveStep }) => {
           value={formik.values.country}
           onChange={(e) => formik.setFieldValue("country", e.target.value)}
         />
-        {formik.touched.country && formik.errors.country && (
-          <p className={customClasses.error}>{formik.errors.country}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.country && formik.errors.country}
+          errorMessage={formik.errors.country}
+        />
 
         <TextField
           variant="outlined"
@@ -100,9 +109,11 @@ const StudentProfileBasic = ({ setActiveStep }) => {
           value={formik.values.city}
           onChange={(e) => formik.setFieldValue("city", e.target.value)}
         />
-        {formik.touched.city && formik.errors.city && (
-          <p className={customClasses.error}>{formik.errors.city}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.city && formik.errors.city}
+          errorMessage={formik.errors.city}
+        />
         <FooterButtons handleNext={formik.handleSubmit} />
       </div>
     </formik>

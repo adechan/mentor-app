@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { Button, makeStyles, Typography } from "@material-ui/core";
 import useAwardStudent from "./hooks/useAwardStudent";
 

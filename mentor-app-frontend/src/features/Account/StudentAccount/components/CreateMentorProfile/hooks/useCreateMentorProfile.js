@@ -1,4 +1,4 @@
-import { request, gql } from "graphql-request";
+import {  gql } from "graphql-request";
 import { useDispatch, useSelector } from "react-redux";
 import { accountActions } from "../../../../../../store/slices/accountSlice";
 import { registrationActions } from "../../../../../../store/slices/registrationSlice";

@@ -1,8 +1,7 @@
 import React from "react";
-import { Avatar, Button, makeStyles, Typography } from "@material-ui/core";
+import {  makeStyles, Typography } from "@material-ui/core";
 import ReviewCard from "./ReviewCard";
 
-// TODO
 const customStyles = makeStyles(() => ({
   title: {
     color: "black",
@@ -108,16 +107,6 @@ const MentorMoreInfoContainer = ({ graphQLClient, profileInfo }) => {
             ))}
           </div>
         </div>
-
-        {/* <div className={customClasses.buttonContainer}>
-          <Button
-            className={customClasses.button}
-            variant="contained"
-            color="primary"
-          >
-            Create appointment
-          </Button>
-        </div> */}
       </div>
     </>
   );

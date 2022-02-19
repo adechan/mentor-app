@@ -2,7 +2,6 @@ import { makeStyles, Typography } from "@material-ui/core";
 import React from "react";
 import useGetAllRecommendedBooks from "./hooks/useGetAllRecommendedBooks";
 import RecommendedBookCard from "./RecommendedBookCard";
-// import useGetAllMentors from "./hooks/useGetAllMentors";
 
 const customStyles = makeStyles(() => ({
   title: {

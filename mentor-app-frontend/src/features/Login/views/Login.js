@@ -137,12 +137,6 @@ const Login = ({ graphQLClient }) => {
           <p className={customClasses.error}>{formik.errors.password}</p>
         )}
 
-        {/* <div className={customClasses.forgotPasswordContainer}>
-        <Typography variant="h6" className={customClasses.forgotPassword}>
-          Forgot your password?
-        </Typography>
-      </div> */}
-
         <Button
           variant="contained"
           color="primary"

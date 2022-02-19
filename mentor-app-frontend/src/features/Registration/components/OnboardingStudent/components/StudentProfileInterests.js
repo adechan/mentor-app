@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import { useGetProfileThirdStep } from "../hooks/useGetProfileThirdStep";
 import useGetAllCourses from "../hooks/useGetAllCourses";
 import Autocomplete from "@mui/material/Autocomplete";
+import ErrorMessage from "../../../../Account/common/ErrorMessage";
 
 const customStyles = makeStyles((theme) => ({
   description: {
@@ -46,16 +47,18 @@ const StudentProfileInterests = () => {
           disablePortal
           id="combo-box-demo"
           options={courses}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             formik.setFieldValue("interest", value !== null ? value.id : null);
-          }} // prints the selected value
+          }}
           sx={{ width: "auto" }}
           getOptionLabel={(option) => option.title}
           renderInput={(params) => <TextField {...params} label="Interest" />}
         />
-        {formik.touched.interest && formik.errors.interest && (
-          <p className={customClasses.error}>{formik.errors.interest}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.interest && formik.errors.interest}
+          errorMessage={formik.errors.interest}
+        />
 
         <FooterButtons handleNext={formik.handleSubmit} />
       </div>

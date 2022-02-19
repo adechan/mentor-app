@@ -1,5 +1,5 @@
-import { Avatar, makeStyles, Typography } from "@material-ui/core";
-import React, { useEffect, useState } from "react";
+import { makeStyles, Typography } from "@material-ui/core";
+import React from "react";
 
 const customStyles = makeStyles((theme) => ({
   text: {
@@ -20,7 +20,7 @@ const UploadAvatar = ({avatar, setAvatar}) => {
       </Typography>
       <input
         type="file"
-        id="myFile"
+        id="avatar"
         name="filename"
         accept="image/*"
         onChange={setAvatar}

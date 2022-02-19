@@ -45,7 +45,6 @@ const useGetMentorProfileDetails = (graphQLClient, mentorId) => {
     }
 
     const result = data?.get_mentor_details;
-    console.log(result);
 
     const item = {
         username: result.mentor_username,

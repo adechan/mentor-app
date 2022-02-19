@@ -39,8 +39,6 @@ const useGetAllRecommendations = (graphQLClient) => {
         return;
     }
 
-    // console.log(result);
-
     let recommendations = []
     result.forEach(resultItem => {
         const item = {

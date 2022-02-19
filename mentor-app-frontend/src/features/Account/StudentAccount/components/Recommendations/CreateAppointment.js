@@ -6,13 +6,11 @@ import {
   Button,
   DialogActions,
   makeStyles,
-  TextField,
   FormControl,
   InputLabel,
   Select,
   MenuItem,
 } from "@material-ui/core";
-import Autocomplete from "@mui/material/Autocomplete";
 import useGetDataForAppointment from "./hooks/useGetDataForAppointment";
 import { getDayName } from "../../../../../utils/helpers";
 import useCreateAppointment from "./hooks/useCreateAppointment";
@@ -83,7 +81,6 @@ const CreateAppointment = ({
         <FormControl style={{ width: "100%", marginTop: 10 }}>
           <InputLabel id="subject">Available Times</InputLabel>
           <Select
-            labelId="available-time-label-id"
             id="available-time-id"
             label="Available Time"
             value={selectedHourId}

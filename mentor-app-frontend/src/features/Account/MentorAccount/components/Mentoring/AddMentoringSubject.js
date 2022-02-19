@@ -110,15 +110,15 @@ const AddMentoringSubject = ({
       <DialogContent className={customClasses.container}>
         <Autocomplete
           disablePortal
-          id="combo-box-demo"
+          id="add-subject-id"
           options={possibleSubjects}
-          onChange={(event, value) => {
+          onChange={(_, value) => {
             setAddMentorCourseValues((prev) => ({
               ...prev,
               courseId: value !== null ? value.id : null,
               courseTitle: value !== null ? value.label: null,
             }));
-          }} // prints the selected value
+          }} 
           sx={{ width: "auto" }}
           renderInput={(params) => <TextField {...params} label="Subject" />}
         />
@@ -276,7 +276,7 @@ const AddMentoringSubject = ({
           <FormControlLabel
             value={"15"}
             control={
-              <Checkbox checked={hours[15]} onChange={handleChange} name="0" />
+              <Checkbox checked={hours[15]} onChange={handleChange} name="15" />
             }
             label="15:00 - 16:00"
           />

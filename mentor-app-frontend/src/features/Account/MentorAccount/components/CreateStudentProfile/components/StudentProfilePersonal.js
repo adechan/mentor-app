@@ -2,6 +2,7 @@ import { makeStyles, TextField } from "@material-ui/core";
 import React, { useEffect, useState } from "react";
 import FooterButtons from "../../../../../../features/Registration/components/common/components/FooterButtons";
 import { useGetProfileSecondStep } from "../hooks/useGetProfileSecondStep";
+import ErrorMessage from "../../../../common/ErrorMessage";
 
 const customStyles = makeStyles((theme) => ({
   textfield: {
@@ -48,9 +49,11 @@ const StudentProfilePersonal = ({ setActiveStep }) => {
           value={formik.values.statement}
           onChange={(e) => formik.setFieldValue("statement", e.target.value)}
         />
-         {formik.touched.statement && formik.errors.statement && (
-          <p className={customClasses.error}>{formik.errors.statement}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.statement && formik.errors.statement}
+          errorMessage={formik.errors.statement}
+        />
 
         <TextField
           className={customClasses.textfield}
@@ -63,9 +66,11 @@ const StudentProfilePersonal = ({ setActiveStep }) => {
           value={formik.values.hobbies}
           onChange={(e) => formik.setFieldValue("hobbies", e.target.value)}
         />
-           {formik.touched.hobbies && formik.errors.hobbies && (
-          <p className={customClasses.error}>{formik.errors.hobbies}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.hobbies && formik.errors.hobbies}
+          errorMessage={formik.errors.hobbies}
+        />
 
         <FooterButtons handleNext={formik.handleSubmit} />
       </div>

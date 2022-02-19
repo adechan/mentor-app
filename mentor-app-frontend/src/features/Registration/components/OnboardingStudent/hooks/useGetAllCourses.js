@@ -11,7 +11,7 @@ const useGetAllCourses = () => {
     }
   `;
 
-  const [courses, setCourses] = useState([]); // [{id, title}, ...]
+  const [courses, setCourses] = useState([]); 
 
   const getAllCourses = async () => {
     const data = await request("http://127.0.0.1:8080/graphql", query);
