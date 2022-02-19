@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { useLogin } from "../hooks/useLogin";
+import ErrorMessage from "../../Account/common/ErrorMessage"
 
 const customStyles = makeStyles((theme) => ({
   transparentContainer: {
@@ -120,9 +121,11 @@ const Login = ({ graphQLClient }) => {
           value={formik.values.email}
           onChange={(e) => formik.setFieldValue("email", e.target.value)}
         />
-        {formik.touched.email && formik.errors.email && (
-          <p className={customClasses.error}>{formik.errors.email}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.email && formik.errors.email}
+          errorMessage={formik.errors.email}
+        />
 
         <TextField
           label="Password"
@@ -133,9 +136,11 @@ const Login = ({ graphQLClient }) => {
           value={formik.values.password}
           onChange={(e) => formik.setFieldValue("password", e.target.value)}
         />
-        {formik.touched.password && formik.errors.password && (
-          <p className={customClasses.error}>{formik.errors.password}</p>
-        )}
+
+        <ErrorMessage
+          showMessage={formik.touched.password && formik.errors.password}
+          errorMessage={formik.errors.password}
+        />
 
         <Button
           variant="contained"

@@ -45,8 +45,6 @@ const StudentProfileBasic = ({ setActiveStep }) => {
     });
   }, [formik.values]);
 
-  console.log(formik.values.avatar);
-
   return (
     <formik onSubmit={formik.onSubmit}>
       <div style={{ marginTop: 30 }}>

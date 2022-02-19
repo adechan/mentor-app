@@ -45,7 +45,7 @@ const StudentProfileInterests = () => {
 
         <Autocomplete
           disablePortal
-          id="combo-box-demo"
+          id="interest-id"
           options={courses}
           onChange={(_, value) => {
             formik.setFieldValue("interest", value !== null ? value.id : null);
