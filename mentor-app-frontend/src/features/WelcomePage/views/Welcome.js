@@ -46,7 +46,7 @@ const Welcome = () => {
   return (
     <div className={customClasses.transparentContainer}>
       <Typography variant="h5" className={customClasses.title}>
-        Welcome to <b>Mentor App</b>
+        Welcome to <b>EduShare</b>
       </Typography>
 
       <div className={customClasses.container}>

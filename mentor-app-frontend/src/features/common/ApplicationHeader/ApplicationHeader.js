@@ -51,7 +51,7 @@ const ApplicationHeader = ({graphQLClient}) => {
     <div className={customClasses.headerContainer}>
       <Typography variant="h5" className={customClasses.text} 
       >
-        Mentor App
+        EduShare
       </Typography>
 
       {selectedProfileId && (
