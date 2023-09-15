@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import StarIcon from "@mui/icons-material/Star";
 
 const StarRating = ({ initialRating, stars, setStars }) => {
@@ -9,18 +9,33 @@ const StarRating = ({ initialRating, stars, setStars }) => {
     setStars(initialRating);
   }, [initialRating]);
 
+  const iconColor = useMemo((index, biggerThan) => {
+   if (index <= biggerThan) {
+     return 'orange'
+   }
+
+   return 'lavander'
+  }, [])
+
+  const onHover = (value) => {
+    setHover(value);
+  }
+
+  const onClick = (value) => {
+    setStars(value)
+  }
+
   return (
     <>
       {possibleStars.map((_, index) => {
         return (
           <StarIcon
             style={{
-              color:
-                index + 1 <= (hover ? hover : stars) ? "orange" : "lavender",
+              color: iconColor(index + 1, hover ? hover : stars)
             }}
-            onMouseLeave={() => setHover(null)}
-            onMouseEnter={() => setHover(index + 1)}
-            onClick={() => setStars(index + 1)}
+            onMouseLeave={() => onHover(null)}
+            onMouseEnter={() => onHover(index + 1)}
+            onClick={() => onClick(index + 1)}
           />
         );
       })}
